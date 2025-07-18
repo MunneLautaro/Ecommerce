@@ -12,9 +12,14 @@
   --font-mono: var(--font-geist-mono);
 }
 
+@theme {
+  --color-tur-500: #44e5ce;
+  --color-grey-900: #212121;
+}
+
 @media (prefers-color-scheme: dark) {
   :root {
-    --background: #0a0a0a;
+    --background: #212121;
     --foreground: #ededed;
   }
 }
