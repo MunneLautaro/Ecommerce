@@ -11,7 +11,7 @@ export function LoginForm() {
       {state?.errors?.email && (
         <p className="text-red-500">{state.errors.email}</p>
       )}
-      <input id="email" name="email" placeholder="Email" />
+      <input id="user" name="user" placeholder="Username" />
 
       <input
         id="password"
