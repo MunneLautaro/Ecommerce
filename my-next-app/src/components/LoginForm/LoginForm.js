@@ -1,21 +1,43 @@
 "use client";
-
-import { login } from "@/services/actions";
-import { useActionState } from "react";
+import { useRouter } from "next/navigation";
 import MyButton from "../Ui/MyButton";
 import MyInput from "../Ui/MyInput";
+import { useContext, useEffect, useState } from "react";
+import { UserDispatchContext } from "../../contexts/UserContext";
+import { login } from "../../services/actions";
 
 export function LoginForm() {
-  const [state, loginAction] = useActionState(login, null);
+  const [response, setResponse] = useState(null);
+  const dispatchUser = useContext(UserDispatchContext);
+  const router = useRouter();
+
+  useEffect(() => {
+    if (!response) return;
+    if (response?.user?.user) {
+      dispatchUser({ type: "logIn", payload: response.user });
+
+      if (response?.user?.isAdmin) {
+        router.push("/prueba");
+      } else {
+        router.push("/prueba");
+      }
+    }
+  }, [response, router, dispatchUser]);
 
   return (
     <div className="flex items-center justify-center p-5">
       <form
         className="flex flex-col bg-[#424242] p-[30px] m-5 rounded"
-        action={loginAction}
+        onSubmit={async (e) => {
+          e.preventDefault();
+          const form = new FormData(e.target);
+          console.log(e.target);
+          const loginResponse = await login(form);
+          setResponse(loginResponse);
+        }}
       >
-        {state?.errors?.email && (
-          <p className="text-red-500">{state.errors.email}</p>
+        {response?.errors?.email && (
+          <p className="text-red-500">{response.errors.email}</p>
         )}
         <MyInput iId={"user"} iName={"user"} iPlaceHolder={"Username"} />
         <MyInput
@@ -23,10 +45,10 @@ export function LoginForm() {
           iName={"password"}
           iPlaceHolder={"Password"}
         />
-        {state?.errors?.password && (
-          <p className="text-red-500">{state.errors.password}</p>
+        {response?.errors?.password && (
+          <p className="text-red-500">{response.errors.password}</p>
         )}
-        <MyButton bText={"Sing in"} bType={"submit"} underline={"underline"} />
+        <MyButton bText={"Sign in"} bType={"submit"} underline={"underline"} />
       </form>
     </div>
   );
