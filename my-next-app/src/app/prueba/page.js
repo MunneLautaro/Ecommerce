@@ -4,6 +4,7 @@ import { logut } from "@/services/actions";
 import { useContext, useEffect } from "react";
 import { UserContext } from "../../contexts/UserContext";
 
+/*@#2*/
 export default function Prueba() {
   const user = useContext(UserContext);
   useEffect(() => {

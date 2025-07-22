@@ -5,7 +5,7 @@ import ModUser from "../../components/BotonesParaModificacionUsuario/ModUser";
 import DeleteUser from "../../components/BotonesParaModificacionUsuario/DeleteUser";
 
 export default async function Home() {
-  const res = await fetch("http://localhost:3000/api/userController", {
+  const res = await fetch(/*@#1*/"http://localhost:3000/api/userController", {
     next: { tags: ["users"] },
   });
   const users = await res.json();
