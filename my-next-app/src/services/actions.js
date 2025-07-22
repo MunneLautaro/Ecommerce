@@ -1,9 +1,9 @@
 "use server";
 
 import CryptoJS from "crypto-js";
-import { createSession, deleteSession } from "@/app/lib/session";
+import { createSession, deleteSession } from "../lib/session";
 import { redirect } from "next/navigation";
-import { getUserData } from "../app/lib/getUserData";
+import { getUserData } from "../lib/getUserData";
 
 export async function login(formData) {
   const user = formData.get("user");
@@ -14,6 +14,9 @@ export async function login(formData) {
 
   const currentUser = await getUserData(user);
 
+  if (!user || !password) {
+    return { errors: { login: "Complete all fields" } };
+  }
   if (!currentUser || currentUser.md5 !== cMD5 || currentUser.sha1 !== cSHA1) {
     return { errors: { login: "Invalid credentials" } };
   }
