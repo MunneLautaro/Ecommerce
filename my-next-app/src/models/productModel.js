@@ -1,4 +1,4 @@
-import mongoose from "mongoose"
+import mongoose from "mongoose";
 
 //electrodomesticos cod:
 /*
@@ -46,7 +46,7 @@ const productSchema = new mongoose.Schema({
   color: { type: String, required: true },
   price: { type: Number, required: true },
   cantidad: { type: Number, required: true },
-})
+});
 
 module.exports =
-  mongoose.models.Product || mongoose.model("Product", productSchema)
+  mongoose.models.Product || mongoose.model("Product", productSchema);

@@ -1,17 +1,17 @@
-"use server"
+"use server";
 
-import { revalidateTag } from "next/cache"
+import { revalidateTag } from "next/cache";
 
 const actionUser = async () => {
-  revalidateTag("users")
-}
+  revalidateTag("users");
+};
 
 const actionProds = async () => {
-  revalidateTag("prods")
-}
+  revalidateTag("prods");
+};
 
 const actionAlert = async () => {
-  revalidateTag("alert")
-}
+  revalidateTag("alert");
+};
 
-export { actionUser, actionProds, actionAlert }
+export { actionUser, actionProds, actionAlert };

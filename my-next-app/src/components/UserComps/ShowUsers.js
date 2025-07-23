@@ -1,6 +1,6 @@
 "use client";
 import { useState } from "react";
-import Tabla from "../BotonesParaModificacionUsuario/Tabla";
+import Tabla from "../UserComps/Tabla";
 import MyButton from "../Ui/MyButton";
 
 export default function ShowUsers({ users }) {

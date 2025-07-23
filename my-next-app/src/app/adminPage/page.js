@@ -1,8 +1,8 @@
 "use server";
-import AddUser from "../../components/BotonesParaModificacionUsuario/AddUser";
-import ShowUsers from "../../components/BotonesParaModificacionUsuario/ShowUsers";
-import ModUser from "../../components/BotonesParaModificacionUsuario/ModUser";
-import DeleteUser from "../../components/BotonesParaModificacionUsuario/DeleteUser";
+import AddUser from "../../components/UserComps/AddUser";
+import ShowUsers from "../../components/UserComps/ShowUsers";
+import ModUser from "../../components/UserComps/ModUser";
+import DeleteUser from "../../components/UserComps/DeleteUser";
 
 export default async function Home() {
   const res = await fetch("http://localhost:3000/api/userController", {

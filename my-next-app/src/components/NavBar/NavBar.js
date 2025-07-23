@@ -1,34 +1,46 @@
-"use client";
+"use client"
 
-import { usePathname } from "next/navigation";
-import { logut } from "../../services/actions";
+import { usePathname } from "next/navigation"
+import { useEffect } from "react"
+import { adminRoutes } from "../../routes"
+import Title from "./Title"
+import LogOutButton from "./LogOutButton"
+import Link from "next/link"
 
-export default function NavBar() {
-  const pathname = usePathname();
-  /*
-  const rutas = {
-    "/agregarProductos": [
-      { label: "Home producto", url: "/productosMongoDB" },
-      { label: "Ver productos", url: "/verProductos" },
-    ],
-    "/verProductos": [
-      { label: "Home producto", url: "/productosMongoDB" },
-      { label: "Agregar producto", url: "/agregarProductos" },
-    ],
-    "/productosMongoDB": [
-      { label: "Agregar producto", url: "/agregarProductos" },
-      { label: "Ver productos", url: "/verProductos" },
-    ],
-  };
-*/
+export default function NavBar({ session }) {
+  const pathname = usePathname()
+
+  useEffect(() => {
+    console.log(session)
+    console.log()
+  }, [session])
+
   return (
     <>
       <div className="flex bg-[#424242] justify-between items-center w-full h-[90px] fixed top-0 overflow-hidden z-10">
-        <h1 className="underline decoration-violet-500 text-violet-500 m-[15px] text-2xl font-serif font-bold ">
-          Bobs Store
-        </h1>
-        <button onClick={logut}>LOGOUT</button>
+        <Title />
+        {session?.username &&
+        session?.isAdmin &&
+        adminRoutes[pathname]?.length > 0 ? (
+          adminRoutes[pathname].map((adminR) => (
+            <Link key={adminR.label} href={adminR.url}>
+              {adminR.label}
+            </Link>
+          ))
+        ) : pathname !== "/catalog" ? (
+          <Link href="/catalog"> Catalog </Link>
+        ) : null}
+        <div className="m-[15px] flex">
+          {session ? (
+            <LogOutButton
+              username={session?.username}
+              isAdmin={session.isAdmin}
+            />
+          ) : (
+            <Link href="/login">Login</Link>
+          )}
+        </div>
       </div>
     </>
-  );
+  )
 }

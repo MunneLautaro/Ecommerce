@@ -1,4 +1,4 @@
-import mongoose from "mongoose"
+import mongoose from "mongoose";
 
 const userSchema = new mongoose.Schema({
   user: { type: String, required: true, unique: true },
@@ -8,6 +8,6 @@ const userSchema = new mongoose.Schema({
   activeSession: { type: Boolean, default: false },
   isAdmin: { type: Boolean, default: false },
   device: { type: String, required: true },
-})
+});
 
-module.exports = mongoose.models.User || mongoose.model("User", userSchema)
+module.exports = mongoose.models.User || mongoose.model("User", userSchema);

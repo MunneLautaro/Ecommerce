@@ -1,4 +1,4 @@
-import mongoose from "mongoose"
+import mongoose from "mongoose";
 
 const purchaseOrderSchema = new mongoose.Schema({
   orderNumber: { type: String, required: true, unique: true },
@@ -33,8 +33,8 @@ const purchaseOrderSchema = new mongoose.Schema({
     default: "Pending",
   },
   totalAmount: { type: Number, required: true },
-})
+});
 
 module.exports =
   mongoose.models.PurchaseOrder ||
-  mongoose.model("PurchaseOrder", purchaseOrderSchema)
+  mongoose.model("PurchaseOrder", purchaseOrderSchema);

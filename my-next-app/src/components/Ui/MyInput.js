@@ -4,6 +4,9 @@ export default function MyInput({
   iPlaceHolder,
   iIsRequired = false,
   iId,
+  iValue,
+  iOnChange,
+  iAccept,
 }) {
   return (
     <input
@@ -13,6 +16,9 @@ export default function MyInput({
       name={iName}
       placeholder={iPlaceHolder}
       required={iIsRequired}
+      value={iValue}
+      onChange={iOnChange}
+      accept={iAccept}
     />
-  );
+  )
 }

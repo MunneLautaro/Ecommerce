@@ -35,7 +35,7 @@ export async function POST(request) {
     if (usuarioExistente) {
       return NextResponse.json(
         { error: "The user already exists" },
-        { status: 400 }
+        { status: 400 },
       );
     }
 
@@ -50,7 +50,7 @@ export async function POST(request) {
     await nuevoUsuario.save();
     return NextResponse.json(
       { success: "User successfully registered" },
-      { status: 200 }
+      { status: 200 },
     );
   } catch (error) {
     return NextResponse.json({ error: error }, { status: 400 });
@@ -65,7 +65,7 @@ export async function DELETE(request) {
     if (!usuarioAEliminar) {
       return NextResponse.json(
         { error: "You must enter a user" },
-        { status: 400 }
+        { status: 400 },
       );
     }
     const usuarioExistente = await encontrarUsuario(usuarioAEliminar);
@@ -73,19 +73,19 @@ export async function DELETE(request) {
     if (!usuarioExistente) {
       return NextResponse.json(
         { error: `The user: ${usuarioAEliminar}. Doesn't exists` },
-        { status: 404 }
+        { status: 404 },
       );
     }
 
     await User.deleteOne({ user: usuarioAEliminar });
     return NextResponse.json(
       { success: "The user was successfully deleted" },
-      { status: 200 }
+      { status: 200 },
     );
   } catch (error) {
     return NextResponse.json(
       { error: "An error has ocurred" },
-      { status: 400 }
+      { status: 400 },
     );
   }
 }
@@ -101,21 +101,21 @@ export async function PUT(request) {
     if (!anteriorUser) {
       return NextResponse.json(
         { error: "You must enter a user" },
-        { status: 400 }
+        { status: 400 },
       );
     }
 
     if (!nuevoUser) {
       return NextResponse.json(
         { error: "Please enter the new username" },
-        { status: 400 }
+        { status: 400 },
       );
     }
 
     if (!nuevaPass) {
       return NextResponse.json(
         { error: "Please enter the new password" },
-        { status: 400 }
+        { status: 400 },
       );
     }
 
@@ -124,7 +124,7 @@ export async function PUT(request) {
     if (!usuarioBuscado) {
       return NextResponse.json(
         { error: `The user: ${anteriorUser}. Doesn't exists` },
-        { status: 404 }
+        { status: 404 },
       );
     }
 
@@ -133,7 +133,7 @@ export async function PUT(request) {
     if (nuevoUsuario) {
       return NextResponse.json(
         { error: "User is already in use" },
-        { status: 400 }
+        { status: 400 },
       );
     }
 
@@ -145,16 +145,16 @@ export async function PUT(request) {
         sha1: CryptoJS.SHA1(nuevaPass).toString(),
         device: request.headers.get("user-agent") || "",
         activeSession: true,
-      }
+      },
     );
     return NextResponse.json(
       { success: "The user was successfully modified" },
-      { status: 200 }
+      { status: 200 },
     );
   } catch (error) {
     return NextResponse.json(
       { error: "An error has ocurred" },
-      { status: 400 }
+      { status: 400 },
     );
   }
 }

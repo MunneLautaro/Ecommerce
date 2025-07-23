@@ -1,31 +1,46 @@
-"use server";
+"use server"
 
-import CryptoJS from "crypto-js";
-import { createSession, deleteSession } from "../lib/session";
-import { redirect } from "next/navigation";
-import { getUserData } from "../lib/getUserData";
+import CryptoJS from "crypto-js"
+import { createSession, deleteSession } from "../lib/session"
+import { redirect } from "next/navigation"
 
 export async function login(formData) {
-  const user = formData.get("user");
-  const password = formData.get("password");
+  const user = formData.get("user")
+  const password = formData.get("password")
 
-  let cMD5 = CryptoJS.MD5(password).toString();
-  let cSHA1 = CryptoJS.SHA1(password).toString();
+  let cMD5 = CryptoJS.MD5(password).toString()
+  let cSHA1 = CryptoJS.SHA1(password).toString()
 
-  const currentUser = await getUserData(user);
+  const response = await fetch("http://localhost:3000/api/getUserData", {
+    method: "POST",
+    body: JSON.stringify({
+      user: user,
+    }),
+    headers: { "content-type": "application/json" },
+  })
+
+  const currentUser = await response.json()
 
   if (!user || !password) {
-    return { errors: { login: "Complete all fields" } };
+    return { errors: { login: "Complete all fields" } }
   }
-  if (!currentUser || currentUser.md5 !== cMD5 || currentUser.sha1 !== cSHA1) {
-    return { errors: { login: "Invalid credentials" } };
+  if (
+    !currentUser?.userData?.user ||
+    currentUser?.userData?.md5 !== cMD5 ||
+    currentUser?.userData?.sha1 !== cSHA1
+  ) {
+    return { errors: { login: "Invalid credentials" } }
   }
-  await createSession(currentUser._id);
+  await createSession(
+    currentUser?.userData?._id,
+    currentUser?.userData?.user,
+    currentUser?.userData?.isAdmin
+  )
 
-  return { user: JSON.parse(JSON.stringify(currentUser)) };
+  return { user: JSON.parse(JSON.stringify(currentUser.userData)) }
 }
 
-export async function logut() {
-  await deleteSession();
-  redirect("/login");
+export async function logout() {
+  await deleteSession()
+  redirect("/login")
 }
