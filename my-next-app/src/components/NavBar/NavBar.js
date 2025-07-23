@@ -6,6 +6,7 @@ import { adminRoutes } from "../../routes"
 import Title from "./Title"
 import LogOutButton from "./LogOutButton"
 import Link from "next/link"
+import MyLink from "../Ui/MyLink"
 
 export default function NavBar({ session }) {
   const pathname = usePathname()
@@ -23,12 +24,10 @@ export default function NavBar({ session }) {
         session?.isAdmin &&
         adminRoutes[pathname]?.length > 0 ? (
           adminRoutes[pathname].map((adminR) => (
-            <Link key={adminR.label} href={adminR.url}>
-              {adminR.label}
-            </Link>
+            <MyLink key={adminR.label} url={adminR.url} text={adminR.label} />
           ))
         ) : pathname !== "/catalog" ? (
-          <Link href="/catalog"> Catalog </Link>
+          <MyLink url="/catalog" text={"Catalog"} />
         ) : null}
         <div className="m-[15px] flex">
           {session ? (
@@ -37,7 +36,7 @@ export default function NavBar({ session }) {
               isAdmin={session.isAdmin}
             />
           ) : (
-            <Link href="/login">Login</Link>
+            <MyLink url={"/login"} text={"Login"} />
           )}
         </div>
       </div>
