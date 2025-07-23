@@ -7,6 +7,7 @@ const tunnelOptions = {
   autoClose: true,
 };
 
+/*@#6*/
 const sshOptions = {
   host: "127.0.0.1",
   port: 1333,
