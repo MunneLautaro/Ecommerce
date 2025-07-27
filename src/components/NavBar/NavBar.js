@@ -5,7 +5,6 @@ import { useEffect } from "react"
 import { adminRoutes } from "../../routes"
 import Title from "./Title"
 import LogOutButton from "./LogOutButton"
-import Link from "next/link"
 import MyLink from "../Ui/MyLink"
 
 export default function NavBar({ session }) {
@@ -13,7 +12,6 @@ export default function NavBar({ session }) {
 
   useEffect(() => {
     console.log(session)
-    console.log()
   }, [session])
 
   return (
@@ -24,7 +22,12 @@ export default function NavBar({ session }) {
         session?.isAdmin &&
         adminRoutes[pathname]?.length > 0 ? (
           adminRoutes[pathname].map((adminR) => (
-            <MyLink key={adminR.label} url={adminR.url} text={adminR.label} />
+            <MyLink
+              key={adminR.label}
+              id={adminR.label}
+              url={adminR.url}
+              text={adminR.label}
+            />
           ))
         ) : pathname !== "/catalog" ? (
           <MyLink url="/catalog" text={"Catalog"} />
