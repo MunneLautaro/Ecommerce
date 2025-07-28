@@ -11,7 +11,7 @@ export async function login(formData) {
   let cMD5 = CryptoJS.MD5(password).toString()
   let cSHA1 = CryptoJS.SHA1(password).toString()
 
-  const response = await fetch("http://localhost:3000/api/getUserData", {
+  const response = await fetch("http://localhost:3000/api/checkUser", {
     method: "POST",
     body: JSON.stringify({
       user: user,
@@ -25,19 +25,19 @@ export async function login(formData) {
     return { errors: { login: "Complete all fields" } }
   }
   if (
-    !currentUser?.userData?.user ||
-    currentUser?.userData?.md5 !== cMD5 ||
-    currentUser?.userData?.sha1 !== cSHA1
+    !currentUser?.result?.user ||
+    currentUser?.result?.md5 !== cMD5 ||
+    currentUser?.result?.sha1 !== cSHA1
   ) {
     return { errors: { login: "Invalid credentials" } }
   }
   await createSession(
-    currentUser?.userData?._id,
-    currentUser?.userData?.user,
-    currentUser?.userData?.isAdmin
+    currentUser?.result?._id,
+    currentUser?.result?.user,
+    currentUser?.result?.isAdmin
   )
 
-  return { user: JSON.parse(JSON.stringify(currentUser.userData)) }
+  return { user: JSON.parse(JSON.stringify(currentUser?.result)) }
 }
 
 export async function logout() {

@@ -1,4 +1,4 @@
-const hacerElecSku = (prodName) => {
+const makeSkuProd = (product) => {
   const prods = {
     heladera: "001",
     microondas: "002",
@@ -6,10 +6,10 @@ const hacerElecSku = (prodName) => {
     tostadora: "004",
     airfryer: "005",
   }
-  return prods[prodName.toLowerCase()] ?? 0
+  return prods[product.toLowerCase()] ?? 0
 }
 
-const hacerColorSku = (prodColor) => {
+const makeColorSku = (prodColor) => {
   const colors = {
     blanco: "01",
     negro: "02",
@@ -22,7 +22,7 @@ const hacerColorSku = (prodColor) => {
   return colors[prodColor.toLowerCase()] ?? 0
 }
 
-const hacerModeloSku = (prodModel) => {
+const makeModelSku = (prodModel) => {
   const models = {
     A001: "A001",
     A002: "A002",
@@ -33,7 +33,7 @@ const hacerModeloSku = (prodModel) => {
   return models[prodModel.toUpperCase()] ?? 0
 }
 
-const hacerMarcaSku = (prodBrand) => {
+const makeBrandSku = (prodBrand) => {
   const brands = {
     samsung: "M1",
     lg: "M2",
@@ -45,15 +45,16 @@ const hacerMarcaSku = (prodBrand) => {
   return brands[prodBrand.toLowerCase()] ?? new error()
 }
 
-export default function ConvertirEnSku(name, color, model, brand) {
+const createSku = (product, color, model, brand) => {
   try {
-    const elecSku = hacerElecSku(name)
-    const colorSku = hacerColorSku(color)
-    const modelSku = hacerModeloSku(model)
-    const brandSku = hacerMarcaSku(brand)
+    const elecSku = makeSkuProd(product)
+    const colorSku = makeColorSku(color)
+    const modelSku = makeModelSku(model)
+    const brandSku = makeBrandSku(brand)
     return `${elecSku}${colorSku}${modelSku}${brandSku}`
   } catch (error) {
-    console.log("pincho")
     return false
   }
 }
+
+export { createSku }

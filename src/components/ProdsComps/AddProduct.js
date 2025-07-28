@@ -4,49 +4,30 @@ import Select from "./Select"
 import { toast } from "react-toastify"
 import MyInput from "../Ui/MyInput"
 import MyButton from "../Ui/MyButton"
-import { useState } from "react"
+import { useState, useEffect } from "react"
+import { addProduct } from "@/actions/product"
 
 export default function AddProduct() {
+  const [response, setResponse] = useState(null)
   const [product, setProduct] = useState({
-    name: "",
+    product: "",
     img: "",
     description: "",
     brand: "",
     model: "",
     color: "",
     price: "",
-    amount: "",
+    stock: "",
   })
 
-  async function addProduct(e) {
-    try {
-      const res = await fetch("../api/prodController", {
-        method: "POST",
-        body: JSON.stringify({
-          name: product.name,
-          img: product.img,
-          description: product.description,
-          brand: product.brand,
-          model: product.model,
-          color: product.color,
-          price: product.price,
-          cantidad: product.amount,
-        }),
-        headers: { "content-type": "application/json" },
-      })
-
-      const data = await res.json()
-
-      if (!res.ok) {
-        toast.error(data?.error)
-        return
-      }
-
-      toast.success(data?.mensaje)
-    } catch (error) {
-      toast.error("Error al agregar producto.")
+  useEffect(() => {
+    if (!response) return
+    if (response?.message) {
+      toast.success(response?.message)
+    } else {
+      toast.error(response?.error)
     }
-  }
+  }, [response])
 
   return (
     <div className="flex flex-col items-center px-4 justify-center">
@@ -56,18 +37,20 @@ export default function AddProduct() {
 
       <div className="flex flex-col md:flex-row mt-6 gap-10 w-full max-w-5xl">
         <form
-          onSubmit={(e) => {
+          onSubmit={async (e) => {
             e.preventDefault()
-            addProduct()
+            const form = new FormData(e.target)
+            const modResponse = await addProduct(form)
+            setResponse(modResponse)
             setProduct({
-              name: "",
+              product: "",
               img: "",
               description: "",
               brand: "",
               model: "",
               color: "",
               price: "",
-              amount: "",
+              stock: "",
             })
           }}
           className="flex flex-col gap-4 w-full md:w-1/2"
@@ -87,28 +70,30 @@ export default function AddProduct() {
           />
 
           <Select
-            value={product.name}
+            value={product.product}
             elements={[
-              "Heladera",
-              "Microondas",
-              "Licuadora",
-              "Tostadora",
+              "Refrigerator",
+              "Microwave",
+              "Blender",
+              "Toaster",
               "Airfryer",
             ]}
-            type="Electrodoméstico"
-            onChange={(e) => setProduct({ ...product, name: e.target.value })}
+            type="Product"
+            onChange={(e) =>
+              setProduct({ ...product, product: e.target.value })
+            }
           />
 
           <Select
             value={product.color}
             elements={[
-              "Blanco",
-              "Negro",
-              "Azul",
-              "Verde",
-              "Rojo",
-              "Rosa",
-              "Gris",
+              "White",
+              "Black",
+              "Blue",
+              "Green",
+              "Red",
+              "Pink",
+              "Gray",
             ]}
             type="Color"
             onChange={(e) => setProduct({ ...product, color: e.target.value })}
@@ -123,12 +108,14 @@ export default function AddProduct() {
           />
 
           <MyInput
+            iName={"img"}
             iValue={product.img}
             iPlaceHolder="img.jpg"
             iOnChange={(e) => setProduct({ ...product, img: e.target.value })}
           />
 
           <MyInput
+            iName={"img"}
             iType="file"
             iAccept="image/png, image/jpeg, image/webp"
             iOnChange={async (e) => {
@@ -145,12 +132,15 @@ export default function AddProduct() {
 
                 const webpDataUrl = canvas.toDataURL("image/webp", 0.8)
                 setProduct({ ...product, img: webpDataUrl })
+
+                e.target.value = null
               }
               img.src = URL.createObjectURL(file)
             }}
           />
 
           <MyInput
+            iName={"description"}
             iValue={product.description || ""}
             iPlaceHolder="Description"
             iOnChange={(e) =>
@@ -160,6 +150,7 @@ export default function AddProduct() {
           />
 
           <MyInput
+            iName={"price"}
             iValue={product.price || ""}
             iPlaceHolder="Price"
             iOnChange={(e) => setProduct({ ...product, price: e.target.value })}
@@ -167,11 +158,10 @@ export default function AddProduct() {
           />
 
           <MyInput
-            iValue={product.amount || ""}
-            iPlaceHolder="Amount"
-            iOnChange={(e) =>
-              setProduct({ ...product, amount: e.target.value })
-            }
+            iName={"stock"}
+            iValue={product.stock || ""}
+            iPlaceHolder="Stock"
+            iOnChange={(e) => setProduct({ ...product, stock: e.target.value })}
             iIsRequired={true}
           />
 

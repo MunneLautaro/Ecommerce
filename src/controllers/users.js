@@ -2,15 +2,24 @@ import { connectWithSSH } from "../dbMongo"
 import User from "../models/userModel"
 import CryptoJS from "crypto-js"
 
-async function getUser(user) {
+const getUser = async (user, id) => {
   try {
-    let currentUser = await User.findOne({ user: user })
-    if (!currentUser) {
-      return { error: `The user ${currentUser} does not exists.`, status: 404 }
+    if (!user && !id) {
+      return { error: "Missing fields", status: 400 }
     }
-    return { user: currentUser, status: 200 }
+    let response
+    if (user) {
+      response = await User.findOne({ user })
+    } else {
+      response = await User.findById(id)
+    }
+
+    if (!response) {
+      return { error: `The user "${user}" does not exists.`, status: 404 }
+    }
+    return { user: response, status: 200 }
   } catch (error) {
-    return { error: error }
+    return { error: error, status: 500 }
   }
 }
 
@@ -22,17 +31,26 @@ const getUsers = async () => {
   }
 
   const users = await User.find({})
-  return { users: users, status: 200 }
+  const plainUsers = JSON.parse(JSON.stringify(users))
+  return { users: plainUsers, status: 200 }
 }
 
 const addUser = async (user, md5, sha1, device) => {
-  await connectWithSSH()
+  try {
+    await connectWithSSH()
+  } catch (error) {
+    return error
+  }
 
   try {
+    if (!user || !md5 || !sha1) {
+      return { error: "Missing fields", status: 400 }
+    }
+
     const currentUser = await getUser(user)
 
-    if (currentUser) {
-      return { error: "The user already exists" }
+    if (currentUser?.user) {
+      return { error: "The user already exists", status: 409 }
     }
 
     const newUser = new User({
@@ -54,46 +72,66 @@ const deleteUser = async (user) => {
   try {
     await connectWithSSH()
 
-    const currentUser = await getUser(user)
+    const result = await getUser(user)
 
-    await User.deleteOne({ user: currentUser })
+    if (result?.error) {
+      return { error: result?.error, status: result?.status || 404 }
+    }
 
-    return { success: "The user was successfully deleted" }
+    await User.deleteOne({ user: user })
+
+    return {
+      success: `The user "${user}" was successfully deleted`,
+      status: 200,
+    }
   } catch (error) {
-    return { error: error }
+    return { error: error, status: 500 }
   }
 }
 
-const modifyUser = async (currentUsername, newUsername, newPassword) => {
+const modifyUser = async (
+  currentUsername,
+  newUsername,
+  newPassword,
+  device = ""
+) => {
   try {
     await connectWithSSH()
 
-    const currentUser = await getUser(currentUsername)
-
-    if (!currentUser) {
-      return { error: `The user: ${currentUsername}. Doesn't exists` }
+    const currentUserResult = await getUser(currentUsername)
+    if (currentUserResult?.error) {
+      return {
+        error: `The user: "${currentUsername}". doesn't exist`,
+        status: 404,
+      }
     }
 
-    const newUser = await getUser(newUsername)
-
-    if (newUser) {
-      return { error: "User is already in use" }
+    const newUserResult = await getUser(newUsername)
+    if (!newUserResult?.error) {
+      return {
+        error: `The user "${newUsername}" is already in use`,
+        status: 409,
+      }
     }
 
     await User.replaceOne(
       { user: currentUsername },
       {
-        user: nuevoUser,
+        user: newUsername,
         md5: CryptoJS.MD5(newPassword).toString(),
         sha1: CryptoJS.SHA1(newPassword).toString(),
-        device: request.headers.get("user-agent") || "",
+        device: device,
         activeSession: true,
       }
     )
-    return { success: "The user was successfully modified" }
+
+    return {
+      success: `The user "${currentUsername}" was successfully modified`,
+      status: 200,
+    }
   } catch (error) {
-    return { error: error }
+    return { error: error?.message || error, status: 500 }
   }
 }
 
-export { getUsers, addUser, deleteUser, modifyUser }
+export { getUsers, addUser, deleteUser, modifyUser, getUser }

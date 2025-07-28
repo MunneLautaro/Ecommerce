@@ -1,10 +1,10 @@
-"use client";
-import { useState } from "react";
-import Tabla from "../UserComps/Tabla";
-import MyButton from "../Ui/MyButton";
+"use client"
+import { useState } from "react"
+import Tabla from "../UserComps/Tabla"
+import MyButton from "../Ui/MyButton"
 
 export default function ShowUsers({ users }) {
-  const [mostrarLista, setMostrarLista] = useState(false);
+  const [mostrarLista, setMostrarLista] = useState(false)
 
   return (
     <>
@@ -21,9 +21,9 @@ export default function ShowUsers({ users }) {
 
       {mostrarLista && (
         <div>
-          <Tabla users={users?.usuarios} />
+          <Tabla users={users} />
         </div>
       )}
     </>
-  );
+  )
 }

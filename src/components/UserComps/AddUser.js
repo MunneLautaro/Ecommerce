@@ -1,5 +1,5 @@
 "use client"
-import { addUser } from "../../services/index"
+import { addUser } from "../../actions/index"
 import MyButton from "../Ui/MyButton"
 import MyInput from "../Ui/MyInput"
 import { useEffect, useState } from "react"
@@ -10,9 +10,8 @@ export default function AddUser() {
 
   useEffect(() => {
     if (!response) return
-
-    if (response?.success) {
-      toast.success(response?.success)
+    if (response?.message) {
+      toast.success(response?.message)
     } else {
       toast.error(response?.error)
     }

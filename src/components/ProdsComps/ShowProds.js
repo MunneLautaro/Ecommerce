@@ -5,8 +5,8 @@ export default function ShowProds({ prods }) {
   return (
     <>
       <div className="flex flex-wrap justify-center m-5">
-        {prods?.productos && prods?.productos.length > 0 ? (
-          prods?.productos.map((prod) => (
+        {prods?.products && prods?.products.length > 0 ? (
+          prods?.products.map((prod) => (
             <ProductCard display={true} key={prod.sku} product={prod} />
           ))
         ) : (

@@ -1,15 +1,9 @@
 "use server"
 import ShowProds from "../../components/ProdsComps/ShowProds"
-const prodsDB = await import("../api/prodController/route")
-
-export async function getProds() {
-  const products = await (await prodsDB.GET()).json()
-  return products
-}
+import { getProducts } from "@/controllers/index"
 
 export default async function Productos() {
-  const prods = await getProds()
-
+  const prods = await getProducts()
   return (
     <>
       <div className="flex items-center justify-center">

@@ -19,7 +19,7 @@ export default async function RootLayout({ children }) {
       <body className="antialiased">
         <NavBar session={session} />
         <div className="pt-[90px]">{children}</div>
-        <ToastContainer theme="dark" />
+        <ToastContainer theme="dark" position="bottom-right" />
       </body>
     </html>
   )

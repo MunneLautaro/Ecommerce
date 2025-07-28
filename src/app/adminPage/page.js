@@ -3,13 +3,18 @@ import AddUser from "../../components/UserComps/AddUser"
 import ShowUsers from "../../components/UserComps/ShowUsers"
 import ModUser from "../../components/UserComps/ModUser"
 import DeleteUser from "../../components/UserComps/DeleteUser"
+import { getUsers } from "@/controllers/index"
 
 export default async function Home() {
-  const res = await fetch(/*@#1*/ "http://localhost:3000/api/userController", {
+  /*const res = await fetch(/*@#1*/ /* "http://localhost:3000/api/users", {
     next: { tags: ["users"] },
   })
+ 
+ 
   const users = await res.json()
+   */
 
+  const users = await getUsers()
   return (
     <>
       <div className="flex flex-col items-center justify-center grid-cols-2 gap-5 mt-5">
@@ -24,7 +29,7 @@ export default async function Home() {
             <ModUser />
           </div>
         </div>
-        <ShowUsers users={users} />
+        <ShowUsers users={users?.users} />
       </div>
     </>
   )

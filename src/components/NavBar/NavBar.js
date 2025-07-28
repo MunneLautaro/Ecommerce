@@ -10,10 +10,6 @@ import MyLink from "../Ui/MyLink"
 export default function NavBar({ session }) {
   const pathname = usePathname()
 
-  useEffect(() => {
-    console.log(session)
-  }, [session])
-
   return (
     <>
       <div className="flex bg-[#424242] justify-between items-center w-full h-[90px] fixed top-0 overflow-hidden z-10">

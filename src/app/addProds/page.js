@@ -1,6 +1,10 @@
 "use server"
-import AddProd from "../../components/ProdsComps/AddProduct"
+import AddProduct from "../../components/ProdsComps/AddProduct"
 
 export default async function AddProds() {
-  return <AddProd />
+  return (
+    <div className="flex justify-center mb-5 items-start">
+      <AddProduct />
+    </div>
+  )
 }

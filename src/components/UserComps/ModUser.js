@@ -1,31 +1,31 @@
-"use client";
-import { modUser } from "../../services/index";
-import MyButton from "../Ui/MyButton";
-import MyInput from "../Ui/MyInput";
-import { useEffect, useState } from "react";
-import { toast } from "react-toastify";
+"use client"
+import { modUser } from "../../actions/index"
+import MyButton from "../Ui/MyButton"
+import MyInput from "../Ui/MyInput"
+import { useEffect, useState } from "react"
+import { toast } from "react-toastify"
 
 export default function ModificarUsuario() {
-  const [response, setResponse] = useState(null);
+  const [response, setResponse] = useState(null)
 
   useEffect(() => {
-    if (!response) return;
+    if (!response) return
 
-    if (response?.success) {
-      toast.success(response?.success);
+    if (response?.message) {
+      toast.success(response?.message)
     } else {
-      toast.error(response?.error);
+      toast.error(response?.error)
     }
-  }, [response]);
+  }, [response])
 
   return (
     <>
       <form
         onSubmit={async (e) => {
-          e.preventDefault();
-          const form = new FormData(e.target);
-          const modResponse = await modUser(form);
-          setResponse(modResponse);
+          e.preventDefault()
+          const form = new FormData(e.target)
+          const modResponse = await modUser(form)
+          setResponse(modResponse)
         }}
         className="flex flex-col justify-between items-center bg-[#424242] h-[200px] w-[300px] rounded-[10px]"
       >
@@ -53,5 +53,5 @@ export default function ModificarUsuario() {
         </div>
       </form>
     </>
-  );
+  )
 }

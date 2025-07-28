@@ -3,7 +3,7 @@ import { useRouter } from "next/navigation"
 import MyButton from "../Ui/MyButton"
 import MyInput from "../Ui/MyInput"
 import { useEffect, useState } from "react"
-import { login } from "../../services/index"
+import { login } from "../../actions/index"
 
 export function LoginForm() {
   const [response, setResponse] = useState(null)

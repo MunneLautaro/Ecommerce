@@ -50,8 +50,8 @@ export default function ProductCard({ product, isCarrito, display }) {
             )}
           </div>
           <div className="flex flex-col items-center mt-[10px]">
-            <ItemProductCard type={"SKU"} elem={product?.name} />
-            <ItemProductCard type={"Name"} elem={product?.name} />
+            <ItemProductCard type={"SKU"} elem={product?.sku} />
+            <ItemProductCard type={"Product"} elem={product?.product} />
             <ItemProductCard type={"Description"} elem={product?.description} />
             <ItemProductCard type={"Brand"} elem={product?.brand} />
             <ItemProductCard type={"Model"} elem={product?.model} />

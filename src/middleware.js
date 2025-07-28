@@ -48,7 +48,6 @@ export default async function middleware(req) {
     isPublicRoute &&
     session?.userId &&
     session?.username &&
-    session?.isAdmin &&
     path !== "/catalog"
   ) {
     return NextResponse.redirect(new URL("/catalog", req.nextUrl))
