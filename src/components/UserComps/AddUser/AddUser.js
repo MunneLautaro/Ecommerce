@@ -1,7 +1,7 @@
 "use client"
-import { addUser } from "../../actions/index"
-import MyButton from "../Ui/MyButton"
-import MyInput from "../Ui/MyInput"
+import { addUserAction } from "../../../actions/index"
+import MyButton from "../../Ui/MyButton"
+import MyInput from "../../Ui/MyInput"
 import { useEffect, useState } from "react"
 import { toast } from "react-toastify"
 
@@ -10,8 +10,9 @@ export default function AddUser() {
 
   useEffect(() => {
     if (!response) return
-    if (response?.message) {
-      toast.success(response?.message)
+
+    if (response?.success) {
+      toast.success(response?.success)
     } else {
       toast.error(response?.error)
     }
@@ -22,8 +23,12 @@ export default function AddUser() {
       <form
         onSubmit={async (e) => {
           e.preventDefault()
-          const form = new FormData(e.target)
-          const modResponse = await addUser(form)
+          const formData = {
+            user: e?.target?.user?.value,
+            password: e?.target?.password?.value,
+            userAgent: window?.navigator?.userAgent || null,
+          }
+          const modResponse = await addUserAction(formData)
           setResponse(modResponse)
         }}
         className="flex flex-col justify-between items-center justify-around bg-[#424242] h-[200px] w-[300px] rounded-[10px] mt-2"

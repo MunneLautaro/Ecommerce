@@ -1,8 +1,10 @@
 import { NextResponse } from "next/server"
+import { connectWithSSH } from "@/dbMongo"
 import { getUser } from "@/controllers/index"
 
 export async function POST(request) {
   try {
+    await connectWithSSH()
     const r = await request.json()
     const { id, user } = r
 

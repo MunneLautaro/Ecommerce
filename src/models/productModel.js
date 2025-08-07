@@ -12,8 +12,8 @@ const productSchema = new mongoose.Schema({
   stock: { type: Number, required: true },
 })
 
-module.exports =
-  mongoose.models.Product || mongoose.model("Product", productSchema)
+export default mongoose.models.Product ||
+  mongoose.model("Product", productSchema)
 
 //electrodomesticos cod:
 /*

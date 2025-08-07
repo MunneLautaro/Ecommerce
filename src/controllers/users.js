@@ -4,6 +4,11 @@ import CryptoJS from "crypto-js"
 
 const getUser = async (user, id) => {
   try {
+    await connectWithSSH()
+  } catch (error) {
+    return error
+  }
+  try {
     if (!user && !id) {
       return { error: "Missing fields", status: 400 }
     }

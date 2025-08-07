@@ -10,7 +10,7 @@ const addProduct = async (formData) => {
   const price = formData.get("price")
   const stock = formData.get("stock")
 
-  const res = await fetch("http://localhost:3000/api/prods", {
+  const res = await fetch(`${process.env.NEXT_FULL_URL}/api/prods`, {
     method: "POST",
     body: JSON.stringify({
       brand,

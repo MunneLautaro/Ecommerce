@@ -8,10 +8,11 @@ export async function login(formData) {
   const user = formData.get("user")
   const password = formData.get("password")
 
+  console.log(user, password)
   let cMD5 = CryptoJS.MD5(password).toString()
   let cSHA1 = CryptoJS.SHA1(password).toString()
 
-  const response = await fetch("http://localhost:3000/api/checkUser", {
+  const response = await fetch(`${process.env.NEXT_FULL_URL}/api/checkUser`, {
     method: "POST",
     body: JSON.stringify({
       user: user,
@@ -20,7 +21,7 @@ export async function login(formData) {
   })
 
   const currentUser = await response.json()
-
+  console.log({ currentUser })
   if (!user || !password) {
     return { errors: { login: "Complete all fields" } }
   }

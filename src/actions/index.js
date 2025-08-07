@@ -1,4 +1,4 @@
-import { addUser, modUser, deleteUser } from "./user"
+import { addUserAction, modUser, deleteUser } from "./userAction"
 import { login, logout } from "./logIn"
 
-export { addUser, modUser, deleteUser, login, logout }
+export { addUserAction, modUser, deleteUser, login, logout }

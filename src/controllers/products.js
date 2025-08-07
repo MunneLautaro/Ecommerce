@@ -15,6 +15,7 @@ const findSku = async (sku) => {
     return { error: error, status: 500 }
   }
 }
+
 const createProduct = async (data, sku) => {
   try {
     await connectWithSSH()
@@ -40,7 +41,7 @@ const getProducts = async () => {
   try {
     await connectWithSSH()
   } catch (error) {
-    return error
+    return { error: "There was an error connecting to DB", status: 424 }
   }
   const result = await Product.find({})
   if (!result) {
@@ -51,6 +52,7 @@ const getProducts = async () => {
 }
 
 const addProduct = async (data) => {
+  //checkear los campos
   await connectWithSSH()
   const validationError = validateProductData(data)
   if (validationError) {

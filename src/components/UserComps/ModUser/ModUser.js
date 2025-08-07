@@ -1,11 +1,11 @@
 "use client"
-import { modUser } from "../../actions/index"
-import MyButton from "../Ui/MyButton"
-import MyInput from "../Ui/MyInput"
+import { modUser } from "../../../actions/index"
+import MyButton from "../../Ui/MyButton"
+import MyInput from "../../Ui/MyInput"
 import { useEffect, useState } from "react"
 import { toast } from "react-toastify"
 
-export default function ModificarUsuario() {
+export default function ModUser() {
   const [response, setResponse] = useState(null)
 
   useEffect(() => {
@@ -23,19 +23,27 @@ export default function ModificarUsuario() {
       <form
         onSubmit={async (e) => {
           e.preventDefault()
-          const form = new FormData(e.target)
-          const modResponse = await modUser(form)
+          const formData = {
+            user: e?.target?.user?.value,
+            newUser: e?.target?.newUser?.value,
+            newPassword: e?.target?.newPassword?.value,
+          }
+          const modResponse = await modUser(formData)
           setResponse(modResponse)
         }}
         className="flex flex-col justify-between items-center bg-[#424242] h-[200px] w-[300px] rounded-[10px]"
       >
         <div className="flex flex-col items-center ">
           <div className="min-h-[150px] ">
-            <MyInput iName={"user"} iPlaceHolder={"User"} iIsRequired={true} />
+            <MyInput
+              iName={"user"}
+              iPlaceHolder={"Username"}
+              iIsRequired={true}
+            />
             <div className="mt-4">
               <MyInput
                 iName={"newUser"}
-                iPlaceHolder={"New user"}
+                iPlaceHolder={"New username"}
                 iIsRequired={true}
               />
             </div>
