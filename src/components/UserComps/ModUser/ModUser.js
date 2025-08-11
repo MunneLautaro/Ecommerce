@@ -11,8 +11,8 @@ export default function ModUser() {
   useEffect(() => {
     if (!response) return
 
-    if (response?.message) {
-      toast.success(response?.message)
+    if (response?.success) {
+      toast.success(response?.success)
     } else {
       toast.error(response?.error)
     }

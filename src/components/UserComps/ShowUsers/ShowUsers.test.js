@@ -1,7 +1,7 @@
 import { render, screen, fireEvent } from "@testing-library/react"
 import "@testing-library/jest-dom"
 import ShowUsers from "./ShowUsers"
-import { mockUsers } from "../../../test/mock"
+import { mockUsers } from "../../../../test/mock"
 
 describe("ShowUsers", () => {
   it("shows and hides the table by clicking the button", () => {

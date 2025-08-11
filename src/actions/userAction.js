@@ -1,5 +1,4 @@
 "use server"
-import { addUser } from "@/controllers"
 import { actionUser } from "./serverActionUser"
 import CryptoJS from "crypto-js"
 
@@ -11,7 +10,12 @@ const addUserAction = async (formData) => {
   const md5 = CryptoJS.MD5(password).toString()
   const sha1 = CryptoJS.SHA1(password).toString()
 
-  const result = await addUser(user, md5, sha1, userAgent)
+  //const result = await addUser(user, md5, sha1, userAgent)
+  const res = await fetch(`${process.env.NEXT_FULL_URL}/api/users`, {
+    method: "POST",
+    body: JSON.stringify({ user, md5, sha1, userAgent }),
+    headers: { "Content-Type": "application/json" },
+  })
   actionUser()
 
   return result

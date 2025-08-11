@@ -8,7 +8,7 @@ jest.mock("jose", () => ({
   compactDecrypt: jest.fn(),
 }))
 
-jest.mock("../../actions/index", () => ({
+jest.mock("../../../actions/index", () => ({
   modUser: jest.fn(),
 }))
 
@@ -50,7 +50,7 @@ describe("ModUsers", () => {
   })
 
   it("submits the form and shows a success toast", async () => {
-    modUser.mockResolvedValueOnce({ message: "User modified successfully" })
+    modUser.mockResolvedValueOnce({ success: "User modified successfully" })
 
     render(
       <>

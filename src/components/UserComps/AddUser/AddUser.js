@@ -28,14 +28,18 @@ export default function AddUser() {
             password: e?.target?.password?.value,
             userAgent: window?.navigator?.userAgent || null,
           }
-          const modResponse = await addUserAction(formData)
-          setResponse(modResponse)
+          const addResponse = await addUserAction(formData)
+          setResponse(addResponse)
         }}
         className="flex flex-col justify-between items-center justify-around bg-[#424242] h-[200px] w-[300px] rounded-[10px] mt-2"
       >
         <div className="flex flex-col items-center">
           <div className="min-h-[150px] ">
-            <MyInput iName={"user"} iPlaceHolder={"User"} iIsRequired={true} />
+            <MyInput
+              iName={"user"}
+              iPlaceHolder={"Username"}
+              iIsRequired={true}
+            />
 
             <div className="mt-5">
               <MyInput

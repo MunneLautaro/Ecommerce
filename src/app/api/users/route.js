@@ -23,9 +23,8 @@ export async function GET(req) {
 }
 
 export async function POST(req) {
-  const userAgent = req.headers.get("user-agent")
 
-  const { user, md5, sha1 } = await req.json()
+  const { user, md5, sha1, userAgent } = await req.json()
 
   const result = await addUser(user, md5, sha1, userAgent)
 
