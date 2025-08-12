@@ -1,4 +1,5 @@
 "use client"
+import { userAgent } from "next/server"
 import { addUserAction } from "../../../actions/index"
 import MyButton from "../../Ui/MyButton"
 import MyInput from "../../Ui/MyInput"
@@ -7,10 +8,14 @@ import { toast } from "react-toastify"
 
 export default function AddUser() {
   const [response, setResponse] = useState(null)
+  const [form, setForm] = useState({
+    user: "",
+    password: "",
+    userAgent: window?.navigator?.userAgent || null,
+  })
 
   useEffect(() => {
     if (!response) return
-
     if (response?.success) {
       toast.success(response?.success)
     } else {
@@ -23,12 +28,7 @@ export default function AddUser() {
       <form
         onSubmit={async (e) => {
           e.preventDefault()
-          const formData = {
-            user: e?.target?.user?.value,
-            password: e?.target?.password?.value,
-            userAgent: window?.navigator?.userAgent || null,
-          }
-          const addResponse = await addUserAction(formData)
+          const addResponse = await addUserAction(form)
           setResponse(addResponse)
         }}
         className="flex flex-col justify-between items-center justify-around bg-[#424242] h-[200px] w-[300px] rounded-[10px] mt-2"
@@ -39,6 +39,9 @@ export default function AddUser() {
               iName={"user"}
               iPlaceHolder={"Username"}
               iIsRequired={true}
+              iOnChange={(e) =>
+                setForm((prev) => ({ ...prev, user: e.target.value }))
+              }
             />
 
             <div className="mt-5">
@@ -47,6 +50,9 @@ export default function AddUser() {
                 iName={"password"}
                 iPlaceHolder={"Password"}
                 iIsRequired={true}
+                iOnChange={(e) =>
+                  setForm((prev) => ({ ...prev, password: e.target.value }))
+                }
               />
             </div>
           </div>

@@ -53,7 +53,7 @@ const addUser = async (user, md5, sha1, device) => {
     }
 
     const currentUser = await getUser(user)
-
+    console.log(currentUser)
     if (currentUser?.user) {
       return { error: "The user already exists", status: 409 }
     }

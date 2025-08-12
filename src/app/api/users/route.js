@@ -23,11 +23,11 @@ export async function GET(req) {
 }
 
 export async function POST(req) {
-
   const { user, md5, sha1, userAgent } = await req.json()
 
   const result = await addUser(user, md5, sha1, userAgent)
 
+  console.log({ result })
   if (result?.error) {
     return NextResponse.json(
       { error: result?.error },
@@ -36,7 +36,7 @@ export async function POST(req) {
   }
 
   return NextResponse.json(
-    { message: result?.success },
+    { success: result?.success },
     { status: result?.status }
   )
 }

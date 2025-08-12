@@ -16,6 +16,7 @@ const addUserAction = async (formData) => {
     body: JSON.stringify({ user, md5, sha1, userAgent }),
     headers: { "Content-Type": "application/json" },
   })
+  const result = res.json()
   actionUser()
 
   return result

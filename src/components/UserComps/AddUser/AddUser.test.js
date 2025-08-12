@@ -33,6 +33,7 @@ describe("AddUser", () => {
 
   it("submits the form with correct inputs and shows success toast", async () => {
     const user = userEvent.setup()
+
     addUserAction.mockResolvedValueOnce({ success: "User added successfully" })
 
     render(
@@ -42,37 +43,42 @@ describe("AddUser", () => {
       </>
     )
 
-    // Verificar que los inputs están en el documento
     expect(screen.getByPlaceholderText("Username")).toBeInTheDocument()
-    expect(screen.getByPlaceholderText(/password/i)).toBeInTheDocument()
+    expect(screen.getByPlaceholderText("Password")).toBeInTheDocument()
 
-    // Simular la escritura en los inputs
-    await user.type(screen.getByPlaceholderText("Username"), "testUser")
-    await user.type(screen.getByPlaceholderText(/password/i), "testPassword")
+    const usernameInput = await screen.findByPlaceholderText("Username")
+    await user.type(usernameInput, "testUser")
 
-    // Verificar que los valores se han ingresado correctamente
-    expect(screen.getByPlaceholderText("Username")).toHaveValue("testUser")
-    expect(screen.getByPlaceholderText("Password")).toHaveValue("testPassword")
+    const passwordInput = await screen.findByPlaceholderText("Password")
+    await user.type(passwordInput, "testPassword")
 
-    // Obtener el botón de submit
-    const submitBtn = screen.getByRole("button", { name: /add user/i })
+    expect(usernameInput).toHaveValue("testUser")
+    expect(passwordInput).toHaveValue("testPassword")
 
-    // Hacer click en el botón de submit
+    const submitBtn = screen.queryByRole("button", { name: /add user/i })
+
     await act(async () => {
-      fireEvent.click(submitBtn)
+      user.click(submitBtn)
     })
 
-    // Verificar que el toast de éxito aparezca
+    /*
+    Problema: los campos de user y password devolvian undefined, sin embargo los test que checkeaban
+    que estos mismos esten completos pasaban bien.
+
+    Solucion: Cree un estado para el formulario el cual se va llenando a medida que el usuario ingresa
+    los datos correspondientes y luego le envio ese formulario a la funcion "addUserAction"
+    */
+    await waitFor(() => {
+      expect(addUserAction).toHaveBeenCalledWith({
+        user: "testUser",
+        password: "testPassword",
+        userAgent:
+          "Mozilla/5.0 (win32) AppleWebKit/537.36 (KHTML, like Gecko) jsdom/20.0.3",
+      })
+    })
+
     await waitFor(() => {
       expect(screen.getByText(/user added successfully/i)).toBeInTheDocument()
-    })
-
-    // Verificar que la acción fue llamada correctamente
-    expect(addUserAction).toHaveBeenCalledWith({
-      user: "testUser",
-      password: "testPassword",
-      userAgent:
-        "Mozilla/5.0 (win32) AppleWebKit/537.36 (KHTML, like Gecko) jsdom/20.0.3",
     })
   })
 })
