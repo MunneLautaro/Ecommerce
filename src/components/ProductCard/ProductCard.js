@@ -1,6 +1,5 @@
 "use client"
 import { useState, useEffect } from "react"
-//import BotonesDeCarrito from "../Carrito/BotonesCarrito"
 import Image from "next/image"
 import ItemProductCard from "./ItemProductCard"
 

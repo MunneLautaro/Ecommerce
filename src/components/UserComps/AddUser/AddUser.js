@@ -1,16 +1,17 @@
 "use client"
-import { userAgent } from "next/server"
 import { addUserAction } from "../../../actions/index"
-import MyButton from "../../Ui/MyButton"
-import MyInput from "../../Ui/MyInput"
+import MyButton from "../../Ui/MyButton/MyButton"
+import MyInput from "../../Ui/MyInput/MyInput"
 import { useEffect, useState } from "react"
 import { toast } from "react-toastify"
+import CryptoJS from "crypto-js"
 
 export default function AddUser() {
   const [response, setResponse] = useState(null)
-  const [form, setForm] = useState({
+  const [formData, setFormData] = useState({
     user: "",
-    password: "",
+    md5: "",
+    sha1: "",
     userAgent: window?.navigator?.userAgent || null,
   })
 
@@ -28,7 +29,7 @@ export default function AddUser() {
       <form
         onSubmit={async (e) => {
           e.preventDefault()
-          const addResponse = await addUserAction(form)
+          const addResponse = await addUserAction(formData)
           setResponse(addResponse)
         }}
         className="flex flex-col justify-between items-center justify-around bg-[#424242] h-[200px] w-[300px] rounded-[10px] mt-2"
@@ -40,10 +41,10 @@ export default function AddUser() {
               iPlaceHolder={"Username"}
               iIsRequired={true}
               iOnChange={(e) =>
-                setForm((prev) => ({ ...prev, user: e.target.value }))
+                setFormData((prev) => ({ ...prev, user: e?.target?.value }))
               }
             />
-
+            <input></input>
             <div className="mt-5">
               <MyInput
                 iType={"password"}
@@ -51,7 +52,11 @@ export default function AddUser() {
                 iPlaceHolder={"Password"}
                 iIsRequired={true}
                 iOnChange={(e) =>
-                  setForm((prev) => ({ ...prev, password: e.target.value }))
+                  setFormData((prev) => ({
+                    ...prev,
+                    md5: CryptoJS.MD5(e?.target?.value).toString(),
+                    sha1: CryptoJS.SHA1(e?.target?.value).toString(),
+                  }))
                 }
               />
             </div>

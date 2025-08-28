@@ -1,11 +1,10 @@
 "use client"
 
 import { usePathname } from "next/navigation"
-import { useEffect } from "react"
 import { adminRoutes } from "../../routes"
 import Title from "./Title"
 import LogOutButton from "./LogOutButton"
-import MyLink from "../Ui/MyLink"
+import MyLink from "../Ui/MyLink/MyLink"
 
 export default function NavBar({ session }) {
   const pathname = usePathname()

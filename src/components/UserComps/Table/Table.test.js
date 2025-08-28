@@ -102,6 +102,7 @@ describe("Table", () => {
 
 /*
 [
+  test coverage with: npm test -- --coverage
   ("not",
   "rejects",
   "resolves",

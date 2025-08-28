@@ -4,11 +4,12 @@ import { getUser } from "@/controllers/index"
 
 export async function POST(request) {
   try {
-    await connectWithSSH()
+    //await connectWithSSH()
     const r = await request.json()
     const { id, user } = r
 
     const result = await getUser(user, id)
+    console.log(result)
     if (result?.error) {
       return NextResponse.json(
         { error: result?.error },

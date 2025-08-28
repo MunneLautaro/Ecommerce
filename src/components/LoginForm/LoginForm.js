@@ -1,7 +1,7 @@
 "use client"
 import { useRouter } from "next/navigation"
-import MyButton from "../Ui/MyButton"
-import MyInput from "../Ui/MyInput"
+import MyButton from "../Ui/MyButton/MyButton"
+import MyInput from "../Ui/MyInput/MyInput"
 import { useEffect, useState } from "react"
 import { login } from "../../actions/index"
 
@@ -47,7 +47,8 @@ export function LoginForm() {
           iName={"password"}
           iPlaceHolder={"Password"}
         />
-        <MyButton bText={"Sign in"} bType={"submit"} underline={"underline"} />
+
+        <MyButton bText={"submit"} bType={"submit"} />
       </form>
       <div
         className={`

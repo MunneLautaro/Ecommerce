@@ -1,7 +1,7 @@
 "use client"
 import { useState } from "react"
 import Table from "../Table/Table"
-import MyButton from "../../Ui/MyButton"
+import MyButton from "../../Ui/MyButton/MyButton"
 
 export default function ShowUsers({ users }) {
   const [mostrarLista, setMostrarLista] = useState(false)

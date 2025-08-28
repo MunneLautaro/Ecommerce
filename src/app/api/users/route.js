@@ -27,7 +27,6 @@ export async function POST(req) {
 
   const result = await addUser(user, md5, sha1, userAgent)
 
-  console.log({ result })
   if (result?.error) {
     return NextResponse.json(
       { error: result?.error },
@@ -59,17 +58,17 @@ export async function DELETE(req) {
   }
 
   return NextResponse.json(
-    { message: result?.success },
+    { success: result?.success },
     { status: result?.status }
   )
 }
 
 export async function PUT(req) {
   const r = await req.json()
-  const { currentUsername, newUsername, newPassword } = r
+  const { currentUsername, newUsername, md5, sha1 } = r
   const device = req.headers.get("user-agent") || ""
 
-  if (!currentUsername || !newUsername || !newPassword) {
+  if (!currentUsername || !newUsername || !md5 || sha1) {
     return NextResponse.json(
       { error: "Missing required fields" },
       { status: 400 }
@@ -79,7 +78,8 @@ export async function PUT(req) {
   const result = await modifyUser(
     currentUsername,
     newUsername,
-    newPassword,
+    md5,
+    sha1,
     device
   )
 
@@ -91,7 +91,7 @@ export async function PUT(req) {
   }
 
   return NextResponse.json(
-    { message: result?.success },
+    { success: result?.success },
     { status: result?.status }
   )
 }

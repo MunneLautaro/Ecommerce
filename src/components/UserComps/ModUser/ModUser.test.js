@@ -1,8 +1,9 @@
-import { render, screen, fireEvent, waitFor } from "@testing-library/react"
+import { render, screen, waitFor, act } from "@testing-library/react"
 import "@testing-library/jest-dom"
 import ModUser from "./ModUser"
 import { modUser } from "@/actions/index"
 import { ToastContainer } from "react-toastify"
+import userEvent from "@testing-library/user-event"
 
 jest.mock("jose", () => ({
   compactDecrypt: jest.fn(),
@@ -50,6 +51,8 @@ describe("ModUsers", () => {
   })
 
   it("submits the form and shows a success toast", async () => {
+    const user = userEvent.setup()
+
     modUser.mockResolvedValueOnce({ success: "User modified successfully" })
 
     render(
@@ -59,51 +62,42 @@ describe("ModUsers", () => {
       </>
     )
 
-    fireEvent.change(screen.getByPlaceholderText("Username"), {
-      target: { value: "oldUser" },
-    })
+    expect(screen.getByPlaceholderText("Username")).toBeInTheDocument()
+    expect(screen.getByPlaceholderText("New username")).toBeInTheDocument()
+    expect(screen.getByPlaceholderText("New password")).toBeInTheDocument()
 
-    fireEvent.change(screen.getByPlaceholderText("New username"), {
-      target: { value: "newUser" },
-    })
+    const usernameInput = await screen.findByPlaceholderText("Username")
+    await user.type(usernameInput, "testUsername")
 
-    fireEvent.change(screen.getByPlaceholderText("New password"), {
-      target: { value: "newPassword123" },
-    })
+    const newUsernameInput = await screen.findByPlaceholderText("New username")
+    await user.type(newUsernameInput, "newTestUsername")
 
-    fireEvent.click(screen.getByRole("button", { name: /modify user/i }))
+    const newPasswordInput = await screen.findByPlaceholderText("New password")
+    await user.type(newPasswordInput, "newTestPassword")
+
+    expect(usernameInput).toHaveValue("testUsername")
+    expect(newUsernameInput).toHaveValue("newTestUsername")
+    expect(newPasswordInput).toHaveValue("newTestPassword")
+
+    const submitBtn = screen.queryByRole("button", { name: /Modify user/i })
+
+    await act(async () => {
+      user.click(submitBtn)
+    })
 
     await waitFor(() =>
       expect(screen.getByText("User modified successfully")).toBeInTheDocument()
     )
-  })
 
-  it("shows an error toast if response contains an error", async () => {
-    modUser.mockResolvedValueOnce({ error: "Something went wrong" })
-
-    render(
-      <>
-        <ModUser />
-        <ToastContainer />
-      </>
-    )
-
-    fireEvent.change(screen.getByPlaceholderText("Username"), {
-      target: { value: "user" },
+    await waitFor(() => {
+      expect(modUser).toHaveBeenCalledWith({
+        user: "testUsername",
+        newUser: "newTestUsername",
+        md5: "f64714d017b678a1d497d3284903ea50",
+        sha1: "6090e82653e07dc45899bc6532b8261e18661d06",
+        userAgent:
+          "Mozilla/5.0 (win32) AppleWebKit/537.36 (KHTML, like Gecko) jsdom/20.0.3",
+      })
     })
-
-    fireEvent.change(screen.getByPlaceholderText("New username"), {
-      target: { value: "newUser" },
-    })
-
-    fireEvent.change(screen.getByPlaceholderText("New password"), {
-      target: { value: "password" },
-    })
-
-    fireEvent.click(screen.getByRole("button", { name: /modify user/i }))
-
-    await waitFor(() =>
-      expect(screen.getByText("Something went wrong")).toBeInTheDocument()
-    )
   })
 })

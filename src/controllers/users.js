@@ -1,14 +1,19 @@
+import { validateUsername } from "@/helpers/validateUsername"
 import { connectWithSSH } from "../dbMongo"
 import User from "../models/userModel"
-import CryptoJS from "crypto-js"
+import { connectToDatabase } from "../../connectToDatabase"
 
 const getUser = async (user, id) => {
   try {
-    await connectWithSSH()
+    await connectToDatabase()
+    /*await connectWithSSH()*/
   } catch (error) {
     return error
   }
   try {
+    const wrongUsername = validateUsername(user)
+    if (wrongUsername) return wrongUsername
+
     if (!user && !id) {
       return { error: "Missing fields", status: 400 }
     }
@@ -30,19 +35,25 @@ const getUser = async (user, id) => {
 
 const getUsers = async () => {
   try {
-    await connectWithSSH()
+    await connectToDatabase()
+    /*await connectWithSSH()*/
   } catch (error) {
     return error
   }
 
-  const users = await User.find({})
-  const plainUsers = JSON.parse(JSON.stringify(users))
-  return { users: plainUsers, status: 200 }
+  try {
+    const users = await User.find({})
+    const plainUsers = JSON.parse(JSON.stringify(users))
+    return { users: plainUsers, status: 200 }
+  } catch (error) {
+    return error
+  }
 }
 
 const addUser = async (user, md5, sha1, device) => {
   try {
-    await connectWithSSH()
+    //await connectWithSSH()
+    await connectToDatabase()
   } catch (error) {
     return error
   }
@@ -53,7 +64,6 @@ const addUser = async (user, md5, sha1, device) => {
     }
 
     const currentUser = await getUser(user)
-    console.log(currentUser)
     if (currentUser?.user) {
       return { error: "The user already exists", status: 409 }
     }
@@ -75,7 +85,8 @@ const addUser = async (user, md5, sha1, device) => {
 
 const deleteUser = async (user) => {
   try {
-    await connectWithSSH()
+    await connectToDatabase()
+    /*await connectWithSSH()*/
 
     const result = await getUser(user)
 
@@ -97,11 +108,13 @@ const deleteUser = async (user) => {
 const modifyUser = async (
   currentUsername,
   newUsername,
-  newPassword,
+  md5,
+  sha1,
   device = ""
 ) => {
   try {
-    await connectWithSSH()
+    await connectToDatabase()
+    /*await connectWithSSH()*/
 
     const currentUserResult = await getUser(currentUsername)
     if (currentUserResult?.error) {
@@ -123,8 +136,8 @@ const modifyUser = async (
       { user: currentUsername },
       {
         user: newUsername,
-        md5: CryptoJS.MD5(newPassword).toString(),
-        sha1: CryptoJS.SHA1(newPassword).toString(),
+        md5: md5,
+        sha1: sha1,
         device: device,
         activeSession: true,
       }

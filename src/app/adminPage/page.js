@@ -2,7 +2,7 @@
 import AddUser from "../../components/UserComps/AddUser/AddUser"
 import ShowUsers from "../../components/UserComps/ShowUsers/ShowUsers"
 import ModUser from "../../components/UserComps/ModUser/ModUser"
-import DeleteUser from "../../components/UserComps/DeleteUser"
+import DeleteUser from "../../components/UserComps/DeleteUser/DeleteUser"
 
 export default async function Home() {
   const res = await fetch(`${process.env.NEXT_FULL_URL}/api/users`, {

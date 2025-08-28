@@ -71,7 +71,8 @@ describe("AddUser", () => {
     await waitFor(() => {
       expect(addUserAction).toHaveBeenCalledWith({
         user: "testUser",
-        password: "testPassword",
+        md5: "fed3b61b26081849378080b34e693d2e",
+        sha1: "82f8809f42d911d1bd5199021d69d15ea91d1fad",
         userAgent:
           "Mozilla/5.0 (win32) AppleWebKit/537.36 (KHTML, like Gecko) jsdom/20.0.3",
       })

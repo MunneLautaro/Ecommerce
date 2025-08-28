@@ -1,14 +1,11 @@
 "use server"
 import { actionUser } from "./serverActionUser"
-import CryptoJS from "crypto-js"
 
 const addUserAction = async (formData) => {
   const user = formData?.user
-  const password = formData?.password
   const userAgent = formData?.userAgent
-
-  const md5 = CryptoJS.MD5(password).toString()
-  const sha1 = CryptoJS.SHA1(password).toString()
+  const md5 = formData?.md5
+  const sha1 = formData?.sha1
 
   //const result = await addUser(user, md5, sha1, userAgent)
   const res = await fetch(`${process.env.NEXT_FULL_URL}/api/users`, {
@@ -23,7 +20,7 @@ const addUserAction = async (formData) => {
 }
 
 const deleteUser = async (formData) => {
-  const user = formData.get("user")
+  const user = formData?.user
 
   const res = await fetch(`${process.env.NEXT_FULL_URL}/api/users`, {
     method: "DELETE",
@@ -38,14 +35,18 @@ const deleteUser = async (formData) => {
 const modUser = async (formData) => {
   const currentUsername = formData?.user
   const newUsername = formData?.newUser
-  const newPassword = formData?.newPassword
+  const md5 = formData?.md5
+  const sha1 = formData?.sha1
+  const userAgent = formData?.userAgent
   //
   const res = await fetch(`${process.env.NEXT_FULL_URL}/api/users`, {
     method: "PUT",
     body: JSON.stringify({
       currentUsername,
       newUsername,
-      newPassword,
+      md5,
+      sha1,
+      userAgent,
     }),
     headers: { "Content-Type": "application/json" },
   })

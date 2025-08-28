@@ -1,4 +1,4 @@
-import MyButton from "../../Ui/MyButton"
+import MyButton from "../../Ui/MyButton/MyButton"
 
 export default function TablePagination({
   currentPage,

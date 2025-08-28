@@ -2,8 +2,8 @@
 import ProductCard from "../ProductCard/ProductCard"
 import Select from "./Select"
 import { toast } from "react-toastify"
-import MyInput from "../Ui/MyInput"
-import MyButton from "../Ui/MyButton"
+import MyInput from "../Ui/MyInput/MyInput"
+import MyButton from "../Ui/MyButton/MyButton"
 import { useState, useEffect } from "react"
 import { addProduct } from "@/actions/product"
 

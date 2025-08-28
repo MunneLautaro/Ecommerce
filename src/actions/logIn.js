@@ -21,7 +21,7 @@ export async function login(formData) {
   })
 
   const currentUser = await response.json()
-  console.log({ currentUser })
+  console.log(currentUser.error)
   if (!user || !password) {
     return { errors: { login: "Complete all fields" } }
   }

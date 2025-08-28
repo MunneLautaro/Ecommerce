@@ -1,12 +1,20 @@
 "use client"
 import { modUser } from "../../../actions/index"
-import MyButton from "../../Ui/MyButton"
-import MyInput from "../../Ui/MyInput"
+import MyButton from "../../Ui/MyButton/MyButton"
+import MyInput from "../../Ui/MyInput/MyInput"
 import { useEffect, useState } from "react"
 import { toast } from "react-toastify"
+import CryptoJS from "crypto-js"
 
 export default function ModUser() {
   const [response, setResponse] = useState(null)
+  const [formData, setFormData] = useState({
+    user: "",
+    newUser: "",
+    md5: "",
+    sha1: "",
+    userAgent: window?.navigator?.userAgent || null,
+  })
 
   useEffect(() => {
     if (!response) return
@@ -23,11 +31,6 @@ export default function ModUser() {
       <form
         onSubmit={async (e) => {
           e.preventDefault()
-          const formData = {
-            user: e?.target?.user?.value,
-            newUser: e?.target?.newUser?.value,
-            newPassword: e?.target?.newPassword?.value,
-          }
           const modResponse = await modUser(formData)
           setResponse(modResponse)
         }}
@@ -39,12 +42,21 @@ export default function ModUser() {
               iName={"user"}
               iPlaceHolder={"Username"}
               iIsRequired={true}
+              iOnChange={(e) =>
+                setFormData((prev) => ({ ...prev, user: e?.target?.value }))
+              }
             />
             <div className="mt-4">
               <MyInput
                 iName={"newUser"}
                 iPlaceHolder={"New username"}
                 iIsRequired={true}
+                iOnChange={(e) =>
+                  setFormData((prev) => ({
+                    ...prev,
+                    newUser: e?.target?.value,
+                  }))
+                }
               />
             </div>
             <div className="mt-4">
@@ -53,6 +65,13 @@ export default function ModUser() {
                 iName={"newPassword"}
                 iPlaceHolder={"New password"}
                 iIsRequired={true}
+                iOnChange={(e) =>
+                  setFormData((prev) => ({
+                    ...prev,
+                    md5: CryptoJS.MD5(e?.target?.value).toString(),
+                    sha1: CryptoJS.SHA1(e?.target?.value).toString(),
+                  }))
+                }
               />
             </div>
           </div>
