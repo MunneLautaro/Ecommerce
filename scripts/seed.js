@@ -1,7 +1,7 @@
 // scripts/seed.js
 import User from "../src/models/userModel.js"
 import { users } from "../data/users/users.js"
-import { connectToDatabase } from "../connectToDatabase.js"
+import { connectToDatabase } from "portable-mongodb"
 
 async function seedDatabase() {
   try {
