@@ -2,47 +2,53 @@ const mongoose = require("mongoose")
 const { MongoMemoryServer } = require("mongodb-memory-server")
 const path = require("path")
 
-let mongoUri = null
+let mongod = null
+let mongoUri = "mongodb://127.0.0.1:27017/PortableDatabase"
 
 async function connectToDatabase() {
   try {
-    // Define paths for binary files and data storage
-    const binaryPath = path.join("./mongodb-binaries")
-    const dbPath = path.join("./mongodb-data")
+    const binaryPath = path.resolve("./mongodb-binaries")
+    const dbPath = path.resolve("./mongodb-data")
 
     process.env.MONGOMS_SYSTEM_BINARY = path.join(binaryPath, "mongod.exe")
 
-    const mongod = new MongoMemoryServer({
-      instance: {
+    if (mongoose.connection.readyState === 1 && mongoUri) {
+      return mongoUri
+    }
+
+    if (!mongod) {
+      mongod = await new MongoMemoryServer({
+        instance: {
+          dbName: "PortableDatabase",
+          dbPath: dbPath,
+          storageEngine: "wiredTiger",
+          port: 27017,
+        },
+        binary: {
+          version: "8.0.13",
+          downloadDir: binaryPath,
+          mongodBinaryPath: path.join(binaryPath, "mongod.exe"),
+          skipMD5: true,
+          autoDownload: false,
+        },
+        autoStart: false,
+      })
+
+      await mongod.start()
+      mongoUri = await mongod.getUri()
+
+      console.log("MongoDB Portable URI:", mongoUri)
+    }
+
+    if (mongoose.connection.readyState === 0) {
+      await mongoose.connect(mongoUri, {
+        serverSelectionTimeoutMS: 5000,
         dbName: "PortableDatabase",
-        dbPath: dbPath, // Path to store data persistently
-        storageEngine: "wiredTiger",
-        port: 27017,
-      },
-      binary: {
-        version: "8.0.13", // Specify MongoDB version
-        downloadDir: binaryPath, // Path to download binaries
-        mongodBinaryPath: path.join(binaryPath, "mongod.exe"),
-        skipMD5: true,
-        autoDownload: false, // Avoid re-downloading binaries
-      },
-      autoStart: false,
-    })
+      })
+      console.log("MongoDB connected with portable, persistent storage.")
+    }
 
-    if (mongoUri) return
-    // Start the MongoDB instance and get URI
-    await mongod.start()
-    mongoUri = await mongod.getUri()
-
-    console.log("MongoDB Portable URI:", mongoUri)
-
-    // Connect Mongoose to the MongoDB instance
-    await mongoose.connect(mongoUri, {
-      serverSelectionTimeoutMS: 5000,
-      dbName: "PortableDatabase",
-    })
-
-    console.log("MongoDB connected with portable, persistent storage.")
+    return mongoUri
   } catch (err) {
     console.error("Error connecting to MongoDB:", err)
     throw err

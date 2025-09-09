@@ -12,8 +12,15 @@ export default function AddUser() {
     user: "",
     md5: "",
     sha1: "",
-    userAgent: window?.navigator?.userAgent || null,
+    userAgent: null,
   })
+
+  useEffect(() => {
+    setFormData((prev) => ({
+      ...prev,
+      userAgent: window.navigator.userAgent,
+    }))
+  }, [])
 
   useEffect(() => {
     if (!response) return

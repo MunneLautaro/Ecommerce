@@ -1,11 +1,12 @@
-import { connectWithSSH } from "../dbMongo"
+//import { connectToDatabase } from "../dbMongo"
 import Product from "../models/productModel"
 import { validateProductData } from "@/helpers/validateProductData"
 import { createSku } from "@/helpers/createSku"
+import { connectToDatabase } from "../../connectToDatabase"
 
 const findSku = async (sku) => {
   try {
-    await connectWithSSH()
+    await connectToDatabase()
     let prod = await Product.findOne({ sku })
     if (!prod) {
       return { error: "Product not found", status: 404 }
@@ -18,7 +19,7 @@ const findSku = async (sku) => {
 
 const createProduct = async (data, sku) => {
   try {
-    await connectWithSSH()
+    await connectToDatabase()
     const newProduct = new Product({
       sku,
       product: data.product,
@@ -39,7 +40,7 @@ const createProduct = async (data, sku) => {
 
 const getProducts = async () => {
   try {
-    await connectWithSSH()
+    await connectToDatabase()
   } catch (error) {
     return { error: "There was an error connecting to DB", status: 424 }
   }
@@ -53,7 +54,7 @@ const getProducts = async () => {
 
 const addProduct = async (data) => {
   //checkear los campos
-  await connectWithSSH()
+  await connectToDatabase()
   const validationError = validateProductData(data)
   if (validationError) {
     return { error: validationError, status: 400 }

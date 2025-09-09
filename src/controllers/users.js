@@ -1,12 +1,10 @@
 import { validateUsername } from "@/helpers/validateUsername"
-import { connectWithSSH } from "../dbMongo"
 import User from "../models/userModel"
 import { connectToDatabase } from "../../connectToDatabase"
 
 const getUser = async (user, id) => {
   try {
     await connectToDatabase()
-    /*await connectWithSSH()*/
   } catch (error) {
     return error
   }
@@ -36,7 +34,6 @@ const getUser = async (user, id) => {
 const getUsers = async () => {
   try {
     await connectToDatabase()
-    /*await connectWithSSH()*/
   } catch (error) {
     return error
   }
@@ -52,7 +49,6 @@ const getUsers = async () => {
 
 const addUser = async (user, md5, sha1, device) => {
   try {
-    //await connectWithSSH()
     await connectToDatabase()
   } catch (error) {
     return error
@@ -86,7 +82,6 @@ const addUser = async (user, md5, sha1, device) => {
 const deleteUser = async (user) => {
   try {
     await connectToDatabase()
-    /*await connectWithSSH()*/
 
     const result = await getUser(user)
 
@@ -114,7 +109,6 @@ const modifyUser = async (
 ) => {
   try {
     await connectToDatabase()
-    /*await connectWithSSH()*/
 
     const currentUserResult = await getUser(currentUsername)
     if (currentUserResult?.error) {
