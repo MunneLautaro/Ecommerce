@@ -1,11 +1,12 @@
 // scripts/seed.js
 import User from "../src/models/userModel.js"
 import { users } from "../data/users/users.js"
-import { connectToDatabase } from "portable-mongodb"
+//import { connectToDatabase } from "portable-mongodb"
+import { connectToDatabaseUnix } from "../connectDBUnix.js"
 
 async function seedDatabase() {
   try {
-    await connectToDatabase("PortableDatabase")
+    await connectToDatabaseUnix("DatabaseUnix")
     const count = await User.countDocuments()
     if (count > 0) {
       console.log("✅ Users already exist, skipping seed.")
