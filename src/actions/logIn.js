@@ -8,7 +8,6 @@ export async function login(formData) {
   const user = formData.get("user")
   const password = formData.get("password")
 
-  console.log(user, password)
   let cMD5 = CryptoJS.MD5(password).toString()
   let cSHA1 = CryptoJS.SHA1(password).toString()
 
@@ -21,10 +20,11 @@ export async function login(formData) {
   })
 
   const currentUser = await response.json()
-  console.log(currentUser.error)
+
   if (!user || !password) {
     return { errors: { login: "Complete all fields" } }
   }
+
   if (
     !currentUser?.result?.user ||
     currentUser?.result?.md5 !== cMD5 ||

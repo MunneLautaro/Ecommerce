@@ -37,6 +37,8 @@ export default async function middleware(req) {
     }
   }
 
+  console.log(session)
+
   if (
     isProtectedRoute &&
     (!session?.userId || !session?.username || !session?.isAdmin)
