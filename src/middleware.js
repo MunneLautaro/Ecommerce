@@ -6,17 +6,22 @@ const protectedRoutes = ["/adminPage", "/addProds"]
 const publicRoutes = ["/login", "/catalog"]
 
 export default async function middleware(req) {
+  const res = NextResponse.next()
+
+  res.headers.set("x-middleware-cache", "no-cache")
+
   const path = req.nextUrl.pathname
   const isProtectedRoute = protectedRoutes.includes(path)
   const isPublicRoute = publicRoutes.includes(path)
 
   const cookieStore = await cookies()
+  let cookies = req.cookies
+  console.log({ cookies })
+  console.log("Aca estan las cookies del REQ")
   const cookie = cookieStore.get("session")?.value
   console.log({ cookie })
   console.log("Aca estan las cookies")
   const session = await decrypt(cookie)
-
-  const res = NextResponse.next()
 
   if (session?.exp) {
     const now = Math.floor(Date.now() / 1000)
