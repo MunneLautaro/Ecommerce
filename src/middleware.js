@@ -12,6 +12,8 @@ export default async function middleware(req) {
 
   const cookieStore = await cookies()
   const cookie = cookieStore.get("session")?.value
+  console.log({ cookie })
+  console.log("Aca estan las cookies")
   const session = await decrypt(cookie)
 
   const res = NextResponse.next()
