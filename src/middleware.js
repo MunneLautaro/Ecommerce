@@ -6,6 +6,8 @@ const protectedRoutes = ["/adminPage", "/addProds"]
 const publicRoutes = ["/login", "/catalog"]
 
 export default async function middleware(req) {
+  let cookiez = req.cookies
+  console.log({ cookiez })
   const res = NextResponse.next()
 
   res.headers.set("x-middleware-cache", "no-cache")
@@ -15,8 +17,8 @@ export default async function middleware(req) {
   const isPublicRoute = publicRoutes.includes(path)
 
   const cookieStore = await cookies()
-  let cookies = req.cookies
-  console.log({ cookies })
+  cookiez = req.cookies
+  console.log({ cookiez })
   console.log("Aca estan las cookies del REQ")
   const cookie = cookieStore.get("session")?.value
   console.log({ cookie })
