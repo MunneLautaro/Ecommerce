@@ -19,7 +19,8 @@ export default async function middleware(req) {
   //console.log({ cookiez })
   //console.log("Aca estan las cookies del REQ")
   console.log({ a: req?.cookies })
-  const cookie = req?.cookies?.value
+  console.log(Object.keys(req?.cookies))
+  const cookie = req?.cookies?._parsed.get("__next_hmr_refresh_hash__")?.value
   console.log({ cookie })
   console.log("Aca estan las cookies")
   const session = await decrypt(cookie)
