@@ -18,6 +18,7 @@ export default async function middleware(req) {
   //cookiez = req.cookies
   //console.log({ cookiez })
   //console.log("Aca estan las cookies del REQ")
+  console.log({ a: req?.cookies })
   const cookie = req?.cookies?.value
   console.log({ cookie })
   console.log("Aca estan las cookies")
