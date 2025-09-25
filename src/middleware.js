@@ -1,6 +1,7 @@
 import { cookies } from "next/headers"
 import { NextResponse } from "next/server"
 import { decrypt, encrypt } from "../src/lib/session"
+import { getCookie } from "cookies-next"
 
 const protectedRoutes = ["/adminPage", "/addProds"]
 const publicRoutes = ["/login", "/catalog"]
@@ -10,20 +11,15 @@ export default async function middleware(req) {
 
   res.headers.set("x-middleware-cache", "no-cache")
 
-  const path = req.nextUrl.pathname
+  const path = req?.nextUrl?.pathname
   const isProtectedRoute = protectedRoutes.includes(path)
   const isPublicRoute = publicRoutes.includes(path)
 
-  //const cookieStore = await cookies()
-  //cookiez = req.cookies
-  //console.log({ cookiez })
-  //console.log("Aca estan las cookies del REQ")
-  console.log({ a: req?.cookies })
-  console.log(Object.keys(req?.cookies))
-  const cookie = req?.cookies?._parsed.get("__next_hmr_refresh_hash__")?.value
-  console.log({ cookie })
-  console.log("Aca estan las cookies")
-  const session = await decrypt(cookie)
+  const sessionCookie = await getCookie("session", { cookies })
+
+  if (!sessionCookie) return
+
+  const session = await decrypt(sessionCookie)
 
   if (session?.exp) {
     const now = Math.floor(Date.now() / 1000)
@@ -46,8 +42,6 @@ export default async function middleware(req) {
     }
   }
 
-  console.log(session)
-
   if (
     isProtectedRoute &&
     (!session?.userId || !session?.username || !session?.isAdmin)
@@ -65,4 +59,7 @@ export default async function middleware(req) {
   }
 
   return res
+}
+export const config = {
+  matcher: protectedRoutes,
 }

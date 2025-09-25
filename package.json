@@ -13,6 +13,7 @@
   },
   "dependencies": {
     "aws4": "^1.13.2",
+    "cookies-next": "^6.1.0",
     "crypto-js": "^4.2.0",
     "dotenv": "^17.2.2",
     "jest-config": "^30.0.5",
