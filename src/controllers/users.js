@@ -1,6 +1,6 @@
 import { validateUsername } from "@/helpers/validateUsername"
 import User from "../models/userModel"
-import { connectToDatabase } from "../../connectToDatabase"
+//import { connectToDatabase } from "../../connectToDatabase"
 import { connectToDatabaseUnix } from "../../connectDBUnix"
 
 const getUser = async (user, id) => {

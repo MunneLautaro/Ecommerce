@@ -7,7 +7,7 @@ export async function POST(request) {
     const { id, user } = r
 
     const result = await getUser(user, id)
-    console.log(result)
+
     if (result?.error) {
       return NextResponse.json(
         { error: result?.error },

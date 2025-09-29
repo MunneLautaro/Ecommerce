@@ -1,3 +1,5 @@
+"use server"
+
 import { actionProds } from "./serverActionUser"
 
 const addProduct = async (formData) => {

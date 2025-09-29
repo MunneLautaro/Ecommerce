@@ -19,7 +19,9 @@ export async function GET(req) {
 
 export async function POST(req) {
   const r = await req.json()
+
   const result = await addProduct(r)
+
   //checkear los campos
   if (result?.error) {
     return NextResponse.json(

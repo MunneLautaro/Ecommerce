@@ -65,10 +65,11 @@ export async function DELETE(req) {
 
 export async function PUT(req) {
   const r = await req.json()
-  const { currentUsername, newUsername, md5, sha1 } = r
-  const device = req.headers.get("user-agent") || ""
+  const { currentUsername, newUsername, md5, sha1, userAgent } = r
 
-  if (!currentUsername || !newUsername || !md5 || sha1) {
+  console.log(currentUsername, newUsername, md5, sha1, userAgent)
+
+  if (!currentUsername || !newUsername || !md5 || !sha1) {
     return NextResponse.json(
       { error: "Missing required fields" },
       { status: 400 }
@@ -80,7 +81,7 @@ export async function PUT(req) {
     newUsername,
     md5,
     sha1,
-    device
+    userAgent
   )
 
   if (result?.error) {
