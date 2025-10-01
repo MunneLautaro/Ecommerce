@@ -62,7 +62,7 @@ const addProduct = async (data) => {
   }
 
   const sku = createSku(data.product, data.color, data.model, data.brand)
-  if (!sku) {
+  if (!sku || sku.length !== 11) {
     return { error: "Wrong product data", status: 400 }
   }
 

@@ -1,9 +1,9 @@
 "use client"
-import ProductCard from "../ProductCard/ProductCard"
-import Select from "./Select"
+import ProductCard from "../../ProductCard/ProductCard"
+import Select from "../Select/Select"
 import { toast } from "react-toastify"
-import MyInput from "../Ui/MyInput/MyInput"
-import MyButton from "../Ui/MyButton/MyButton"
+import MyInput from "../../Ui/MyInput/MyInput"
+import MyButton from "../../Ui/MyButton/MyButton"
 import { useState, useEffect } from "react"
 import { addProduct } from "@/actions/product"
 
@@ -73,7 +73,7 @@ export default function AddProduct() {
             value={product.product}
             elements={[
               "Refrigerator",
-              "Microwave",
+              "Microwaves",
               "Blender",
               "Toaster",
               "Airfryer",
