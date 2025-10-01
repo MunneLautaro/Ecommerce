@@ -1,5 +1,5 @@
 "use server"
-import AddProduct from "../../components/ProdsComps/AddProduct"
+import AddProduct from "../../components/ProdsComps/AddProduct/AddProduct"
 
 export default async function AddProds() {
   return (

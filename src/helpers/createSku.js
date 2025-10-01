@@ -1,9 +1,10 @@
 const makeSkuProd = (product) => {
+  if (!product) return 0
   const prods = {
-    heladera: "001",
-    microondas: "002",
-    licuadora: "003",
-    tostadora: "004",
+    refrigerator: "001",
+    microwaves: "002",
+    blender: "003",
+    toaster: "004",
     airfryer: "005",
   }
   return prods[product.toLowerCase()] ?? 0
@@ -11,13 +12,13 @@ const makeSkuProd = (product) => {
 
 const makeColorSku = (prodColor) => {
   const colors = {
-    blanco: "01",
-    negro: "02",
-    azul: "03",
-    verde: "04",
-    rojo: "05",
-    rosa: "06",
-    gris: "07",
+    white: "01",
+    black: "02",
+    blue: "03",
+    green: "04",
+    red: "05",
+    pink: "06",
+    gray: "07",
   }
   return colors[prodColor.toLowerCase()] ?? 0
 }
@@ -42,7 +43,7 @@ const makeBrandSku = (prodBrand) => {
     electrolux: "M5",
     panasonic: "M6",
   }
-  return brands[prodBrand.toLowerCase()] ?? new error()
+  return brands[prodBrand.toLowerCase()] ?? 0
 }
 
 const createSku = (product, color, model, brand) => {
