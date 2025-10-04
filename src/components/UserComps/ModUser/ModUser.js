@@ -83,7 +83,7 @@ export default function ModUser() {
             </div>
           </div>
 
-          <MyButton bText={"Modify user"} buttonType={"submit"} />
+          <MyButton text={"Modify user"} buttonType={"submit"} />
         </div>
       </form>
     </>

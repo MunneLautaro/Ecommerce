@@ -68,7 +68,7 @@ export default function AddUser() {
               />
             </div>
           </div>
-          <MyButton bText={"Add user"} bType={"submit"} />
+          <MyButton text={"Add user"} type={"submit"} />
         </div>
       </form>
     </>

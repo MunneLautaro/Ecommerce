@@ -165,7 +165,7 @@ export default function AddProduct() {
             iIsRequired={true}
           />
 
-          <MyButton bType="submit" bText="Add product" />
+          <MyButton type="submit" text="Add product" />
         </form>
 
         <div className="w-full md:w-1/2">
