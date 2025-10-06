@@ -9,14 +9,14 @@ export default function ShowUsers({ users }) {
   return (
     <>
       <MyButton
-        bText={
+        text={
           mostrarLista ? (
             <span className="m-5">Hide users</span>
           ) : (
             <span className="m-5">Show users</span>
           )
         }
-        bOnClick={() => setMostrarLista(!mostrarLista)}
+        onClick={() => setMostrarLista(!mostrarLista)}
       />
 
       {mostrarLista && (

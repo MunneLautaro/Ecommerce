@@ -4,7 +4,7 @@ import "@testing-library/jest-dom"
 
 describe("MyButton", () => {
   it("displays the button disabled and underline", () => {
-    render(<MyButton bText={"Im a button"} bDisabled={true} />)
+    render(<MyButton text={"Im a button"} disabled={true} />)
 
     const button = screen.getByRole("button", { name: /Im a button/i })
 
@@ -14,7 +14,7 @@ describe("MyButton", () => {
 
   it("calls correctly the function passed", () => {
     const testFunction = jest.fn()
-    render(<MyButton bOnClick={testFunction} bText={"Im a button"} />)
+    render(<MyButton onClick={testFunction} text={"Im a button"} />)
 
     const button = screen.getByRole("button", { name: /Im a button/i })
 

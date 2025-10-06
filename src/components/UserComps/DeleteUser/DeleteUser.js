@@ -46,7 +46,7 @@ export default function DeleteUser() {
             />
           </div>
 
-          <MyButton bText={"Delete user"} bType={"submit"} />
+          <MyButton text={"Delete user"} type={"submit"} />
         </div>
       </form>
     </>

@@ -13,7 +13,7 @@ import {
   productIncialFilter,
   productFilterReducer,
 } from "@/reducers/productFilterReducer"
-import { aplyFilter } from "@/helpers/aplyFilter"
+import { calculateMaximum, calculateMinimum, aplyFilter } from "@/helpers/index"
 import ShowProds from "../ShowProds/ShowProds"
 import { useEffect, useReducer, useState } from "react"
 
@@ -23,8 +23,10 @@ export default function ProductFilter({ products }) {
     productIncialFilter
   )
 
-  console.log({ products })
   const [filteredProducts, setFilteredProducts] = useState(products)
+
+  const min = calculateMinimum(products)
+  const max = calculateMaximum(products)
 
   useEffect(() => {
     setFilteredProducts(aplyFilter(products, prodFilter))
@@ -35,17 +37,18 @@ export default function ProductFilter({ products }) {
       <div className="flex flex-wrap justify-center">
         <ProductFilterContext.Provider value={prodFilter}>
           <ProductFilterDispatchContext.Provider value={dispatchProdFilter}>
-            <div className="flex">
+            <div className="flex items-center justify-center absolute m-5 top-15">
               <FilterByName />
               <FilterByBrand />
               <FilterByModel />
               <FilterByColor />
-              <FilterByPrice />
+              <FilterByPrice min={min} max={max} />
             </div>
           </ProductFilterDispatchContext.Provider>
         </ProductFilterContext.Provider>
-
-        <ShowProds prods={filteredProducts} />
+        <div className="mt-[50px]">
+          <ShowProds prods={filteredProducts} />
+        </div>
       </div>
     </>
   )

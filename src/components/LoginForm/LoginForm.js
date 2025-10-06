@@ -48,7 +48,7 @@ export function LoginForm() {
           iPlaceHolder={"Password"}
         />
 
-        <MyButton bText={"submit"} bType={"submit"} />
+        <MyButton text={"submit"} type={"submit"} />
       </form>
       <div
         className={`
