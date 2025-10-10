@@ -18,14 +18,14 @@ export default function NavBar({ session }) {
         adminRoutes[pathname]?.length > 0 ? (
           adminRoutes[pathname].map((adminR) => (
             <MyLink
-              key={adminR.label}
-              id={adminR.label}
-              url={adminR.url}
-              text={adminR.label}
+              key={adminR?.label}
+              id={adminR?.label}
+              url={adminR?.url}
+              text={adminR?.label}
             />
           ))
-        ) : pathname !== "/catalog" ? (
-          <MyLink url="/catalog" text={"Catalog"} />
+        ) : pathname !== "/" ? (
+          <MyLink url="/" text={"Catalog"} />
         ) : null}
         <div className="m-[15px] flex">
           {session ? (

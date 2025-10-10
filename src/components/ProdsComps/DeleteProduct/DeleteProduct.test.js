@@ -9,16 +9,14 @@ jest.mock("jose", () => ({
   compactDecrypt: jest.fn(),
 }))
 
-
 describe("DeleteProduct", () => {
-  it("displays correctly the old user input", () => {
+  it("displays correctly the productID input", () => {
     render(<DeleteProduct />)
 
-    const userInput = screen.getByPlaceholderText("Username")
+    const productIdInput = screen.getByPlaceholderText("Product ID/SKU")
 
-    expect(userInput).toBeInTheDocument()
-    expect(userInput).toBeRequired()
+    expect(productIdInput).toBeInTheDocument()
+    expect(productIdInput).toBeRequired()
+    expect(productIdInput).toHaveAttribute("type", "text")
   })
-
-  
 })

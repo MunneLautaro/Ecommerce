@@ -1,6 +1,6 @@
 import mongoose from "mongoose"
-import dotenv from 'dotenv'
-dotenv.config({ path: '.env.local' })
+import dotenv from "dotenv"
+dotenv.config({ path: ".env.local" })
 
 const MONGODB_URI = process.env.MONGODB_URI
 
@@ -14,10 +14,7 @@ export const connectToDatabaseUnix = async () => {
   if (isConnected) return
 
   try {
-    await mongoose.connect(MONGODB_URI, {
-      useNewUrlParser: true,
-      useUnifiedTopology: true,
-    })
+    await mongoose.connect(MONGODB_URI)
     isConnected = true
     console.log("MongoDB conectado con Mongoose")
   } catch (error) {

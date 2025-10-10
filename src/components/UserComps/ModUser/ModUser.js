@@ -46,19 +46,19 @@ export default function ModUser() {
         <div className="flex flex-col items-center ">
           <div className="min-h-[150px] ">
             <MyInput
-              iName={"user"}
-              iPlaceHolder={"Username"}
-              iIsRequired={true}
-              iOnChange={(e) =>
+              name={"user"}
+              placeHolder={"Username"}
+              required={true}
+              onChange={(e) =>
                 setFormData((prev) => ({ ...prev, user: e?.target?.value }))
               }
             />
             <div className="mt-4">
               <MyInput
-                iName={"newUser"}
-                iPlaceHolder={"New username"}
-                iIsRequired={true}
-                iOnChange={(e) =>
+                name={"newUser"}
+                placeHolder={"New username"}
+                required={true}
+                onChange={(e) =>
                   setFormData((prev) => ({
                     ...prev,
                     newUser: e?.target?.value,
@@ -68,11 +68,11 @@ export default function ModUser() {
             </div>
             <div className="mt-4">
               <MyInput
-                iType={"password"}
-                iName={"newPassword"}
-                iPlaceHolder={"New password"}
-                iIsRequired={true}
-                iOnChange={(e) =>
+                type={"password"}
+                name={"newPassword"}
+                placeHolder={"New password"}
+                required={true}
+                onChange={(e) =>
                   setFormData((prev) => ({
                     ...prev,
                     md5: CryptoJS.MD5(e?.target?.value).toString(),

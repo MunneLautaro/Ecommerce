@@ -17,9 +17,9 @@ export default function FilterByModel() {
   return (
     <div className="m-2">
       <MyInput
-        iType="text"
-        iPlaceHolder="Search by model"
-        iOnChange={handleChange}
+        type="text"
+        placeHolder="Search by model"
+        onChange={handleChange}
       />
     </div>
   )

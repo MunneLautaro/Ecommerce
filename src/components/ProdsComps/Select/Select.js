@@ -7,10 +7,14 @@ export default function Select({ elements, type, onChange, value }) {
 
   return (
     <div className="w-full max-w-xs my-2">
-      <label className="block text-sm font-medium text-gray-200 mb-1">
+      <label
+        htmlFor={type.toLowerCase()}
+        className="block text-sm font-medium text-gray-200 mb-1"
+      >
         {type}
       </label>
       <select
+        id={type.toLowerCase()}
         name={type.toLowerCase()}
         value={value || ""}
         onChange={handleChange}

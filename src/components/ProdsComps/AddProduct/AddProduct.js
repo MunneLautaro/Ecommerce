@@ -56,7 +56,7 @@ export default function AddProduct() {
           className="flex flex-col gap-4 w-full md:w-1/2"
         >
           <Select
-            value={product.brand}
+            value={product?.brand}
             elements={[
               "Samsung",
               "Phillips",
@@ -70,7 +70,7 @@ export default function AddProduct() {
           />
 
           <Select
-            value={product.product}
+            value={product?.product}
             elements={[
               "Refrigerator",
               "Microwaves",
@@ -85,7 +85,7 @@ export default function AddProduct() {
           />
 
           <Select
-            value={product.color}
+            value={product?.color}
             elements={[
               "White",
               "Black",
@@ -108,17 +108,18 @@ export default function AddProduct() {
           />
 
           <MyInput
-            iName={"img"}
-            iValue={product.img}
-            iPlaceHolder="img.jpg"
-            iOnChange={(e) => setProduct({ ...product, img: e.target.value })}
+            name={"img"}
+            value={product?.img}
+            placeHolder="img.jpg"
+            onChange={(e) => setProduct({ ...product, img: e.target.value })}
           />
 
           <MyInput
-            iName={"img"}
-            iType="file"
-            iAccept="image/png, image/jpeg, image/webp"
-            iOnChange={async (e) => {
+            dataTestId="imgFile"
+            name={"img"}
+            type="file"
+            accept="image/png, image/jpeg, image/webp"
+            onChange={async (e) => {
               const file = e.target.files[0]
               if (!file) return
 
@@ -140,29 +141,33 @@ export default function AddProduct() {
           />
 
           <MyInput
-            iName={"description"}
-            iValue={product.description || ""}
-            iPlaceHolder="Description"
-            iOnChange={(e) =>
-              setProduct({ ...product, description: e.target.value })
+            name={"description"}
+            value={product?.description || ""}
+            placeHolder="Description"
+            onChange={(e) =>
+              setProduct({ ...product, description: e?.target?.value })
             }
-            iIsRequired={true}
+            required={true}
           />
 
           <MyInput
-            iName={"price"}
-            iValue={product.price || ""}
-            iPlaceHolder="Price"
-            iOnChange={(e) => setProduct({ ...product, price: e.target.value })}
-            iIsRequired={true}
+            name={"price"}
+            value={product?.price || ""}
+            placeHolder="Price"
+            onChange={(e) =>
+              setProduct({ ...product, price: e?.target?.value })
+            }
+            required={true}
           />
 
           <MyInput
-            iName={"stock"}
-            iValue={product.stock || ""}
-            iPlaceHolder="Stock"
-            iOnChange={(e) => setProduct({ ...product, stock: e.target.value })}
-            iIsRequired={true}
+            name={"stock"}
+            value={product?.stock || ""}
+            placeHolder="Stock"
+            onChange={(e) =>
+              setProduct({ ...product, stock: e?.target?.value })
+            }
+            required={true}
           />
 
           <MyButton type="submit" text="Add product" />

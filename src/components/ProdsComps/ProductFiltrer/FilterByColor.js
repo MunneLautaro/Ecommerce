@@ -17,9 +17,9 @@ export default function FilterByColor() {
   return (
     <div className="m-2">
       <MyInput
-        iType="text"
-        iPlaceHolder="Search by color"
-        iOnChange={handleChange}
+        type="text"
+        placeHolder="Search by color"
+        onChange={handleChange}
       />
     </div>
   )

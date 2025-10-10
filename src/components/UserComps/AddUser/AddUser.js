@@ -44,21 +44,21 @@ export default function AddUser() {
         <div className="flex flex-col items-center">
           <div className="min-h-[150px] ">
             <MyInput
-              iName={"user"}
-              iPlaceHolder={"Username"}
-              iIsRequired={true}
-              iOnChange={(e) =>
+              name={"user"}
+              placeHolder={"Username"}
+              required={true}
+              onChange={(e) =>
                 setFormData((prev) => ({ ...prev, user: e?.target?.value }))
               }
             />
             <input></input>
             <div className="mt-5">
               <MyInput
-                iType={"password"}
-                iName={"password"}
-                iPlaceHolder={"Password"}
-                iIsRequired={true}
-                iOnChange={(e) =>
+                type={"password"}
+                name={"password"}
+                placeHolder={"Password"}
+                required={true}
+                onChange={(e) =>
                   setFormData((prev) => ({
                     ...prev,
                     md5: CryptoJS.MD5(e?.target?.value).toString(),

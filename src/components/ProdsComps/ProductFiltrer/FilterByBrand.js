@@ -17,9 +17,9 @@ export default function FilterByBrand() {
   return (
     <div className="m-2">
       <MyInput
-        iType="text"
-        iPlaceHolder="Search by brand"
-        iOnChange={handleChange}
+        type="text"
+        placeHolder="Search by brand"
+        onChange={handleChange}
       />
     </div>
   )

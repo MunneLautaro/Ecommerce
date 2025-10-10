@@ -17,7 +17,7 @@ export function LoginForm() {
       if (response?.user?.isAdmin) {
         router.push("/adminPage")
       } else {
-        router.push("/catalog")
+        router.push("/")
       }
     } else {
       setError(response?.errors?.login)
@@ -41,12 +41,8 @@ export function LoginForm() {
           setResponse(loginResponse)
         }}
       >
-        <MyInput iId={"user"} iName={"user"} iPlaceHolder={"Username"} />
-        <MyInput
-          iId={"password"}
-          iName={"password"}
-          iPlaceHolder={"Password"}
-        />
+        <MyInput id={"user"} name={"user"} placeHolder={"Username"} />
+        <MyInput id={"password"} name={"password"} placeHolder={"Password"} />
 
         <MyButton text={"submit"} type={"submit"} />
       </form>

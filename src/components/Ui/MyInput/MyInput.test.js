@@ -6,7 +6,7 @@ describe("MyInput", () => {
   it("change values via the fireEvent.change method", () => {
     const handleChange = jest.fn()
     render(
-      <MyInput iType={"text"} iOnChange={handleChange} iPlaceHolder={"Text"} />
+      <MyInput type={"text"} onChange={handleChange} placeHolder={"Text"} />
     )
 
     const input = screen.getByPlaceholderText(/text/i)

@@ -5,8 +5,9 @@ export default function RangeSlider({ min = 0, max = 100, value, onChange }) {
       min={min}
       max={max}
       step={1}
-      value={value} // <-- ahora existe porque lo recibe como prop
+      value={value}
       onChange={onChange}
+      className="accent-violet-700"
     />
   )
 }

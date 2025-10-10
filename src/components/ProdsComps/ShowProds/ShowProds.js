@@ -2,7 +2,6 @@
 import ProductCard from "../../ProductCard/ProductCard"
 
 export default function ShowProds({ prods }) {
-  console.log({ prods })
   return (
     <>
       <div className="flex flex-wrap justify-center m-5">

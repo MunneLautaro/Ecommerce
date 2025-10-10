@@ -34,10 +34,10 @@ export default function DeleteUser() {
         <div className="flex flex-col items-center ">
           <div className="min-h-[150px] ">
             <MyInput
-              iName={"user"}
-              iPlaceHolder={"Username"}
-              iIsRequired={true}
-              iOnChange={(e) =>
+              name={"user"}
+              placeHolder={"Username"}
+              required={true}
+              onChange={(e) =>
                 setFormData((prev) => ({
                   ...prev,
                   user: e?.target?.value,

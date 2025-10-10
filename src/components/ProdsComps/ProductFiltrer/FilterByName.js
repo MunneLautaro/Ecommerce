@@ -22,9 +22,9 @@ export default function FilterByName() {
   return (
     <div className="m-2">
       <MyInput
-        iType="text"
-        iPlaceHolder="Search by name"
-        iOnChange={handleChange}
+        type="text"
+        placeHolder="Search by name"
+        onChange={handleChange}
       />
     </div>
   )

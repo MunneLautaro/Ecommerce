@@ -4,7 +4,7 @@ import { decrypt, encrypt } from "../src/lib/session"
 import { getCookie } from "cookies-next"
 
 const protectedRoutes = ["/adminPage", "/addProds"]
-const publicRoutes = ["/login", "/catalog"]
+const publicRoutes = ["/login", "/"]
 
 export default async function middleware(req) {
   const res = NextResponse.next()
@@ -49,13 +49,8 @@ export default async function middleware(req) {
     return NextResponse.redirect(new URL("/login", req.nextUrl))
   }
 
-  if (
-    isPublicRoute &&
-    session?.userId &&
-    session?.username &&
-    path !== "/catalog"
-  ) {
-    return NextResponse.redirect(new URL("/catalog", req.nextUrl))
+  if (isPublicRoute && session?.userId && session?.username && path !== "/") {
+    return NextResponse.redirect(new URL("/", req.nextUrl))
   }
 
   return res
