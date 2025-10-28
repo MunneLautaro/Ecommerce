@@ -1,16 +1,19 @@
 "use client"
 
-import DropDown from "@/components/Ui/DropDown/DropDown"
-import ModifyProductForm from "./ModifyProductForm"
-import MyButton from "@/components/Ui/MyButton/MyButton"
+import FilterByKey from "./FilterByKey"
+import {
+  ProductFilterContext,
+  ProductFilterDispatchContext,
+} from "@/contexts/ProductFilterContext"
 import {
   productIncialFilter,
   productFilterReducer,
 } from "@/reducers/productFilterReducer"
+import ShowProds from "./ShowProds"
 import { useEffect, useReducer } from "react"
-import ShowProds from "../ProductFiltrer/TableFormat/ShowProds"
+import FilterByPrice from "./FilterByPrice"
 
-export default function ModifyProduct() {
+export default function ProductFilter() {
   const [prodFilter, dispatchProdFilter] = useReducer(
     productFilterReducer,
     productIncialFilter
@@ -39,7 +42,6 @@ export default function ModifyProduct() {
           payload: products?.products,
         })
 
-        console.log({ products })
         dispatchProdFilter({
           type: "SET_RANGE_FILTER",
           payload: { attribute: "min", value: min },
@@ -60,17 +62,26 @@ export default function ModifyProduct() {
   }, [])
 
   return (
-    <div data-testid="ModProductComponent">
-      <h1>Modify an existent product!</h1>
-      <div className="flex">
-        <DropDown elements={[1, 2, 3]} />
-        <DropDown elements={[1, 2, 3]} />
-        <DropDown elements={[1, 2, 3]} />
-        <DropDown elements={[1, 2, 3]} />
-        <MyButton text={"Order by price"} />
-        <ModifyProductForm />
-        <ShowProds />
+    <>
+      <div className="flex flex-wrap justify-center">
+        <ProductFilterContext.Provider value={prodFilter}>
+          <ProductFilterDispatchContext.Provider value={dispatchProdFilter}>
+            <div className="flex items-center justify-center absolute m-5 top-15">
+              <FilterByKey keys={"brand"} />
+              <FilterByKey keys={"model"} />
+              <FilterByKey keys={"color"} />
+              <FilterByKey keys={"product"} />
+              <FilterByPrice
+                min={prodFilter?.prodFilter?.range?.min || 0}
+                max={prodFilter?.prodFilter?.range?.max || 100}
+              />
+            </div>
+            <div className="mt-[50px]">
+              <ShowProds />
+            </div>
+          </ProductFilterDispatchContext.Provider>
+        </ProductFilterContext.Provider>
       </div>
-    </div>
+    </>
   )
 }

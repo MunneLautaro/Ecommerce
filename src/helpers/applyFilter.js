@@ -1,6 +1,7 @@
-export const aplyFilter = (products, prodFilter = {}) => {
+export const applyFilter = (products, prodFilter = {}) => {
+  console.log("SE ESTA LLAMANDO")
+  console.log({ prodFilter })
   if (Array.isArray(products) === false) return []
-  console.log(prodFilter)
   return products.filter((prod) => {
     return (
       (prodFilter.product
@@ -18,8 +19,8 @@ export const aplyFilter = (products, prodFilter = {}) => {
         ? prod?.color?.toLowerCase().includes(prodFilter.color.toLowerCase())
         : true) &&
       (prodFilter.price
-        ? prod?.price >= prodFilter.price.minPrice &&
-          prod?.price <= prodFilter.price.maxPrice
+        ? prod?.price >= prodFilter.price.min &&
+          prod?.price <= prodFilter.price.max
         : true)
     )
   })

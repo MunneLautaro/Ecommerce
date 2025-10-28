@@ -1,5 +1,5 @@
 import "./globals.css"
-import NavBar from "@/components/NavBar/NavBar"
+import NavBar from "../components/Ui/NavBar/NavBar"
 import { ToastContainer } from "react-toastify"
 import { cookies } from "next/headers"
 import { decrypt } from "../lib/session"

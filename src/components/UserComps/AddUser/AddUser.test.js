@@ -1,4 +1,4 @@
-import { render, screen, waitFor, act, fireEvent } from "@testing-library/react"
+import { render, screen, waitFor } from "@testing-library/react"
 import "@testing-library/jest-dom"
 import AddUser from "./AddUser"
 import { addUserAction } from "../../../actions/index"
@@ -57,9 +57,7 @@ describe("AddUser", () => {
 
     const submitBtn = screen.queryByRole("button", { name: /add user/i })
 
-    await act(async () => {
-      user.click(submitBtn)
-    })
+    await user.click(submitBtn)
 
     /*
     Problema: los campos de user y password devolvian undefined, sin embargo los test que checkeaban

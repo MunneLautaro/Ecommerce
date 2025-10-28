@@ -1,7 +1,7 @@
 "use client"
 
 import { useState } from "react"
-import MyButton from "../Ui/MyButton/MyButton"
+import MyButton from "../MyButton/MyButton"
 
 export default function Carrousel({ products }) {
   const [selectedProduct, setSelectedProduct] = useState(0)
@@ -23,7 +23,12 @@ export default function Carrousel({ products }) {
           return (
             selectedProduct == id && (
               // eslint-disable-next-line @next/next/no-img-element
-              <img key={id} src={prod?.img} className="h-[100px] w-[100px]" />
+              <img
+                key={id}
+                src={prod?.img}
+                className="h-[100px] w-[100px]"
+                alt="Product image"
+              />
             )
           )
         })}

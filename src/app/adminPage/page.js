@@ -3,9 +3,10 @@ import AddUser from "../../components/UserComps/AddUser/AddUser"
 import ShowUsers from "../../components/UserComps/ShowUsers/ShowUsers"
 import ModUser from "../../components/UserComps/ModUser/ModUser"
 import DeleteUser from "../../components/UserComps/DeleteUser/DeleteUser"
+import DropDown from "@/components/Ui/DropDown/DropDown"
 
 export default async function Home() {
-  const res = await fetch(`${process.env.NEXT_FULL_URL}/api/users`, {
+  const res = await fetch(`${process.env.NEXT_PUBLIC_FULL_URL}/api/users`, {
     next: { tags: ["users"] },
   })
 
@@ -15,6 +16,7 @@ export default async function Home() {
     <>
       <div className="flex flex-col items-center justify-center grid-cols-2 gap-5 mt-5">
         <div className="flex flex-row items-end justify-center gap-5">
+          <DropDown elements={["A", "B", "C"]} />
           <div>
             <AddUser />
           </div>

@@ -7,8 +7,7 @@ const addUserAction = async (formData) => {
   const md5 = formData?.md5
   const sha1 = formData?.sha1
 
-  //const result = await addUser(user, md5, sha1, userAgent)
-  const res = await fetch(`${process.env.NEXT_FULL_URL}/api/users`, {
+  const res = await fetch(`${process.env.NEXT_PUBLIC_FULL_URL}/api/users`, {
     method: "POST",
     body: JSON.stringify({ user, md5, sha1, userAgent }),
     headers: { "Content-Type": "application/json" },
@@ -22,7 +21,7 @@ const addUserAction = async (formData) => {
 const deleteUser = async (formData) => {
   const user = formData?.user
 
-  const res = await fetch(`${process.env.NEXT_FULL_URL}/api/users`, {
+  const res = await fetch(`${process.env.NEXT_PUBLIC_FULL_URL}/api/users`, {
     method: "DELETE",
     body: JSON.stringify({ user }),
     headers: { "Content-Type": "application/json" },
@@ -39,7 +38,7 @@ const modUser = async (formData) => {
   const sha1 = formData?.sha1
   const userAgent = formData?.userAgent
   //
-  const res = await fetch(`${process.env.NEXT_FULL_URL}/api/users`, {
+  const res = await fetch(`${process.env.NEXT_PUBLIC_FULL_URL}/api/users`, {
     method: "PUT",
     body: JSON.stringify({
       currentUsername,

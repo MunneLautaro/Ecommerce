@@ -1,44 +1,67 @@
 export const productIncialFilter = {
-  product: "",
-  brand: "",
-  model: "",
-  color: "",
-  price: {
-    minPrice: 0,
-    maxPrice: 100,
-  },
-  range: {
-    minRange: 0,
-    maxRange: 100,
+  products: null,
+  loading: true,
+  error: null,
+  prodFilter: {
+    product: "",
+    brand: "",
+    model: "",
+    color: "",
+    price: {
+      min: null,
+      max: null,
+    },
+    range: { min: null, max: null },
   },
 }
 
 export const productFilterReducer = (state, action) => {
   switch (action.type) {
-    case "filter": {
-      return { ...state, [action.payload.attrib]: action.payload.value }
+    case "FETCH_INIT": {
+      return { ...state, loading: true, error: null }
     }
-    case "filterPrice": {
+    case "FETCH_SUCCESS": {
+      return { ...state, products: action.payload, loading: false, error: null }
+    }
+    case "FETCH_FAIL": {
+      return { ...state, loading: false, error: action.payload }
+    }
+    case "SET_FILTER": {
       return {
         ...state,
-        price: {
-          ...state.price,
-          [action.payload.attrib]: action.payload.value,
+        prodFilter: {
+          ...state.prodFilter,
+          [action.payload.attribute]: action.payload.value,
         },
       }
     }
-    case "setRange": {
+    case "SET_PRICE_FILTER": {
       return {
         ...state,
-        range: {
-          ...state.range,
-          [action.payload.attrib]: action.payload.value,
+        prodFilter: {
+          ...state.prodFilter,
+          price: {
+            ...state.prodFilter.price,
+            [action.payload.attribute]: action.payload.value,
+          },
+        },
+      }
+    }
+    case "SET_RANGE_FILTER": {
+      return {
+        ...state,
+        prodFilter: {
+          ...state.prodFilter,
+          range: {
+            ...state.prodFilter.range,
+            [action.payload.attribute]: action.payload.value,
+          },
         },
       }
     }
 
     default: {
-      alert("Unknown action")
+      console.log("unkown action")
     }
   }
 }

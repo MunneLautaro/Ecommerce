@@ -3,16 +3,16 @@
 import { actionProds } from "./serverActionUser"
 
 const addProduct = async (formData) => {
-  const brand = formData.get("brand")
-  const product = formData.get("product")
-  const color = formData.get("color")
-  const model = formData.get("model")
-  const img = formData.get("img")
-  const description = formData.get("description")
-  const price = formData.get("price")
-  const stock = formData.get("stock")
+  const brand = formData?.brand
+  const product = formData?.product
+  const color = formData?.color
+  const model = formData?.model
+  const img = formData?.img
+  const description = formData?.description
+  const price = formData?.price
+  const stock = formData?.stock
 
-  const res = await fetch(`${process.env.NEXT_FULL_URL}/api/prods`, {
+  const res = await fetch(`${process.env.NEXT_PUBLIC_FULL_URL}/api/prods`, {
     method: "POST",
     body: JSON.stringify({
       brand,

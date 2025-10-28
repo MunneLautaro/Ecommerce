@@ -1,4 +1,4 @@
-import { logout } from "../../actions/logIn"
+import { logout } from "../../../actions/index"
 
 export default function LogOutButton({ username, isAdmin }) {
   return (

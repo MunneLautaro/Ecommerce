@@ -4,9 +4,19 @@ import AddProduct from "@/components/ProdsComps/AddProduct/AddProduct"
 import React from "react"
 import "@testing-library/jest-dom"
 import { ToastContainer } from "react-toastify"
+import { addProduct } from "../../../actions/product"
+
+jest.mock("../../../actions/product", () => ({
+  addProduct: jest.fn(),
+}))
+
+jest.mock("jose", () => ({
+  compactDecrypt: jest.fn(),
+}))
 
 describe("AddProduct Component", () => {
   beforeAll(() => {
+    addProduct.mockResolvedValue({ message: "Product added successfully" })
     global.URL.createObjectURL = jest.fn(() => "mocked-url")
   })
 
@@ -60,8 +70,8 @@ describe("AddProduct Component", () => {
     expect(stockInput).toBeRequired()
     expect(descriptionInput).toBeRequired()
   })
-  /*
-  it("shows an alert if trying to submit the form with empty required fields", async () => {
+
+  it("allows the user to fill all fields, submit the form and see success toast", async () => {
     const user = userEvent.setup()
 
     render(
@@ -75,25 +85,44 @@ describe("AddProduct Component", () => {
     await user.selectOptions(screen.getByLabelText(/Product/i), "Toaster")
     await user.selectOptions(screen.getByLabelText(/Color/i), "Black")
     await user.selectOptions(screen.getByLabelText(/Model/i), "A003")
+
     await user.type(screen.getByPlaceholderText("Price"), "199")
     await user.type(screen.getByPlaceholderText("Stock"), "5")
     await user.type(
       screen.getByPlaceholderText("Description"),
       "Great toaster!"
     )
+
     const file = new File(["img"], "img.jpg", { type: "image/jpg" })
     const imageInput = screen.getByTestId("imgFile")
     await user.upload(imageInput, file)
 
-    const submitButton = screen.getByRole("button", { name: /Add Product/i })
-    await user.click(submitButton)
+    const submitBtn = screen.getByRole("button", { name: /Add product/i })
+
+    user.click(submitBtn)
 
     await waitFor(() => {
-      expect(productActions.addProduct).toHaveBeenCalledTimes(1)
+      expect(addProduct).toHaveBeenCalledTimes(1)
+      expect(addProduct).toHaveBeenCalledWith({
+        brand: "Samsung",
+        product: "Toaster",
+        color: "Black",
+        model: "A003",
+        description: "Great toaster!",
+        img: "",
+        price: "199",
+        stock: "5",
+      })
+    })
+
+    await waitFor(() => {
+      expect(
+        screen.getByText(/product added successfully/i)
+      ).toBeInTheDocument()
     })
   })
 
   afterAll(() => {
     global.URL.createObjectURL.mockRestore()
-  })*/
+  })
 })

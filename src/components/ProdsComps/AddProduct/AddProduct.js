@@ -30,7 +30,10 @@ export default function AddProduct() {
   }, [response])
 
   return (
-    <div className="flex flex-col items-center px-4 justify-center">
+    <div
+      data-testid="AddProductComponent"
+      className="flex flex-col items-center px-4 justify-center"
+    >
       <h1 className="text-2xl font-semibold text-yellow-500 my-6">
         ¡Add a new product!
       </h1>
@@ -39,9 +42,8 @@ export default function AddProduct() {
         <form
           onSubmit={async (e) => {
             e.preventDefault()
-            const form = new FormData(e.target)
-            const modResponse = await addProduct(form)
-            setResponse(modResponse)
+            const addResponse = await addProduct(product)
+            setResponse(addResponse)
             setProduct({
               product: "",
               img: "",

@@ -11,13 +11,16 @@ export async function login(formData) {
   let cMD5 = CryptoJS.MD5(password).toString()
   let cSHA1 = CryptoJS.SHA1(password).toString()
 
-  const response = await fetch(`${process.env.NEXT_FULL_URL}/api/checkUser`, {
-    method: "POST",
-    body: JSON.stringify({
-      user: user,
-    }),
-    headers: { "content-type": "application/json" },
-  })
+  const response = await fetch(
+    `${process.env.NEXT_PUBLIC_FULL_URL}/api/checkUser`,
+    {
+      method: "POST",
+      body: JSON.stringify({
+        user: user,
+      }),
+      headers: { "content-type": "application/json" },
+    }
+  )
 
   const currentUser = await response.json()
 
