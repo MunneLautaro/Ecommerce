@@ -7,13 +7,27 @@ import {
   productIncialFilter,
   productFilterReducer,
 } from "@/reducers/productFilterReducer"
+import {
+  initialFormState,
+  productFormReducer,
+} from "../../../reducers/productReducer"
 import { useEffect, useReducer } from "react"
 import ShowProds from "../ProductFiltrer/TableFormat/ShowProds"
+import {
+  ProductFilterContext,
+  ProductFilterDispatchContext,
+} from "@/contexts/ProductFilterContext"
+import { ProductContext } from "@/contexts/ProductContext"
 
 export default function ModifyProduct() {
   const [prodFilter, dispatchProdFilter] = useReducer(
     productFilterReducer,
     productIncialFilter
+  )
+
+  const [formState, dispatchForm] = useReducer(
+    productFormReducer,
+    initialFormState
   )
 
   useEffect(() => {
@@ -60,17 +74,33 @@ export default function ModifyProduct() {
   }, [])
 
   return (
-    <div data-testid="ModProductComponent">
-      <h1>Modify an existent product!</h1>
-      <div className="flex">
-        <DropDown elements={[1, 2, 3]} />
-        <DropDown elements={[1, 2, 3]} />
-        <DropDown elements={[1, 2, 3]} />
-        <DropDown elements={[1, 2, 3]} />
-        <MyButton text={"Order by price"} />
-        <ModifyProductForm />
-        <ShowProds />
+    <>
+      <h1 className="flex text-lg font-semibold mb-4">
+        Modify an existent product!
+      </h1>
+      <div className="grid grid-cols-2 gap-4" data-testid="ModProductComponent">
+        <ProductFilterContext.Provider value={prodFilter}>
+          <ProductFilterDispatchContext.Provider value={dispatchProdFilter}>
+            <ProductContext.Provider value={[formState, dispatchForm]}>
+              <div className="flex flex-col items-center justify-center gap-4 ">
+                <div className="grid grid-flow-col">
+                  <DropDown elements={[1, 2, 3]} />
+                  <DropDown elements={[1, 2, 3]} />
+                  <DropDown elements={[1, 2, 3]} />
+                  <DropDown elements={[1, 2, 3]} />
+                  <MyButton text="Order by price" />
+                </div>
+
+                <ShowProds />
+              </div>
+
+              <div className="grid grid-flow-col justify-center gap-4  ">
+                <ModifyProductForm />
+              </div>
+            </ProductContext.Provider>
+          </ProductFilterDispatchContext.Provider>
+        </ProductFilterContext.Provider>
       </div>
-    </div>
+    </>
   )
 }
