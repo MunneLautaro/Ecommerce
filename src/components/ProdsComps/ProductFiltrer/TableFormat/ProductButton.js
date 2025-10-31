@@ -8,7 +8,7 @@ export default function ProductButton({ prod, index }) {
 
   return (
     <div
-      className={`w-full h-full flex items-center ${
+      className={`transition-all duration-300 w-full h-full flex items-center ${
         index % 2 === 0
           ? "bg-violet-200 hover:bg-violet-400"
           : "bg-amber-200 hover:bg-amber-400"
