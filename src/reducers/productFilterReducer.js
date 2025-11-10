@@ -12,6 +12,7 @@ export const productIncialFilter = {
       max: null,
     },
     range: { min: null, max: null },
+    isAscending: false,
   },
 }
 
@@ -56,6 +57,21 @@ export const productFilterReducer = (state, action) => {
             ...state.prodFilter.range,
             [action.payload.attribute]: action.payload.value,
           },
+        },
+      }
+    }
+    case "RESET_FILTERS": {
+      return {
+        ...state,
+        prodFilter: productIncialFilter.prodFilter,
+      }
+    }
+    case "TOGGLE_SORT_ORDER": {
+      return {
+        ...state,
+        prodFilter: {
+          ...state.prodFilter,
+          isAscending: !state.prodFilter.isAscending,
         },
       }
     }

@@ -1,6 +1,7 @@
 export const applyFilter = (products, prodFilter = {}) => {
   if (Array.isArray(products) === false) return []
-  return products.filter((prod) => {
+
+  const filtered = products.filter((prod) => {
     return (
       (prodFilter.product
         ? prod?.product
@@ -22,4 +23,12 @@ export const applyFilter = (products, prodFilter = {}) => {
         : true)
     )
   })
+
+  if (prodFilter.isAscending !== undefined) {
+    return filtered.sort((a, b) => {
+      return prodFilter.isAscending ? a.price - b.price : b.price - a.price
+    })
+  }
+
+  return filtered
 }

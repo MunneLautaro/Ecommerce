@@ -39,6 +39,23 @@ const createProduct = async (data, sku) => {
   }
 }
 
+const updateProduct = async (data) => {
+  try {
+    await connectToDatabaseUnix()
+    await Product.updateOne(
+      { sku: data?.sku },
+      {
+        img: data?.img,
+        description: data?.description,
+        price: data?.price,
+        stock: data?.stock,
+      }
+    )
+  } catch (error) {
+    return { error: error, status: 500 }
+  }
+}
+
 const getProducts = async () => {
   try {
     await connectToDatabaseUnix()
@@ -61,7 +78,7 @@ const addProduct = async (data) => {
     return { error: validationError, status: 400 }
   }
 
-  const sku = createSku(data.product, data.color, data.model, data.brand)
+  const sku = createSku(data?.product, data?.color, data?.model, data?.brand)
   if (!sku || sku.length !== 11) {
     return { error: "Wrong product data", status: 400 }
   }
@@ -74,9 +91,42 @@ const addProduct = async (data) => {
   await createProduct(data, sku)
 
   return {
-    success: `The product ${data.product} was successfully registered`,
+    success: `The product ${data?.product} was successfully registered`,
     status: 201,
   }
 }
 
-export { getProducts, addProduct }
+const modProduct = async (data) => {
+  await connectToDatabaseUnix()
+  const product = await Product.findOne({ sku: data?.sku })
+
+  if (!product?.sku) {
+    return { error: "The product does not exist", status: 404 }
+  }
+
+  if (
+    product?.price === data?.price &&
+    product?.stock === data?.stock &&
+    product?.img === data?.img &&
+    product?.description === data?.description
+  ) {
+    return {
+      error: `No changes detected on the product with sku: ${data?.sku}`,
+      status: 400,
+    }
+  }
+
+  const validationError = validateProductData(data)
+  if (validationError) {
+    return { error: validationError, status: 400 }
+  }
+
+  await updateProduct(data)
+
+  return {
+    success: `The product ${data?.product} was successfully modified`,
+    status: 201,
+  }
+}
+
+export { getProducts, addProduct, modProduct }

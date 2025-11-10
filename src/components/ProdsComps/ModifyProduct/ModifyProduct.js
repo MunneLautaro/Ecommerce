@@ -1,6 +1,5 @@
 "use client"
 
-import DropDown from "@/components/Ui/DropDown/DropDown"
 import ModifyProductForm from "./ModifyProductForm"
 import MyButton from "@/components/Ui/MyButton/MyButton"
 import {
@@ -18,6 +17,7 @@ import {
   ProductFilterDispatchContext,
 } from "@/contexts/ProductFilterContext"
 import { ProductContext } from "@/contexts/ProductContext"
+import { RefreshCcw } from "react-feather"
 
 export default function ModifyProduct() {
   const [prodFilter, dispatchProdFilter] = useReducer(
@@ -30,45 +30,41 @@ export default function ModifyProduct() {
     initialFormState
   )
 
+  const fetchProducts = async () => {
+    try {
+      const res = await fetch(`${process.env.NEXT_PUBLIC_FULL_URL}/api/prods`, {
+        method: "GET",
+      })
+      const products = await res.json()
+
+      //Sacar en un helper
+      const prices = products?.products?.map((product) => product?.price)
+      const min = Math.min(...prices)
+      const max = Math.max(...prices)
+
+      dispatchProdFilter({
+        type: "FETCH_SUCCESS",
+        payload: products?.products,
+      })
+
+      dispatchProdFilter({
+        type: "SET_RANGE_FILTER",
+        payload: { attribute: "min", value: min },
+      })
+      dispatchProdFilter({
+        type: "SET_RANGE_FILTER",
+        payload: { attribute: "max", value: max },
+      })
+    } catch {
+      dispatchProdFilter({
+        type: "FETCH_FAIL",
+        payload: "Error fetching products",
+      })
+    }
+  }
+
   useEffect(() => {
     dispatchProdFilter({ type: "FETCH_INIT" })
-
-    const fetchProducts = async () => {
-      try {
-        const res = await fetch(
-          `${process.env.NEXT_PUBLIC_FULL_URL}/api/prods`,
-          {
-            method: "GET",
-          }
-        )
-        const products = await res.json()
-
-        //Sacar en un helper
-        const prices = products?.products?.map((product) => product?.price)
-        const min = Math.min(...prices)
-        const max = Math.max(...prices)
-
-        dispatchProdFilter({
-          type: "FETCH_SUCCESS",
-          payload: products?.products,
-        })
-
-        console.log({ products })
-        dispatchProdFilter({
-          type: "SET_RANGE_FILTER",
-          payload: { attribute: "min", value: min },
-        })
-        dispatchProdFilter({
-          type: "SET_RANGE_FILTER",
-          payload: { attribute: "max", value: max },
-        })
-      } catch {
-        dispatchProdFilter({
-          type: "FETCH_FAIL",
-          payload: "Error fetching products",
-        })
-      }
-    }
 
     fetchProducts()
   }, [])
@@ -82,20 +78,20 @@ export default function ModifyProduct() {
         <ProductFilterContext.Provider value={prodFilter}>
           <ProductFilterDispatchContext.Provider value={dispatchProdFilter}>
             <ProductContext.Provider value={[formState, dispatchForm]}>
-              <div className="flex flex-col items-center justify-center gap-4 ">
-                <div className="grid grid-flow-col">
-                  <DropDown elements={[1, 2, 3]} />
-                  <DropDown elements={[1, 2, 3]} />
-                  <DropDown elements={[1, 2, 3]} />
-                  <DropDown elements={[1, 2, 3]} />
-                  <MyButton text="Order by price" />
+              <div className="flex flex-col items-start justify-start gap-4">
+                <div className="flex flex-col-reverse items-end">
+                  <ShowProds />
+                  <MyButton
+                    text={<RefreshCcw />}
+                    onClick={() =>
+                      dispatchProdFilter({ type: "RESET_FILTERS" })
+                    }
+                  />
                 </div>
-
-                <ShowProds />
               </div>
 
-              <div className="grid grid-flow-col justify-center gap-4  ">
-                <ModifyProductForm />
+              <div className="grid grid-flow-col justify-center gap-4">
+                <ModifyProductForm onSubmit={fetchProducts} />
               </div>
             </ProductContext.Provider>
           </ProductFilterDispatchContext.Provider>

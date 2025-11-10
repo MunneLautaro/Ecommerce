@@ -32,4 +32,18 @@ const addProduct = async (formData) => {
   return body
 }
 
-export { addProduct }
+const modProduct = async (formData) => {
+  const res = await fetch(`${process.env.NEXT_PUBLIC_FULL_URL}/api/prods`, {
+    method: "PUT",
+    body: JSON.stringify({
+      formData,
+    }),
+    headers: { "Content-Type": "application/json" },
+  })
+  actionProds()
+
+  let body = await res.json()
+  return body
+}
+
+export { addProduct, modProduct }

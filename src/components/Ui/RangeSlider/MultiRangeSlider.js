@@ -21,7 +21,6 @@ export default function MultiRangeSlider({ min, max, onChange }) {
   }
 
   const handleMaxChange = (e) => {
-    console.log(e.target.value)
     let value = Math.max(Number(e.target.value), minValue + 4000)
     value = Math.round(value / 1000) * 1000
     setMaxValue(value)

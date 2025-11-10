@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server"
-import { addProduct, getProducts } from "@/controllers/index"
+import { addProduct, getProducts, modProduct } from "@/controllers/index"
 
 export async function GET(req) {
   const response = await getProducts()
@@ -30,6 +30,24 @@ export async function POST(req) {
     )
   }
 
+  return NextResponse.json(
+    { message: result?.success },
+    { status: result?.status }
+  )
+}
+
+export async function PUT(req) {
+  const r = await req.json()
+  const data = r?.formData
+
+  const result = await modProduct(data)
+
+  if (result?.error) {
+    return NextResponse.json(
+      { error: result?.error },
+      { status: result?.status || 500 }
+    )
+  }
   return NextResponse.json(
     { message: result?.success },
     { status: result?.status }

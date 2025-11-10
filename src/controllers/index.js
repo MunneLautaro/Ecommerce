@@ -1,5 +1,5 @@
 import { getUser, getUsers, addUser, deleteUser, modifyUser } from "./users"
-import { getProducts, addProduct } from "./products"
+import { getProducts, addProduct, modProduct } from "./products"
 
 export {
   getUser,
@@ -9,4 +9,5 @@ export {
   modifyUser,
   getProducts,
   addProduct,
+  modProduct,
 }

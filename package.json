@@ -17,6 +17,7 @@
     "cookies-next": "^6.1.0",
     "crypto-js": "^4.2.0",
     "dotenv": "^17.2.2",
+    "feather-icons": "^4.29.2",
     "jest-config": "^30.0.5",
     "jest-fixed-jsdom": "^0.0.9",
     "jose": "^6.0.12",
@@ -29,6 +30,7 @@
     "postcss-nested": "^7.0.2",
     "react": "^19.1.1",
     "react-dom": "^19.1.1",
+    "react-feather": "^2.0.10",
     "react-toastify": "^11.0.5",
     "tunnel-ssh": "^5.2.0"
   },
@@ -51,7 +53,7 @@
     "sass": "^1.90.0",
     "tailwindcss": "^4.1.12"
   },
-   "prettier": {
+  "prettier": {
     "semi": false
   }
 }

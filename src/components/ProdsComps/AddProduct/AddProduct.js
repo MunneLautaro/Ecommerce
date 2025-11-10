@@ -75,7 +75,7 @@ export default function AddProduct() {
             value={product?.product}
             elements={[
               "Refrigerator",
-              "Microwaves",
+              "Microwave",
               "Blender",
               "Toaster",
               "Airfryer",

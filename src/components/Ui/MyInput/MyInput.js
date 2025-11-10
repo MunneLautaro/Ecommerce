@@ -8,6 +8,7 @@ export default function MyInput({
   onChange,
   accept,
   dataTestId,
+  disabled = false,
 }) {
   // For file inputs we must NOT set the `value` prop (controlled file inputs
   // prevent programmatic file assignment in tests). Keep value only for
@@ -26,6 +27,7 @@ export default function MyInput({
       onChange={onChange}
       accept={accept}
       data-testid={dataTestId}
+      disabled={disabled}
     />
   )
 }

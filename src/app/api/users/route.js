@@ -67,8 +67,6 @@ export async function PUT(req) {
   const r = await req.json()
   const { currentUsername, newUsername, md5, sha1, userAgent } = r
 
-  console.log(currentUsername, newUsername, md5, sha1, userAgent)
-
   if (!currentUsername || !newUsername || !md5 || !sha1) {
     return NextResponse.json(
       { error: "Missing required fields" },

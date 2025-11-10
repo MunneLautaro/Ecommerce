@@ -5,10 +5,10 @@ export const adminRoutes = {
   ],
   "/": [
     { label: "Home", url: "/adminPage" },
-    { label: "Add prods", url: "/addProds" },
+    { label: "Add/Modify prods", url: "/addProds" },
   ],
   "/adminPage": [
-    { label: "Add prods", url: "/addProds" },
     { label: "Catalog", url: "/" },
+    { label: "Add/Modify prods", url: "/addProds" },
   ],
 }
