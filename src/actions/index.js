@@ -1,5 +1,5 @@
 import { addUserAction, modUser, deleteUser } from "./userAction"
 import { login, logout } from "./logIn"
-import { addProduct } from "./product"
+import { addProductAction } from "./product"
 
-export { addUserAction, modUser, deleteUser, login, logout, addProduct }
+export { addUserAction, modUser, deleteUser, login, logout, addProductAction }

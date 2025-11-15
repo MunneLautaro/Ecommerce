@@ -5,7 +5,7 @@ import { toast } from "react-toastify"
 import MyInput from "../../Ui/MyInput/MyInput"
 import MyButton from "../../Ui/MyButton/MyButton"
 import { useState, useEffect } from "react"
-import { addProduct } from "@/actions/product"
+import { addProductAction } from "@/actions/product"
 
 export default function AddProduct() {
   const [response, setResponse] = useState(null)
@@ -22,8 +22,8 @@ export default function AddProduct() {
 
   useEffect(() => {
     if (!response) return
-    if (response?.message) {
-      toast.success(response?.message)
+    if (response?.success) {
+      toast.success(response?.success)
     } else {
       toast.error(response?.error)
     }
@@ -42,8 +42,9 @@ export default function AddProduct() {
         <form
           onSubmit={async (e) => {
             e.preventDefault()
-            const addResponse = await addProduct(product)
+            const addResponse = await addProductAction(product)
             setResponse(addResponse)
+            console.log({ addResponse })
             setProduct({
               product: "",
               img: "",

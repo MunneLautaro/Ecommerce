@@ -4,10 +4,10 @@ import AddProduct from "@/components/ProdsComps/AddProduct/AddProduct"
 import React from "react"
 import "@testing-library/jest-dom"
 import { ToastContainer } from "react-toastify"
-import { addProduct } from "../../../actions/product"
+import { addProductAction } from "../../../actions/product"
 
 jest.mock("../../../actions/product", () => ({
-  addProduct: jest.fn(),
+  addProductAction: jest.fn(),
 }))
 
 jest.mock("jose", () => ({
@@ -16,7 +16,9 @@ jest.mock("jose", () => ({
 
 describe("AddProduct Component", () => {
   beforeAll(() => {
-    addProduct.mockResolvedValue({ message: "Product added successfully" })
+    addProductAction.mockResolvedValue({
+      message: "Product added successfully",
+    })
     global.URL.createObjectURL = jest.fn(() => "mocked-url")
   })
 

@@ -4,7 +4,7 @@ import ProductCard from "../../../ProductCard/ProductCard"
 import { ProductFilterContext } from "../../../../contexts/ProductFilterContext"
 import { applyFilter } from "@/helpers"
 
-export default function ShowProds() {
+export default function ShowProds({ isAdmin = false, onSubmit }) {
   const state = useContext(ProductFilterContext)
 
   return (
@@ -15,7 +15,13 @@ export default function ShowProds() {
         <div className="flex flex-wrap justify-center m-5">
           {state?.products && state?.products.length > 0 ? (
             applyFilter(state?.products, state?.prodFilter).map((prod) => (
-              <ProductCard display={true} key={prod?.sku} product={prod} />
+              <ProductCard
+                display={true}
+                key={prod?.sku}
+                product={prod}
+                isAdmin={isAdmin}
+                onSubmit={onSubmit}
+              />
             ))
           ) : (
             <h1>There is no products</h1>

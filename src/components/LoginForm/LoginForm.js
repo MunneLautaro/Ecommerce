@@ -42,7 +42,12 @@ export function LoginForm() {
         }}
       >
         <MyInput id={"user"} name={"user"} placeHolder={"Username"} />
-        <MyInput id={"password"} name={"password"} placeHolder={"Password"} />
+        <MyInput
+          id={"password"}
+          name={"password"}
+          placeHolder={"Password"}
+          type={"password"}
+        />
 
         <MyButton text={"submit"} type={"submit"} />
       </form>
@@ -57,6 +62,3 @@ export function LoginForm() {
     </div>
   )
 }
-/*
-
-*/

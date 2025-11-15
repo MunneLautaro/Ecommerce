@@ -1,49 +1,65 @@
 "use server"
 
 import { actionProds } from "./serverActionUser"
+import { cookies } from "next/headers"
+import { decrypt } from "../lib/session"
+import { addProduct, modProduct, deleteProduct } from "../controllers/index"
 
-const addProduct = async (formData) => {
-  const brand = formData?.brand
-  const product = formData?.product
-  const color = formData?.color
-  const model = formData?.model
-  const img = formData?.img
-  const description = formData?.description
-  const price = formData?.price
-  const stock = formData?.stock
+const addProductAction = async (formData) => {
+  const cookieStore = await cookies()
+  const sessionCookie = cookieStore.get("session")
 
-  const res = await fetch(`${process.env.NEXT_PUBLIC_FULL_URL}/api/prods`, {
-    method: "POST",
-    body: JSON.stringify({
-      brand,
-      product,
-      color,
-      model,
-      img,
-      description,
-      price,
-      stock,
-    }),
-    headers: { "Content-Type": "application/json" },
-  })
+  if (!sessionCookie?.value) return { error: "You must login" }, { status: 401 }
+
+  const session = await decrypt(sessionCookie?.value)
+
+  if (!session?.isAdmin) {
+    return { error: "Unauthorized" }, { status: 401 }
+  }
+
+  const res = await addProduct(formData)
+
   actionProds()
 
-  let body = await res.json()
-  return body
+  return res
 }
 
-const modProduct = async (formData) => {
-  const res = await fetch(`${process.env.NEXT_PUBLIC_FULL_URL}/api/prods`, {
-    method: "PUT",
-    body: JSON.stringify({
-      formData,
-    }),
-    headers: { "Content-Type": "application/json" },
-  })
+const modProductAction = async (formData) => {
+  const cookieStore = await cookies()
+  const sessionCookie = cookieStore.get("session")
+
+  if (!sessionCookie?.value) return { error: "You must login" }, { status: 401 }
+
+  const session = await decrypt(sessionCookie?.value)
+
+  if (!session?.isAdmin) {
+    return { error: "Unauthorized" }, { status: 401 }
+  }
+
+  const res = await modProduct(formData)
+
   actionProds()
 
-  let body = await res.json()
-  return body
+  return res
 }
 
-export { addProduct, modProduct }
+const deleteProductAction = async (sku) => {
+  const cookieStore = await cookies()
+  const sessionCookie = cookieStore.get("session")
+
+  if (!sessionCookie?.value) return { error: "You must login" }, { status: 401 }
+
+  const session = await decrypt(sessionCookie?.value)
+
+  if (!session?.isAdmin) {
+    return { error: "Unauthorized" }, { status: 401 }
+  }
+
+  const res = await deleteProduct(sku)
+
+  actionProds()
+
+  return res
+}
+
+export { addProductAction, modProductAction, deleteProductAction }

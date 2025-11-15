@@ -5,6 +5,7 @@ input[type="range"] {
     width: 100%;
     position: absolute;
     pointer-events: none;
+    
 }
 
 input[type="range"]::-webkit-slider-thumb {
@@ -17,7 +18,7 @@ input[type="range"]::-webkit-slider-thumb {
     pointer-events: auto;
     position: relative;
     z-index: 2;
-    margin-top: -9px;
+    margin-top: -10px;
 }
 
 input[type="range"]::-moz-range-thumb {
@@ -29,7 +30,7 @@ input[type="range"]::-moz-range-thumb {
     pointer-events: auto;
     position: relative;
     z-index: 2;
-    margin-top: -9px;
+    margin-top: -10px;
 }
 
 input[type="range"]::-webkit-slider-thumb:hover {

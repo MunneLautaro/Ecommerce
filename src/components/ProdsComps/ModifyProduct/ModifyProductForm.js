@@ -4,7 +4,7 @@ import MyInput from "@/components/Ui/MyInput/MyInput"
 import { useContext, useEffect, useState } from "react"
 import { toast } from "react-toastify"
 import { ProductContext } from "../../../contexts/ProductContext"
-import { modProduct } from "../../../actions/product"
+import { modProductAction } from "../../../actions/product"
 
 export default function ModifyProductForm({ onSubmit }) {
   const [formProduct, dispatchFormProduct] = useContext(ProductContext)
@@ -12,8 +12,8 @@ export default function ModifyProductForm({ onSubmit }) {
 
   useEffect(() => {
     if (!response) return
-    if (response?.message) {
-      toast.success(response?.message)
+    if (response?.success) {
+      toast.success(response?.success)
     } else {
       toast.error(response?.error)
     }
@@ -25,7 +25,7 @@ export default function ModifyProductForm({ onSubmit }) {
         <form
           onSubmit={async (e) => {
             e.preventDefault()
-            const modedProduct = await modProduct(formProduct?.form)
+            const modedProduct = await modProductAction(formProduct?.form)
             setResponse(modedProduct)
             onSubmit()
           }}

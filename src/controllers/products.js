@@ -78,7 +78,10 @@ const addProduct = async (data) => {
     return { error: validationError, status: 400 }
   }
 
+  console.log({ data })
+
   const sku = createSku(data?.product, data?.color, data?.model, data?.brand)
+  console.log({ sku })
   if (!sku || sku.length !== 11) {
     return { error: "Wrong product data", status: 400 }
   }
@@ -129,4 +132,21 @@ const modProduct = async (data) => {
   }
 }
 
-export { getProducts, addProduct, modProduct }
+const deleteProduct = async (sku) => {
+  await connectToDatabaseUnix()
+
+  const product = await Product.findOne({ sku: sku })
+
+  if (!product?.sku) {
+    return { error: "The product does not exist", status: 404 }
+  }
+
+  await Product.deleteOne({ sku: sku })
+
+  return {
+    success: `The product with sku: ${sku} was successfully deleted`,
+    status: 200,
+  }
+}
+
+export { getProducts, addProduct, modProduct, deleteProduct }

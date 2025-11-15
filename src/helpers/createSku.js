@@ -2,7 +2,7 @@ const makeSkuProd = (product) => {
   if (!product) return 0
   const prods = {
     refrigerator: "001",
-    microwaves: "002",
+    microwave: "002",
     blender: "003",
     toaster: "004",
     airfryer: "005",
