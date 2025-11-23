@@ -65,7 +65,7 @@ export default function ProductCard({
           </div>
         </div>
       ) : (
-        <div className="w-[250px] h-[300px] rounded-[15px] bg-[#151515] m-[3px] p-[5px] flex flex-col items-center overflow-hidden">
+        <div className="w-[250px] h-[300px] rounded-[15px] bg-[#151515] m-[3px] p-[5px] flex flex-col items-center overflow-hidden shadow-lg">
           <div className="flex items-center justify-center relative w-[75px] h-[75px]">
             {product?.img && (
               <Image

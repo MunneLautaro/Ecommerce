@@ -3,13 +3,9 @@
 import { useState } from "react"
 import AddProduct from "../AddProduct/AddProduct"
 import ModifyProduct from "../ModifyProduct/ModifyProduct"
-import { useSearchParams } from "next/navigation"
 
 export default function ProductTab() {
   const [displayAddProduct, setDisplayAddProduct] = useState(true)
-  const searchParams = useSearchParams()
-
-  console.log({ searchParams })
 
   return (
     <>

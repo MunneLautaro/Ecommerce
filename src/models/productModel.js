@@ -17,36 +17,35 @@ export default mongoose.models.Product ||
 
 //electrodomesticos cod:
 /*
-  heladera:001
-  microondas:002
-  licuadora:003
-  tostadora:004
-  airFryer:005
+  heladera:P001
+  microondas:P002
+  licuadora:P003
+  tostadora:P004
+  airFryer:P005
 
   colores cod:
-  blanco:01
-  negro:02
-  azul:03
-  verde:04
-  rojo:05
-  rosa:06
+  blanco:C001
+  negro:C002
+  azul:C003
+  verde:C004
+  rojo:C005
+  rosa:C006
 
   modelo:
-  A001
-  A002
-  A003
-  A004
-  A005
+  M001
+  M002
+  M003
+  M004
+  M005
 
   marca:
-  samsung: M1
-  samsung: M2
-  samsung: M3
-  samsung: M4
-  samsung: M5
-  samsung: M6
-
+  samsung: B001
+  samsung: B002
+  samsung: B003
+  samsung: B004
+  samsung: B005
+  samsung: B006
   Ej sku:
   producto - color - modelo - samsung
-    001    -  01   -  A001  -   M1
+    P001    -  C001   -  M001  -   B001
   */

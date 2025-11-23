@@ -1,47 +1,34 @@
 "use server"
 
-import CryptoJS from "crypto-js"
 import { createSession, deleteSession } from "../lib/session"
 import { redirect } from "next/navigation"
+import { getUser } from "@/controllers/index"
 
 export async function login(formData) {
-  const user = formData.get("user")
-  const password = formData.get("password")
+  const user = formData?.user
+  const cMD5 = formData?.md5
+  const cSHA1 = formData?.sha1
 
-  let cMD5 = CryptoJS.MD5(password).toString()
-  let cSHA1 = CryptoJS.SHA1(password).toString()
-
-  const response = await fetch(
-    `${process.env.NEXT_PUBLIC_FULL_URL}/api/checkUser`,
-    {
-      method: "POST",
-      body: JSON.stringify({
-        user: user,
-      }),
-      headers: { "content-type": "application/json" },
-    }
-  )
-
-  const currentUser = await response.json()
-
-  if (!user || !password) {
+  if (!user || !cMD5 || !cSHA1) {
     return { errors: { login: "Complete all fields" } }
   }
 
+  const currentUser = await getUser(user)
+
   if (
-    !currentUser?.result?.user ||
-    currentUser?.result?.md5 !== cMD5 ||
-    currentUser?.result?.sha1 !== cSHA1
+    !currentUser?.user?.user ||
+    currentUser?.user?.md5 !== cMD5 ||
+    currentUser?.user?.sha1 !== cSHA1
   ) {
     return { errors: { login: "Invalid credentials" } }
   }
   await createSession(
-    currentUser?.result?._id,
-    currentUser?.result?.user,
-    currentUser?.result?.isAdmin
+    currentUser?.user?._id,
+    currentUser?.user?.user,
+    currentUser?.user?.isAdmin
   )
 
-  return { user: JSON.parse(JSON.stringify(currentUser?.result)) }
+  return { user: JSON.parse(JSON.stringify(currentUser?.user)) }
 }
 
 export async function logout() {

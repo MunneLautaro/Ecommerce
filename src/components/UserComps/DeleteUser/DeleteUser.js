@@ -1,5 +1,5 @@
 "use client"
-import { deleteUser } from "../../../actions/index"
+import { deleteUserAction } from "../../../actions/index"
 import MyButton from "../../Ui/MyButton/MyButton"
 import MyInput from "../../Ui/MyInput/MyInput"
 import { useEffect, useState } from "react"
@@ -26,8 +26,8 @@ export default function DeleteUser() {
       <form
         onSubmit={async (e) => {
           e.preventDefault()
-          const modResponse = await deleteUser(formData)
-          setResponse(modResponse)
+          const delResponse = await deleteUserAction(formData)
+          setResponse(delResponse)
         }}
         className="flex flex-col justify-between items-center justify-around bg-[#424242] h-[200px] w-[300px] rounded-[10px]"
       >

@@ -1,58 +1,73 @@
 "use server"
 import { actionUser } from "./serverActionUser"
+import { requireAuth } from "../lib/session"
+import { addUser, modifyUser, deleteUser } from "../controllers/index"
 
 const addUserAction = async (formData) => {
+  const { authorized, error, session } = await requireAuth({
+    requireAdmin: true,
+  })
+
+  if (!authorized) {
+    return { error }
+  }
+
   const user = formData?.user
   const userAgent = formData?.userAgent
   const md5 = formData?.md5
   const sha1 = formData?.sha1
 
-  const res = await fetch(`${process.env.NEXT_PUBLIC_FULL_URL}/api/users`, {
-    method: "POST",
-    body: JSON.stringify({ user, md5, sha1, userAgent }),
-    headers: { "Content-Type": "application/json" },
-  })
-  const result = res.json()
+  const result = await addUser(user, md5, sha1, userAgent)
+
   actionUser()
 
   return result
 }
 
-const deleteUser = async (formData) => {
-  const user = formData?.user
-
-  const res = await fetch(`${process.env.NEXT_PUBLIC_FULL_URL}/api/users`, {
-    method: "DELETE",
-    body: JSON.stringify({ user }),
-    headers: { "Content-Type": "application/json" },
+const modUserAction = async (formData) => {
+  const { authorized, error, session } = await requireAuth({
+    requireAdmin: true,
   })
-  actionUser()
-  let body = await res.json()
-  return body
-}
 
-const modUser = async (formData) => {
+  if (!authorized) {
+    return { error }
+  }
+
   const currentUsername = formData?.user
   const newUsername = formData?.newUser
   const md5 = formData?.md5
   const sha1 = formData?.sha1
   const userAgent = formData?.userAgent
-  //
-  const res = await fetch(`${process.env.NEXT_PUBLIC_FULL_URL}/api/users`, {
-    method: "PUT",
-    body: JSON.stringify({
-      currentUsername,
-      newUsername,
-      md5,
-      sha1,
-      userAgent,
-    }),
-    headers: { "Content-Type": "application/json" },
-  })
+
+  const res = await modifyUser(
+    currentUsername,
+    newUsername,
+    md5,
+    sha1,
+    userAgent
+  )
+
   actionUser()
 
-  let body = await res.json()
-  return body
+  return res
 }
 
-export { addUserAction, deleteUser, modUser }
+const deleteUserAction = async (formData) => {
+  const { authorized, error, session } = await requireAuth({
+    requireAdmin: true,
+  })
+
+  if (!authorized) {
+    return { error }
+  }
+
+  const user = formData?.user
+
+  const res = await deleteUser(user)
+
+  actionUser()
+
+  return res
+}
+
+export { addUserAction, modUserAction, deleteUserAction }

@@ -44,7 +44,6 @@ export default function AddProduct() {
             e.preventDefault()
             const addResponse = await addProductAction(product)
             setResponse(addResponse)
-            console.log({ addResponse })
             setProduct({
               product: "",
               img: "",

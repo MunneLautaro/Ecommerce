@@ -38,3 +38,26 @@ export async function decrypt(session = "") {
     console.log("Failed to verify session")
   }
 }
+
+export async function getSession() {
+  const cookieStore = await cookies()
+  const sessionCookie = cookieStore.get("session")
+
+  if (!sessionCookie?.value) return null
+
+  return await decrypt(sessionCookie.value)
+}
+
+export async function requireAuth(options = {}) {
+  const session = await getSession()
+
+  if (!session) {
+    return { authorized: false, error: "You must login", session: null }
+  }
+
+  if (options.requireAdmin && !session.isAdmin) {
+    return { authorized: false, error: "Unauthorized", session: null }
+  }
+
+  return { authorized: true, error: null, session }
+}

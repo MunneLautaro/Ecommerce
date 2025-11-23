@@ -1,5 +1,5 @@
 "use client"
-import { modUser } from "../../../actions/index"
+import { modUserAction } from "../../../actions/index"
 import MyButton from "../../Ui/MyButton/MyButton"
 import MyInput from "../../Ui/MyInput/MyInput"
 import { useEffect, useState } from "react"
@@ -38,7 +38,7 @@ export default function ModUser() {
       <form
         onSubmit={async (e) => {
           e.preventDefault()
-          const modResponse = await modUser(formData)
+          const modResponse = await modUserAction(formData)
           setResponse(modResponse)
         }}
         className="flex flex-col justify-between items-center bg-[#424242] h-[200px] w-[300px] rounded-[10px]"
