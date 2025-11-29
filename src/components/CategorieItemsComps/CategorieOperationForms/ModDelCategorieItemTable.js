@@ -1,14 +1,14 @@
 "use client"
 
 import { useContext, useState } from "react"
-import { ProductContext } from "../../../../contexts/ProductContext"
+import { ItemContext, ItemDispatchContext } from "@/contexts/ItemContext"
 import DropDown from "@/components/Ui/DropDown/DropDown"
-import OrderPriceButton from "@/components/Ui/MyButton/OrderPriceButton"
 
-export default function ProductTable({ products }) {
-  const [formState, dispatchForm] = useContext(ProductContext)
+export default function ModDelCategorieItemTable() {
+  const itemFilter = useContext(ItemContext)
+  const dispatchItemFilter = useContext(ItemDispatchContext)
   const [isAdjusted, setIsAdjusted] = useState(false)
-  const [fieldToSort, setFieldToSort] = useState("product")
+  const [fieldToSort, setFieldToSort] = useState("type")
   const [isAscending, setIsAscending] = useState(true)
 
   return (
@@ -25,7 +25,7 @@ export default function ProductTable({ products }) {
               <div className="flex flex-row justify-center items-center">
                 <div
                   onClick={() => {
-                    setFieldToSort("product")
+                    setFieldToSort("type")
                     setIsAscending((prevIsAscending) => !prevIsAscending)
                   }}
                   className="mr-2 hover:underline cursor-pointer"
@@ -33,7 +33,7 @@ export default function ProductTable({ products }) {
                   Product
                 </div>
                 <div>
-                  <DropDown name={"product"} />
+                  <DropDown name={"type"} />
                 </div>
               </div>
             </th>
@@ -41,15 +41,15 @@ export default function ProductTable({ products }) {
               <div className="flex flex-row justify-center items-center">
                 <div
                   onClick={() => {
-                    setFieldToSort("brand")
+                    setFieldToSort("productname")
                     setIsAscending((prevIsAscending) => !prevIsAscending)
                   }}
                   className="mr-2 hover:underline cursor-pointer"
                 >
-                  Brand
+                  Product Name
                 </div>
                 <div>
-                  <DropDown name={"brand"} />
+                  <DropDown name={"productname"} />
                 </div>
               </div>
             </th>
@@ -57,15 +57,15 @@ export default function ProductTable({ products }) {
               <div className="flex flex-row justify-center items-center">
                 <div
                   onClick={() => {
-                    setFieldToSort("color")
+                    setFieldToSort("prodId")
                     setIsAscending((prevIsAscending) => !prevIsAscending)
                   }}
                   className="mr-2 hover:underline cursor-pointer"
                 >
-                  Color
+                  Prod ID
                 </div>
                 <div>
-                  <DropDown name={"color"} />
+                  <DropDown name={"prodId"} />
                 </div>
               </div>
             </th>
@@ -73,30 +73,22 @@ export default function ProductTable({ products }) {
               <div className="flex flex-row justify-center items-center">
                 <div
                   onClick={() => {
-                    setFieldToSort("model")
+                    setFieldToSort("date")
                     setIsAscending((prevIsAscending) => !prevIsAscending)
                   }}
                   className="mr-2 hover:underline cursor-pointer"
                 >
-                  Model
+                  Date
                 </div>
                 <div>
-                  <DropDown name={"model"} />
-                </div>
-              </div>
-            </th>
-            <th className="p-2 border border-[#212121]">
-              <div className="flex flex-row justify-center items-center">
-                <div className="mr-2">Price</div>
-                <div>
-                  <OrderPriceButton />
+                  <DropDown name={"date"} />
                 </div>
               </div>
             </th>
           </tr>
         </thead>
         <tbody>
-          {products
+          {itemFilter.items
             .sort((a, b) => {
               if (isAscending) {
                 return a[fieldToSort].localeCompare(b[fieldToSort])
@@ -107,12 +99,12 @@ export default function ProductTable({ products }) {
               <tr
                 key={prod?.sku}
                 onClick={() => {
-                  dispatchForm({ type: "SET_PRODUCT", payload: prod })
+                  dispatchItemFilter({ type: "SET_PRODUCT", payload: prod })
                 }}
                 onKeyDown={(e) => {
                   if (e.key === "Enter" || e.key === " ") {
                     e.preventDefault()
-                    dispatchForm({ type: "SET_PRODUCT", payload: prod })
+                    dispatchItemFilter({ type: "SET_PRODUCT", payload: prod })
                   }
                 }}
                 className={`h-[40px] cursor-pointer focus:ring-4 focus:ring-teal-300 ${

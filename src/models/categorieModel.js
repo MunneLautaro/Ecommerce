@@ -6,11 +6,12 @@ const categorieSchema = new mongoose.Schema(
       type: String,
       required: [true, "Type is required"],
       enum: {
-        values: ["brand", "color", "productName", "model"],
+        values: ["brand", "color", "productname", "model"],
         message:
-          "{VALUE} is not a valid type. Valid types are: brand, color, productName, model",
+          "{VALUE} is not a valid type. Valid types are: brand, color, productname, model",
       },
       trim: true,
+      lowercase: true,
     },
     value: {
       type: String,

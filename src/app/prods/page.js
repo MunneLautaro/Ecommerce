@@ -1,7 +1,7 @@
 "use server"
 import ProductTab from "@/components/ProdsComps/ProductTab/ProductTab"
 
-export default async function AddProds() {
+export default async function Prods() {
   return (
     <div className="flex justify-center mb-5 items-start">
       <ProductTab />

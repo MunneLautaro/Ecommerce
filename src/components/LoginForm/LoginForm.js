@@ -40,8 +40,6 @@ export function LoginForm() {
           e.preventDefault()
           const loginResponse = await login(user)
           setResponse(loginResponse)
-          console.log({ loginResponse })
-          console.log({ user })
         }}
       >
         <MyInput

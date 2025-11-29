@@ -19,7 +19,7 @@ export const productFormReducer = (state, action) => {
     }
 
     case "CLEAR_FORM": {
-      return initialFormState // Retorna el estado inicial
+      return initialFormState
     }
 
     default: {

@@ -39,7 +39,7 @@ export default function AddUser() {
           const addResponse = await addUserAction(formData)
           setResponse(addResponse)
         }}
-        className="flex flex-col justify-between items-center justify-around bg-[#424242] h-[200px] w-[300px] rounded-[10px] mt-2"
+        className="flex flex-col justify-between items-center bg-[#424242] shadow-2xl border border-yellow-500 h-[200px] w-[300px] rounded-[10px] mt-2"
       >
         <div className="flex flex-col items-center">
           <div className="min-h-[150px] ">

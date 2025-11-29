@@ -1,52 +1,33 @@
 import Categorie from "../models/categorieModel"
 import { connectToDatabaseUnix } from "../../connectDBUnix"
+import { validateCategorie } from "@/helpers/validateCategorie"
 
-const VALID_TYPES = ["brand", "color", "productName", "model"]
-
-const validateCategorieInput = (type, value) => {
-  if (!type || type.trim() === "") {
-    return { error: "Type is required", status: 400 }
-  }
-
-  if (!value || value.trim() === "") {
-    return { error: "Value is required", status: 400 }
-  }
-
-  if (!VALID_TYPES.includes(type)) {
-    return {
-      error: `Invalid type: ${type}. Valid types are: ${VALID_TYPES.join(
-        ", "
-      )}`,
-      status: 400,
-    }
-  }
-
-  return null
-}
-
-const getIdFromCategorie = async (type, value) => {
+const getItemsByCategorie = async (type) => {
   try {
-    const validationError = validateCategorieInput(type, value)
-    if (validationError) {
-      return validationError
-    }
     await connectToDatabaseUnix()
-    const categorie = await Categorie.findOne({
-      type: type.trim(),
-      value: value.trim(),
-    })
-    if (!categorie) {
-      return { error: "Categorie not found", status: 404 }
-    }
-    return categorie._id
+    const categories = await Categorie.find({
+      type: type.trim().toLowerCase(),
+    }).lean()
+    return { success: "Items fetched", data: categories, status: 200 }
   } catch (error) {
     return { error: error.message, status: 500 }
   }
 }
 
-const createCategorie = async (type, value) => {
+const getItems = async () => {
   try {
-    const validationError = validateCategorieInput(type, value)
+    await connectToDatabaseUnix()
+    const categories = await Categorie.find({})
+    const plainCategories = JSON.parse(JSON.stringify(categories))
+    return { success: "Items fetched", data: plainCategories, status: 200 }
+  } catch (error) {
+    return { error: error?.message, status: 500 }
+  }
+}
+
+const addItemInCategorie = async (type, value) => {
+  try {
+    const validationError = validateCategorie(type, value)
     if (validationError) {
       return validationError
     }
@@ -54,9 +35,9 @@ const createCategorie = async (type, value) => {
     await connectToDatabaseUnix()
 
     const existing = await Categorie.findOne({
-      type: type.trim(),
-      value: value.trim(),
-    })
+      type: type.trim().toLowerCase(),
+      value: value.trim().toLowerCase(),
+    }).lean()
 
     if (existing) {
       return {
@@ -65,15 +46,20 @@ const createCategorie = async (type, value) => {
       }
     }
 
-    const newCategorie = new Categorie({
-      type: type.trim(),
-      value: value.trim(),
+    const newItem = await Categorie.create({
+      type: type.trim().toLowerCase(),
+      value: value.trim().toLowerCase(),
     })
-    await newCategorie.save()
 
     return {
-      success: true,
-      data: newCategorie,
+      success: "Item added successfully",
+      data: {
+        type: newItem.type,
+        value: newItem.value,
+        _id: newItem._id.toString(),
+        createdAt: newItem.createdAt.toISOString(),
+        updatedAt: newItem.updatedAt.toISOString(),
+      },
       status: 201,
     }
   } catch (error) {
@@ -92,7 +78,7 @@ const createCategorie = async (type, value) => {
 
 const deleteCategorie = async (type, value) => {
   try {
-    const validationError = validateCategorieInput(type, value)
+    const validationError = validateCategorie(type, value)
     if (validationError) {
       return validationError
     }
@@ -100,9 +86,9 @@ const deleteCategorie = async (type, value) => {
     await connectToDatabaseUnix()
 
     const categorie = await Categorie.findOneAndDelete({
-      type: type.trim(),
-      value: value.trim(),
-    })
+      type: type.trim().toLowerCase(),
+      value: value.trim().toLowerCase(),
+    }).lean()
 
     if (!categorie) {
       return { error: "The categorie does not exist", status: 404 }
@@ -120,7 +106,7 @@ const deleteCategorie = async (type, value) => {
 
 const modifyCategorie = async (type, oldValue, newValue) => {
   try {
-    const validationError = validateCategorieInput(type, newValue)
+    const validationError = validateCategorie(type, newValue)
     if (validationError) {
       return validationError
     }
@@ -132,10 +118,9 @@ const modifyCategorie = async (type, oldValue, newValue) => {
     await connectToDatabaseUnix()
 
     const existing = await Categorie.findOne({
-      type: type.trim(),
-      value: oldValue.trim(),
-    })
-
+      type: type.trim().toLowerCase(),
+      value: oldValue.trim().toLowerCase(),
+    }).lean()
     if (!existing) {
       return {
         error: `The ${type} with value "${oldValue}" does not exist`,
@@ -144,10 +129,10 @@ const modifyCategorie = async (type, oldValue, newValue) => {
     }
 
     const duplicate = await Categorie.findOne({
-      type: type.trim(),
-      value: newValue.trim(),
+      type: type.trim().toLowerCase(),
+      value: newValue.trim().toLowerCase(),
       _id: { $ne: existing._id },
-    })
+    }).lean()
 
     if (duplicate) {
       return {
@@ -157,13 +142,13 @@ const modifyCategorie = async (type, oldValue, newValue) => {
     }
 
     const updatedCategorie = await Categorie.findOneAndUpdate(
-      { type: type.trim(), value: oldValue.trim() },
-      { value: newValue.trim() },
+      { type: type.trim().toLowerCase(), value: oldValue.trim().toLowerCase() },
+      { value: newValue.trim().toLowerCase() },
       { new: true }
-    )
+    ).lean()
 
     return {
-      success: true,
+      success: "Item updated successfully",
       message: `Category updated from "${oldValue}" to "${newValue}"`,
       data: updatedCategorie,
       status: 200,
@@ -174,9 +159,9 @@ const modifyCategorie = async (type, oldValue, newValue) => {
 }
 
 export {
-  getIdFromCategorie,
-  createCategorie,
+  addItemInCategorie,
   deleteCategorie,
   modifyCategorie,
-  VALID_TYPES,
+  getItemsByCategorie,
+  getItems,
 }

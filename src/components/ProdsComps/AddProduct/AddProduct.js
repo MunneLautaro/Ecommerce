@@ -38,7 +38,7 @@ export default function AddProduct() {
         ¡Add a new product!
       </h1>
 
-      <div className="flex flex-col md:flex-row mt-6 gap-10 w-full max-w-5xl">
+      <div className="flex flex-col md:flex-row mt-6 gap-10 w-full max-w-5xl bg-[#424242] p-3 rounded-lg shadow-2xl border border-yellow-500">
         <form
           onSubmit={async (e) => {
             e.preventDefault()

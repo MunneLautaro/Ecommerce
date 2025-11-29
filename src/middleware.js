@@ -3,7 +3,7 @@ import { NextResponse } from "next/server"
 import { decrypt, encrypt } from "../src/lib/session"
 import { getCookie } from "cookies-next"
 
-const protectedRoutes = ["/adminPage", "/addProds"]
+const protectedRoutes = ["/adminPage", "/prods", "/categorieItems"]
 const publicRoutes = ["/login", "/"]
 
 export default async function middleware(req) {

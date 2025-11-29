@@ -1,7 +1,7 @@
 "use client"
 
 import { usePathname } from "next/navigation"
-import { adminRoutes } from "../../../routes"
+import { adminRoutes } from "../../../app/routes"
 import Title from "./Title"
 import LogOutButton from "./LogOutButton"
 import MyLink from "../../Ui/MyLink/MyLink"

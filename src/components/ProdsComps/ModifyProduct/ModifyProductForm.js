@@ -29,7 +29,7 @@ export default function ModifyProductForm({ onSubmit }) {
             setResponse(modedProduct)
             onSubmit()
           }}
-          className="flex flex-col gap-4 w-full md:w-1/2"
+          className="flex flex-col gap-4 w-full md:w-1/2 bg-[#424242] p-3 rounded-lg shadow-2xl border border-yellow-500"
         >
           <label className="font-semibold">Brand:</label>
           <MyInput value={formProduct?.form?.brand || ""} disabled={true} />

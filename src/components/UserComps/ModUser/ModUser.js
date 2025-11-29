@@ -41,7 +41,7 @@ export default function ModUser() {
           const modResponse = await modUserAction(formData)
           setResponse(modResponse)
         }}
-        className="flex flex-col justify-between items-center bg-[#424242] h-[200px] w-[300px] rounded-[10px]"
+        className="flex flex-col justify-between items-center shadow-2xl border border-yellow-500 bg-[#424242] h-[200px] w-[300px] rounded-[10px]"
       >
         <div className="flex flex-col items-center ">
           <div className="min-h-[150px] ">
