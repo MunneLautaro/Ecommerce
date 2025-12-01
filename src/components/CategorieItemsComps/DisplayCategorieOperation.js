@@ -10,6 +10,7 @@ import AddCategorieItem from "./CategorieOperationForms/AddCategorieItem"
 import ModifyCategorieItem from "./CategorieOperationForms/ModifyCategorieItem"
 import ModDelCategorieItemTable from "./CategorieOperationForms/ModDelCategorieItemTable"
 import { getCategorieItemsAction } from "@/actions/categorieAction"
+import { Trash2 } from "react-feather"
 
 export default function CategorieItems() {
   const [displayAddItem, setDisplayAddItem] = useState(true)
@@ -74,7 +75,14 @@ export default function CategorieItems() {
                 {displayAddItem ? (
                   <AddCategorieItem />
                 ) : (
-                  <ModDelCategorieItemTable />
+                  <>
+                    <div className="flex flex-row items-start">
+                      <ModDelCategorieItemTable />
+                      <button className="flex mt-5 items-center">
+                        <Trash2 />
+                      </button>
+                    </div>
+                  </>
                 )}
               </div>
             </div>
