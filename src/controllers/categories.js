@@ -88,15 +88,17 @@ const deleteCategorie = async (type, value) => {
     const categorie = await Categorie.findOneAndDelete({
       type: type.trim().toLowerCase(),
       value: value.trim().toLowerCase(),
-    }).lean()
+    })
 
     if (!categorie) {
       return { error: "The categorie does not exist", status: 404 }
     }
 
+    const plainCategorie = JSON.parse(JSON.stringify(categorie))
+
     return {
       success: `The categorie with type: ${type} and value: ${value} was successfully deleted`,
-      data: categorie,
+      data: plainCategorie,
       status: 200,
     }
   } catch (error) {
@@ -120,7 +122,7 @@ const modifyCategorie = async (type, oldValue, newValue) => {
     const existing = await Categorie.findOne({
       type: type.trim().toLowerCase(),
       value: oldValue.trim().toLowerCase(),
-    }).lean()
+    })
     if (!existing) {
       return {
         error: `The ${type} with value "${oldValue}" does not exist`,
@@ -131,8 +133,7 @@ const modifyCategorie = async (type, oldValue, newValue) => {
     const duplicate = await Categorie.findOne({
       type: type.trim().toLowerCase(),
       value: newValue.trim().toLowerCase(),
-      _id: { $ne: existing._id },
-    }).lean()
+    })
 
     if (duplicate) {
       return {
@@ -145,12 +146,13 @@ const modifyCategorie = async (type, oldValue, newValue) => {
       { type: type.trim().toLowerCase(), value: oldValue.trim().toLowerCase() },
       { value: newValue.trim().toLowerCase() },
       { new: true }
-    ).lean()
+    )
+    const plainUpdatedCategorie = JSON.parse(JSON.stringify(updatedCategorie))
 
     return {
       success: "Item updated successfully",
       message: `Category updated from "${oldValue}" to "${newValue}"`,
-      data: updatedCategorie,
+      data: plainUpdatedCategorie,
       status: 200,
     }
   } catch (error) {

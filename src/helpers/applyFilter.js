@@ -1,4 +1,5 @@
-export const applyFilter = (products, prodFilter = {}) => {
+const applyFilter = (products, prodFilter = {}) => {
+  console.log({ prodFilter })
   if (Array.isArray(products) === false) return []
 
   const filtered = products.filter((prod) => {
@@ -32,3 +33,14 @@ export const applyFilter = (products, prodFilter = {}) => {
 
   return filtered
 }
+
+const applyItemFilter = (items, itemFilter = {}) => {
+  if (Array.isArray(items) === false) return []
+  const filtered = items.filter((item) => {
+    return itemFilter.type
+      ? item?.type?.toLowerCase().includes(itemFilter.type.toLowerCase())
+      : true
+  })
+  return filtered
+}
+export { applyFilter, applyItemFilter }

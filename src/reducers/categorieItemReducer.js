@@ -1,13 +1,12 @@
 export const initialItems = {
   items: null,
+  currentItem: null,
   loading: true,
   error: null,
   itemFilter: {
     type: "",
-    value: "",
-    prodId: "",
-    date: "",
   },
+  newValue: "",
 }
 
 export const itemFilterReducer = (state, action) => {
@@ -24,6 +23,26 @@ export const itemFilterReducer = (state, action) => {
       return { ...state, loading: false, error: action.payload }
     }
 
+    case "SET_ITEM": {
+      console.log("setting item in reducer", action.payload)
+      return {
+        ...state,
+        currentItem: action.payload,
+        newValue: initialItems.newValue,
+      }
+    }
+
+    case "CLEAR_NEW_VALUE": {
+      return {
+        ...state,
+        newValue: initialItems.newValue,
+      }
+    }
+
+    case "SET_NEW_VALUE": {
+      return { ...state, newValue: action.payload }
+    }
+
     case "SET_FILTER": {
       return {
         ...state,
@@ -38,6 +57,13 @@ export const itemFilterReducer = (state, action) => {
       return {
         ...state,
         itemFilter: initialItems.itemFilter,
+      }
+    }
+
+    case "RESET_CURRENT_ITEM": {
+      return {
+        ...state,
+        currentItem: initialItems.currentItem,
       }
     }
 

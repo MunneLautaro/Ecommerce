@@ -34,11 +34,7 @@ const addCategorieItemAction = async (formData) => {
   return res
 }
 
-const modifyCategorieAction = async (formData) => {
-  const type = formData?.type
-  const oldValue = formData?.oldValue
-  const newValue = formData?.newValue
-
+const modifyCategorieAction = async (type, oldValue, newValue) => {
   if (!type || !oldValue || !newValue) {
     return { error: "Type, Old Value and New Value are required" }
   }
@@ -56,9 +52,7 @@ const modifyCategorieAction = async (formData) => {
   return res
 }
 
-const deleteCategorieItemAction = async (formData) => {
-  const type = formData?.type
-  const value = formData?.value
+const deleteCategorieItemAction = async (type, value) => {
   if (!type || !value) {
     return { error: "Type and Value are required" }
   }

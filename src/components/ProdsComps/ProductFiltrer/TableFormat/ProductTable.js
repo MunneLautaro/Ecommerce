@@ -4,12 +4,14 @@ import { useContext, useState } from "react"
 import { ProductContext } from "../../../../contexts/ProductContext"
 import DropDown from "@/components/Ui/DropDown/DropDown"
 import OrderPriceButton from "@/components/Ui/MyButton/OrderPriceButton"
+import { ProductFilterDispatchContext } from "@/contexts/ProductFilterContext"
 
 export default function ProductTable({ products }) {
   const [formState, dispatchForm] = useContext(ProductContext)
   const [isAdjusted, setIsAdjusted] = useState(false)
   const [fieldToSort, setFieldToSort] = useState("product")
   const [isAscending, setIsAscending] = useState(true)
+  const dispatch = useContext(ProductFilterDispatchContext)
 
   return (
     <>
@@ -33,7 +35,16 @@ export default function ProductTable({ products }) {
                   Product
                 </div>
                 <div>
-                  <DropDown name={"product"} />
+                  <DropDown
+                    elements={products}
+                    name={"product"}
+                    callback={(elem) => {
+                      dispatch({
+                        type: "SET_FILTER",
+                        payload: { attribute: "product", value: elem },
+                      })
+                    }}
+                  />
                 </div>
               </div>
             </th>
@@ -49,7 +60,16 @@ export default function ProductTable({ products }) {
                   Brand
                 </div>
                 <div>
-                  <DropDown name={"brand"} />
+                  <DropDown
+                    elements={products}
+                    name={"brand"}
+                    callback={(elem) => {
+                      dispatch({
+                        type: "SET_FILTER",
+                        payload: { attribute: "brand", value: elem },
+                      })
+                    }}
+                  />
                 </div>
               </div>
             </th>
@@ -65,7 +85,16 @@ export default function ProductTable({ products }) {
                   Color
                 </div>
                 <div>
-                  <DropDown name={"color"} />
+                  <DropDown
+                    elements={products}
+                    name={"color"}
+                    callback={(elem) => {
+                      dispatch({
+                        type: "SET_FILTER",
+                        payload: { attribute: "color", value: elem },
+                      })
+                    }}
+                  />
                 </div>
               </div>
             </th>
@@ -81,7 +110,16 @@ export default function ProductTable({ products }) {
                   Model
                 </div>
                 <div>
-                  <DropDown name={"model"} />
+                  <DropDown
+                    elements={products}
+                    name={"model"}
+                    callback={(elem) => {
+                      dispatch({
+                        type: "SET_FILTER",
+                        payload: { attribute: "model", value: elem },
+                      })
+                    }}
+                  />
                 </div>
               </div>
             </th>

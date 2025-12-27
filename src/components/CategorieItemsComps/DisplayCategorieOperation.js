@@ -1,29 +1,43 @@
 "use client"
 
 import { useState, useReducer, useEffect } from "react"
+import { ItemContext, ItemDispatchContext } from "@/contexts/ItemContext"
+import {
+  deleteCategorieItemAction,
+  getCategorieItemsAction,
+} from "@/actions/categorieAction"
+import { Trash2, Edit } from "react-feather"
 import {
   initialItems,
   itemFilterReducer,
 } from "../../reducers/categorieItemReducer"
-import { ItemContext, ItemDispatchContext } from "@/contexts/ItemContext"
+import { modifyCategorieAction } from "@/actions/categorieAction"
+import { toast } from "react-toastify"
 import AddCategorieItem from "./CategorieOperationForms/AddCategorieItem"
-import ModifyCategorieItem from "./CategorieOperationForms/ModifyCategorieItem"
 import ModDelCategorieItemTable from "./CategorieOperationForms/ModDelCategorieItemTable"
-import { getCategorieItemsAction } from "@/actions/categorieAction"
-import { Trash2 } from "react-feather"
+import ItemActionButton from "./ItemActionButton"
 
 export default function CategorieItems() {
   const [displayAddItem, setDisplayAddItem] = useState(true)
-
+  const [response, setResponse] = useState(null)
   const [itemFilter, dispatchItemFilter] = useReducer(
     itemFilterReducer,
     initialItems
   )
 
-  const fetchProducts = async () => {
+  useEffect(() => {
+    if (!response) return
+    if (response?.success) {
+      toast.success(response?.success)
+      toast.info(response?.message)
+    } else {
+      toast.error(response?.error)
+    }
+  }, [response])
+
+  const fetchItems = async () => {
     try {
       const items = await getCategorieItemsAction()
-      console.log({ items })
 
       dispatchItemFilter({
         type: "FETCH_SUCCESS",
@@ -40,10 +54,9 @@ export default function CategorieItems() {
   useEffect(() => {
     dispatchItemFilter({ type: "FETCH_INIT" })
 
-    fetchProducts()
+    fetchItems()
   }, [])
 
-  console.log({ itemFilter })
   return (
     <>
       <div className="flex flex-col items-center">
@@ -73,14 +86,42 @@ export default function CategorieItems() {
                   </button>
                 </div>
                 {displayAddItem ? (
-                  <AddCategorieItem />
+                  <AddCategorieItem onSubmit={fetchItems} />
                 ) : (
                   <>
                     <div className="flex flex-row items-start">
                       <ModDelCategorieItemTable />
-                      <button className="flex mt-5 items-center">
+                      <ItemActionButton
+                        disabled={!itemFilter?.newValue}
+                        onClick={async (e) => {
+                          const modItemResponse = await modifyCategorieAction(
+                            itemFilter?.currentItem?.type,
+                            itemFilter?.currentItem?.value,
+                            itemFilter?.newValue
+                          )
+                          setResponse(modItemResponse)
+                          fetchItems()
+                          dispatchItemFilter({ type: "RESET_CURRENT_ITEM" })
+                        }}
+                      >
+                        <Edit />
+                      </ItemActionButton>
+                      <ItemActionButton
+                        disabled={!itemFilter?.currentItem}
+                        onClick={async (e) => {
+                          e.preventDefault()
+                          const delItemResponse =
+                            await deleteCategorieItemAction(
+                              itemFilter?.currentItem?.type,
+                              itemFilter?.currentItem?.value
+                            )
+                          setResponse(delItemResponse)
+                          fetchItems()
+                          dispatchItemFilter({ type: "RESET_CURRENT_ITEM" })
+                        }}
+                      >
                         <Trash2 />
-                      </button>
+                      </ItemActionButton>
                     </div>
                   </>
                 )}

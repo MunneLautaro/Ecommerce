@@ -8,7 +8,7 @@ import { useState, useEffect } from "react"
 import { toast } from "react-toastify"
 import { addCategorieItemAction } from "../../../actions/categorieAction"
 
-export default function AddCategorieItem() {
+export default function AddCategorieItem({ onSubmit }) {
   const [item, setItem] = useState({ type: "", value: "" })
   const [response, setResponse] = useState(null)
 
@@ -30,6 +30,7 @@ export default function AddCategorieItem() {
           const addItemResponse = await addCategorieItemAction(item)
           setResponse(addItemResponse)
           setItem({ type: "", value: "" })
+          onSubmit()
         }}
       >
         <Select

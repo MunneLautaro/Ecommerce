@@ -1,21 +1,21 @@
 "use client"
 
 import MyButton from "../MyButton/MyButton"
-import { useState } from "react"
+import { useState, useContext } from "react"
+import {
+  ProductFilterContext,
+  ProductFilterDispatchContext,
+} from "@/contexts/ProductFilterContext"
 import useOutsideClick from "../../../hooks/dropdownHook"
 import { ArrowDown, ArrowUp } from "react-feather"
 
-export default function DropDown({ elements, name, callback }) {
+export default function DropDown({ name, susanita }) {
   const [isOpen, setIsOpen] = useState(false)
+  const prodFilter = useContext(ProductFilterContext)
+  const dispatchProdFilter = useContext(ProductFilterDispatchContext)
   const ref = useOutsideClick(() => setIsOpen(false))
 
-  let setOfElems = [
-    ...new Set(
-      elements?.map((elem) => {
-        return name ? elem?.[name] : elem
-      })
-    ),
-  ]
+  let elements = [...new Set(prodFilter?.products?.map((prod) => prod?.[name]))]
 
   return (
     <div>
@@ -27,14 +27,17 @@ export default function DropDown({ elements, name, callback }) {
       />
       {isOpen && (
         <div ref={ref} className="flex justify-end">
-          <ul className="flex bg-violet-700 shadow-md rounded-md mt-1 absolute flex-col overflow-y-auto max-h-60">
-            {setOfElems.map((elem, index) => {
+          <ul className="flex bg-violet-700 shadow-md rounded-md mt-1 absolute flex-col">
+            {elements.map((elem, index) => {
               return (
                 <li
                   key={index}
                   className="px-4 py-2 hover:bg-violet-800 hover:rounded-md cursor-pointer"
-                  onClick={(e) => {
-                    callback(elem)
+                  onClick={() => {
+                    susanita({
+                      type: "SET_FILTER",
+                      payload: { attribute: name, value: elem },
+                    })
                   }}
                 >
                   {elem}
