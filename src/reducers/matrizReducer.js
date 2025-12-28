@@ -6,7 +6,6 @@ export const initialMatrix = {
   matriz: [],
   width: 0,
   height: 0,
-
   startDate: null,
   endDate: null,
   selectedMonth: new Date().getMonth(),
@@ -123,6 +122,13 @@ export const matrizReducer = (state, action) => {
       }
     }
 
+    case "RESET_DATES": {
+      return {
+        ...state,
+        startDate: null,
+        endDate: null,
+      }
+    }
     default:
       return state
   }

@@ -2,15 +2,16 @@
 
 import DropDown from "@/components/Ui/DropDown/DropDown"
 import { initialMatrix, matrizReducer } from "@/reducers/matrizReducer"
-import { useReducer, useEffect, useState } from "react"
+import { useReducer, useEffect, useState, useRef } from "react"
 import { ArrowLeftCircle, ArrowRightCircle, Calendar } from "react-feather"
 import useOutsideClick from "../../hooks/dropdownHook"
 
-export default function DatePicker() {
+export default function DatePicker({ callback, resetTrigger }) {
   const [matriz, dispatchMatriz] = useReducer(matrizReducer, initialMatrix)
   const [dragging, setDragging] = useState(null)
   const [isOpen, setIsOpen] = useState(false)
   const ref = useOutsideClick(() => setIsOpen(false))
+  const callbackRef = useRef(callback)
 
   useEffect(() => {
     dispatchMatriz({
@@ -109,6 +110,25 @@ export default function DatePicker() {
   const actualYear = new Date().getFullYear()
   const years = Array.from({ length: 81 }, (_, i) => actualYear - 80 + i)
 
+  useEffect(() => {
+    callbackRef.current = callback
+  }, [callback])
+
+  useEffect(() => {
+    callbackRef.current({
+      startDate: matriz.startDate,
+      endDate: matriz.endDate,
+    })
+  }, [matriz.startDate, matriz.endDate])
+
+  useEffect(() => {
+    if (resetTrigger) {
+      dispatchMatriz({ type: "RESET_DATES" })
+      callbackRef.current({ startDate: null, endDate: null })
+      setIsOpen(false)
+    }
+  }, [resetTrigger])
+
   return (
     <>
       <div className="relative inline-block">
@@ -118,12 +138,12 @@ export default function DatePicker() {
         {isOpen && (
           <div
             ref={ref}
-            className="absolute left-0 top-full mt-2 z-50"
+            className="absolute left-0 top-full mt-2 z-3"
             onMouseUp={() => setDragging(null)}
           >
             <div className="w-[320px] select-none bg-[#212121] rounded-md shadow-lg border border-violet-200 p-3">
               <div className="flex justify-between gap-4 mb-2">
-                <div className="flex gap-2">
+                <div className="flex gap-2 z-50">
                   <DropDown
                     unSelected={matriz.selectedMonth + 1}
                     selected={matriz.selectedMonth + 1}

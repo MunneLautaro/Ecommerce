@@ -4,9 +4,17 @@ export const initialItems = {
   loading: true,
   error: null,
   itemFilter: {
+    fieldToSort: "type",
+    isAscending: true,
+    isAdjusted: false,
     type: "",
+    date: {
+      startDate: null,
+      endDate: null,
+    },
   },
   newValue: "",
+  response: null,
 }
 
 export const itemFilterReducer = (state, action) => {
@@ -24,7 +32,6 @@ export const itemFilterReducer = (state, action) => {
     }
 
     case "SET_ITEM": {
-      console.log("setting item in reducer", action.payload)
       return {
         ...state,
         currentItem: action.payload,
@@ -53,6 +60,26 @@ export const itemFilterReducer = (state, action) => {
       }
     }
 
+    case "SET_FILTER_DATE": {
+      return {
+        ...state,
+        itemFilter: {
+          ...state.itemFilter,
+          date: action.payload,
+        },
+      }
+    }
+
+    case "RESET_DATE": {
+      return {
+        ...state,
+        itemFilter: {
+          ...state.itemFilter,
+          date: initialItems.itemFilter.date,
+        },
+      }
+    }
+
     case "RESET_FILTERS": {
       return {
         ...state,
@@ -64,6 +91,13 @@ export const itemFilterReducer = (state, action) => {
       return {
         ...state,
         currentItem: initialItems.currentItem,
+      }
+    }
+
+    case "SET_RESPONSE": {
+      return {
+        ...state,
+        response: action.payload,
       }
     }
 

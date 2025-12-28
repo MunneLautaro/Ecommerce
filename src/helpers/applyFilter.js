@@ -1,5 +1,4 @@
 const applyFilter = (products, prodFilter = {}) => {
-  console.log({ prodFilter })
   if (Array.isArray(products) === false) return []
 
   const filtered = products.filter((prod) => {
@@ -34,13 +33,29 @@ const applyFilter = (products, prodFilter = {}) => {
   return filtered
 }
 
+const toDayString = (d) => new Date(d).toISOString().slice(0, 10)
+
 const applyItemFilter = (items, itemFilter = {}) => {
-  if (Array.isArray(items) === false) return []
-  const filtered = items.filter((item) => {
-    return itemFilter.type
+  if (!Array.isArray(items)) return []
+
+  return items.filter((item) => {
+    const typeMatch = itemFilter.type
       ? item?.type?.toLowerCase().includes(itemFilter.type.toLowerCase())
       : true
+
+    const dateMatch =
+      itemFilter.date?.startDate && itemFilter.date?.endDate
+        ? (() => {
+            const dateValue = item.createdAt
+            if (!dateValue) return false
+            const itemDay = toDayString(dateValue)
+            const startDay = toDayString(itemFilter.date.startDate)
+            const endDay = toDayString(itemFilter.date.endDate)
+            return itemDay >= startDay && itemDay <= endDay
+          })()
+        : true
+
+    return typeMatch && dateMatch
   })
-  return filtered
 }
 export { applyFilter, applyItemFilter }
