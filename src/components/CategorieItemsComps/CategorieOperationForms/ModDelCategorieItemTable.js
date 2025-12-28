@@ -2,9 +2,10 @@
 
 import { useContext, useState } from "react"
 import { ItemContext, ItemDispatchContext } from "@/contexts/ItemContext"
-import ItemDropDown from "@/components/Ui/DropDown/ItemDropDown"
 import { RefreshCcw } from "react-feather"
 import { applyItemFilter } from "@/helpers/applyFilter"
+import DropDown from "@/components/Ui/DropDown/DropDown"
+import DatePicker from "@/components/DatePicker/DatePicker"
 
 const INITIAL_FIELD_TO_SORT = "type"
 
@@ -75,7 +76,16 @@ export default function ModDelCategorieItemTable() {
                       Type
                     </div>
                     <div>
-                      <ItemDropDown name={"type"} />
+                      <DropDown
+                        name={"type"}
+                        elements={itemFilter?.items}
+                        callback={(elem) => {
+                          dispatchItemFilter({
+                            type: "SET_FILTER",
+                            payload: { attribute: "type", value: elem },
+                          })
+                        }}
+                      />
                     </div>
                   </div>
                 </th>
@@ -115,6 +125,9 @@ export default function ModDelCategorieItemTable() {
                       className="mr-2 hover:underline cursor-pointer"
                     >
                       Date
+                    </div>
+                    <div className="hover:bg-violet-600 rounded-full p-2 transition-all duration-300">
+                      <DatePicker />
                     </div>
                   </div>
                 </th>

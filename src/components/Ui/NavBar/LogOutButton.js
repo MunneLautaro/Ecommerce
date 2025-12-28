@@ -5,8 +5,8 @@ export default function LogOutButton({ username, isAdmin }) {
     <div className="flex flex-col items-center justify-center">
       <h2
         className={`${
-          isAdmin ? "text-violet-500" : "text-yellow-500"
-        } font-bold font-mono text-3xl`}
+          isAdmin ? "text-violet-400" : "text-yellow-500"
+        } font-black font-mono text-3xl `}
       >
         {username}
       </h2>

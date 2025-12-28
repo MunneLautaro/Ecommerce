@@ -5,7 +5,7 @@ export default function MyLink({ url, text, id }) {
     <Link
       id={id}
       href={url}
-      className="text-violet-500 hover:underline mr-10 text-xl"
+      className="text-violet-400 hover:underline mr-10 text-xl font-bold"
     >
       {text}
     </Link>

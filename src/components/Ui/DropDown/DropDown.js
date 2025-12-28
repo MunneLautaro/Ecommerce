@@ -5,7 +5,13 @@ import { useState } from "react"
 import useOutsideClick from "../../../hooks/dropdownHook"
 import { ArrowDown, ArrowUp } from "react-feather"
 
-export default function DropDown({ elements, name, callback }) {
+export default function DropDown({
+  elements,
+  name,
+  callback,
+  selected = <ArrowUp />,
+  unSelected = <ArrowDown />,
+}) {
   const [isOpen, setIsOpen] = useState(false)
   const ref = useOutsideClick(() => setIsOpen(false))
 
@@ -18,16 +24,16 @@ export default function DropDown({ elements, name, callback }) {
   ]
 
   return (
-    <div>
+    <div className="z-3 relative">
       <MyButton
         textColor="amber-400"
         onClick={() => setIsOpen((prevIsOpen) => !prevIsOpen)}
-        text={<>{isOpen ? <ArrowUp /> : <ArrowDown />}</>}
+        text={<>{isOpen ? selected : unSelected}</>}
         m={0}
       />
       {isOpen && (
-        <div ref={ref} className="flex justify-end">
-          <ul className="flex bg-violet-700 shadow-md rounded-md mt-1 absolute flex-col overflow-y-auto max-h-60">
+        <div ref={ref} className="absolute right-0 mt-1 w-full">
+          <ul className="custom-scrollbar flex bg-violet-700 shadow-md rounded-md mt-1 absolute flex-col overflow-y-auto max-h-60">
             {setOfElems.map((elem, index) => {
               return (
                 <li

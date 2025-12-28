@@ -1,28 +1,34 @@
+const today = new Date()
+const currentMonthStart = new Date(today.getFullYear(), today.getMonth(), 1)
+const currentMonthEnd = new Date(today.getFullYear(), today.getMonth() + 1, 0)
+
 export const initialMatrix = {
   matriz: [],
-  ancho: 0,
-  alto: 0,
+  width: 0,
+  height: 0,
 
   startDate: null,
   endDate: null,
   selectedMonth: new Date().getMonth(),
   selectedYear: new Date().getFullYear(),
+  currentMonthLastDay: currentMonthEnd,
+  currentMonthStartDate: currentMonthStart,
 }
 
 export const matrizReducer = (state, action) => {
   switch (action.type) {
     case "MATRIX_INIT": {
-      const { ancho, alto } = action.payload
+      const { width, height } = action.payload
 
-      const matriz = Array.from({ length: alto }, () =>
-        Array.from({ length: ancho }, () => false)
+      const matriz = Array.from({ length: height }, () =>
+        Array.from({ length: width }, () => false)
       )
 
       return {
         ...state,
         matriz,
-        ancho,
-        alto,
+        width,
+        height,
         startDate: null,
         endDate: null,
       }
@@ -106,6 +112,14 @@ export const matrizReducer = (state, action) => {
       return {
         ...state,
         [action.payload.attribute]: action.payload.value,
+      }
+    }
+
+    case "SET_CURRENT_MONTH_DATES": {
+      return {
+        ...state,
+        currentMonthLastDay: action.payload.currentMonthLastDay,
+        currentMonthStartDate: action.payload.currentMonthStartDate,
       }
     }
 
