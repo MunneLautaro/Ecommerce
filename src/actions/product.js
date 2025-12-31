@@ -2,7 +2,12 @@
 
 import { actionProds } from "./serverActionUser"
 import { requireAuth } from "../lib/session"
-import { addProduct, modProduct, deleteProduct } from "../controllers/index"
+import {
+  addProduct,
+  modProduct,
+  deleteProduct,
+  getProducts,
+} from "../controllers/index"
 
 const addProductAction = async (formData) => {
   const { authorized, error, session } = await requireAuth({
@@ -52,4 +57,17 @@ const deleteProductAction = async (sku) => {
   return res
 }
 
-export { addProductAction, modProductAction, deleteProductAction }
+const getProductsAction = async (sku) => {
+  const res = await getProducts(sku)
+
+  actionProds()
+
+  return res
+}
+
+export {
+  addProductAction,
+  modProductAction,
+  deleteProductAction,
+  getProductsAction,
+}

@@ -1,4 +1,4 @@
-export default function MyInput({
+export default function Input({
   type = "text",
   name,
   placeHolder,

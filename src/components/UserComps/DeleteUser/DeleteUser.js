@@ -1,7 +1,7 @@
 "use client"
 import { deleteUserAction } from "../../../actions/index"
-import MyButton from "../../Ui/MyButton/MyButton"
-import MyInput from "../../Ui/MyInput/MyInput"
+import Button from "../../Ui/Button/Button"
+import Input from "../../Ui/Input/Input"
 import { useEffect, useState } from "react"
 import { toast } from "react-toastify"
 
@@ -33,7 +33,7 @@ export default function DeleteUser() {
       >
         <div className="flex flex-col items-center ">
           <div className="min-h-[150px] ">
-            <MyInput
+            <Input
               name={"user"}
               placeHolder={"Username"}
               required={true}
@@ -46,7 +46,7 @@ export default function DeleteUser() {
             />
           </div>
 
-          <MyButton text={"Delete user"} type={"submit"} />
+          <Button text={"Delete user"} type={"submit"} />
         </div>
       </form>
     </>

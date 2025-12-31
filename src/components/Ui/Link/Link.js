@@ -1,6 +1,6 @@
 import Link from "next/link"
 
-export default function MyLink({ url, text, id }) {
+export default function LinkUi({ url, text, id }) {
   return (
     <Link
       id={id}

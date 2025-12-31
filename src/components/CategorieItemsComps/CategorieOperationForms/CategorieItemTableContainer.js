@@ -3,22 +3,13 @@
 import { useContext, useState } from "react"
 import { ItemContext, ItemDispatchContext } from "@/contexts/ItemContext"
 import { RefreshCcw } from "react-feather"
-import MyButton from "@/components/Ui/MyButton/MyButton"
+import Button from "@/components/Ui/Button/Button"
 import ItemTable from "./ItemTable"
-import ItemActionButton from "../ItemActionButton"
-import { Trash2, Edit } from "react-feather"
-import {
-  modifyCategorieAction,
-  deleteCategorieItemAction,
-} from "@/actions/categorieAction"
-import { useFetchItems } from "@/hooks/fetchItems"
 
 export default function CategorieItemTableContainer() {
   const itemFilter = useContext(ItemContext)
   const dispatchItemFilter = useContext(ItemDispatchContext)
-  const fetchItems = useFetchItems(dispatchItemFilter)
   const [resetTrigger, setResetTrigger] = useState(false)
-
   const resetFilters = () => {
     dispatchItemFilter({ type: "RESET_FILTERS" })
     setResetTrigger((prev) => !prev)
@@ -30,50 +21,13 @@ export default function CategorieItemTableContainer() {
     !itemFilter?.itemFilter?.date.startDate &&
     !itemFilter?.itemFilter?.date.endDate &&
     itemFilter?.itemFilter?.type === ""
-
-  console.log({ itemFilter })
   return (
     <>
       <div className="flex flex-row items-start justify-between mb-4">
-        <MyButton
+        <Button
           onClick={resetFilters}
           disabled={isRefreshDisabled}
           text={<RefreshCcw />}
-        />
-
-        <MyButton
-          disabled={!itemFilter?.newValue}
-          onClick={async (e) => {
-            const modItemResponse = await modifyCategorieAction(
-              itemFilter?.currentItem?.type,
-              itemFilter?.currentItem?.value,
-              itemFilter?.newValue
-            )
-            dispatchItemFilter({
-              type: "SET_RESPONSE",
-              payload: modItemResponse,
-            })
-            fetchItems()
-            dispatchItemFilter({ type: "RESET_CURRENT_ITEM" })
-          }}
-          text={<Edit />}
-        />
-        <MyButton
-          disabled={!itemFilter?.currentItem}
-          onClick={async (e) => {
-            e.preventDefault()
-            const delItemResponse = await deleteCategorieItemAction(
-              itemFilter?.currentItem?.type,
-              itemFilter?.currentItem?.value
-            )
-            dispatchItemFilter({
-              type: "SET_RESPONSE",
-              payload: delItemResponse,
-            })
-            fetchItems()
-            dispatchItemFilter({ type: "RESET_CURRENT_ITEM" })
-          }}
-          text={<Trash2 />}
         />
       </div>
       <ItemTable resetTrigger={resetTrigger} />

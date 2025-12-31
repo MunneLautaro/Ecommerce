@@ -1,7 +1,7 @@
 "use client"
 import { useRouter } from "next/navigation"
-import MyButton from "../Ui/MyButton/MyButton"
-import MyInput from "../Ui/MyInput/MyInput"
+import Button from "../Ui/Button/Button"
+import Input from "../Ui/Input/Input"
 import { useEffect, useState } from "react"
 import { login } from "../../actions/index"
 import CryptoJS from "crypto-js"
@@ -42,7 +42,7 @@ export function LoginForm() {
           setResponse(loginResponse)
         }}
       >
-        <MyInput
+        <Input
           id={"user"}
           name={"user"}
           placeHolder={"Username"}
@@ -50,7 +50,7 @@ export function LoginForm() {
             setUser((prev) => ({ ...prev, user: e?.target?.value }))
           }
         />
-        <MyInput
+        <Input
           id={"password"}
           name={"password"}
           placeHolder={"Password"}
@@ -64,7 +64,7 @@ export function LoginForm() {
           }
         />
 
-        <MyButton text={"submit"} type={"submit"} />
+        <Button text={"submit"} type={"submit"} />
       </form>
       <div
         className={`

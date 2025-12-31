@@ -1,4 +1,4 @@
-import MyButton from "../../Ui/MyButton/MyButton"
+import Button from "../../Ui/Button/Button"
 
 export default function TablePagination({
   currentPage,
@@ -7,7 +7,7 @@ export default function TablePagination({
 }) {
   return (
     <div className="flex justify-center mt-4 space-x-2">
-      <MyButton
+      <Button
         disabled={currentPage === 1}
         onClick={() => setCurrentPage((p) => p - 1)}
         text={"Previous"}
@@ -16,7 +16,7 @@ export default function TablePagination({
         Page {currentPage} of {totalPages}
       </span>
 
-      <MyButton
+      <Button
         disabled={currentPage === totalPages}
         onClick={() => setCurrentPage((p) => p + 1)}
         text={"next"}

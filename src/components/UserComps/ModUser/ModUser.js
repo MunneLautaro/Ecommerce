@@ -1,7 +1,7 @@
 "use client"
 import { modUserAction } from "../../../actions/index"
-import MyButton from "../../Ui/MyButton/MyButton"
-import MyInput from "../../Ui/MyInput/MyInput"
+import Button from "../../Ui/Button/Button"
+import Input from "../../Ui/Input/Input"
 import { useEffect, useState } from "react"
 import { toast } from "react-toastify"
 import CryptoJS from "crypto-js"
@@ -45,7 +45,7 @@ export default function ModUser() {
       >
         <div className="flex flex-col items-center ">
           <div className="min-h-[150px] ">
-            <MyInput
+            <Input
               name={"user"}
               placeHolder={"Username"}
               required={true}
@@ -54,7 +54,7 @@ export default function ModUser() {
               }
             />
             <div className="mt-4">
-              <MyInput
+              <Input
                 name={"newUser"}
                 placeHolder={"New username"}
                 required={true}
@@ -67,7 +67,7 @@ export default function ModUser() {
               />
             </div>
             <div className="mt-4">
-              <MyInput
+              <Input
                 type={"password"}
                 name={"newPassword"}
                 placeHolder={"New password"}
@@ -83,7 +83,7 @@ export default function ModUser() {
             </div>
           </div>
 
-          <MyButton text={"Modify user"} buttonType={"submit"} />
+          <Button text={"Modify user"} buttonType={"submit"} />
         </div>
       </form>
     </>

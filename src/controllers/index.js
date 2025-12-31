@@ -5,6 +5,7 @@ import {
   addItemInCategorie,
   modifyCategorie,
   deleteCategorie,
+  getItemsByType,
 } from "./categories"
 
 export {
@@ -21,4 +22,5 @@ export {
   addItemInCategorie,
   modifyCategorie,
   deleteCategorie,
+  getItemsByType,
 }

@@ -4,7 +4,7 @@ import { usePathname } from "next/navigation"
 import { adminRoutes } from "../../../app/routes"
 import Title from "./Title"
 import LogOutButton from "./LogOutButton"
-import MyLink from "../../Ui/MyLink/MyLink"
+import Link from "../../Ui/Link/Link"
 
 export default function NavBar({ session }) {
   const pathname = usePathname()
@@ -17,7 +17,7 @@ export default function NavBar({ session }) {
         session?.isAdmin &&
         adminRoutes[pathname]?.length > 0 ? (
           adminRoutes[pathname].map((adminR) => (
-            <MyLink
+            <Link
               key={adminR?.label}
               id={adminR?.label}
               url={adminR?.url}
@@ -25,7 +25,7 @@ export default function NavBar({ session }) {
             />
           ))
         ) : pathname !== "/" ? (
-          <MyLink url="/" text={"Catalog"} />
+          <Link url="/" text={"Catalog"} />
         ) : null}
         <div className="m-[15px] flex">
           {session ? (
@@ -34,7 +34,7 @@ export default function NavBar({ session }) {
               isAdmin={session.isAdmin}
             />
           ) : (
-            <MyLink url={"/login"} text={"Login"} />
+            <Link url={"/login"} text={"Login"} />
           )}
         </div>
       </div>

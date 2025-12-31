@@ -1,7 +1,7 @@
 "use client"
 
 import { useState } from "react"
-import MyButton from "../MyButton/MyButton"
+import Button from "../Button/Button"
 
 export default function Carrousel({ products }) {
   const [selectedProduct, setSelectedProduct] = useState(0)
@@ -11,7 +11,7 @@ export default function Carrousel({ products }) {
   return (
     <div className="flex flex-col items-center">
       <div className="flex-row flex">
-        <MyButton
+        <Button
           text={"Atras"}
           onClick={() => {
             selectedProduct == 0
@@ -32,7 +32,7 @@ export default function Carrousel({ products }) {
             )
           )
         })}
-        <MyButton
+        <Button
           text={"Adelante"}
           onClick={() => {
             selectedProduct == products.length - 1
@@ -44,7 +44,7 @@ export default function Carrousel({ products }) {
       <div className="flex-row">
         {products.map((prod, id) => {
           return (
-            <MyButton
+            <Button
               key={id}
               onClick={() => {
                 setSelectedProduct(id)

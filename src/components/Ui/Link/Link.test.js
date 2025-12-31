@@ -1,10 +1,10 @@
-import MyLink from "./MyLink"
+import Link from "./Link"
 import { render, screen } from "@testing-library/react"
 import "@testing-library/jest-dom"
 
-describe("MyLink", () => {
+describe("Link", () => {
   it("displays correctyle the link", () => {
-    render(<MyLink text={"Im a link"} url={"testUrl"} />)
+    render(<Link text={"Im a link"} url={"testUrl"} />)
 
     const link = screen.getByRole("link", { name: /Im a link/i })
 

@@ -23,12 +23,12 @@ const createProduct = async (data, sku) => {
     await connectToDatabaseUnix()
     const newProduct = new Product({
       sku,
-      product: data?.product,
+      product: data?.product?.label,
       img: data?.img,
       description: data?.description,
-      brand: data?.brand,
-      model: data?.model,
-      color: data?.color,
+      brand: data?.brand?.label,
+      model: data?.model?.label,
+      color: data?.color?.label,
       price: data?.price,
       stock: data?.stock,
     })
@@ -72,15 +72,16 @@ const getProducts = async () => {
 
 const addProduct = async (data) => {
   try {
+    console.log({ data })
     await connectToDatabaseUnix()
     const validationError = validateProductData(data)
     if (validationError) {
       return { error: validationError, status: 400 }
     }
 
-    const sku = createSku(data?.product, data?.color, data?.model, data?.brand)
+    const sku = createSku(data)
 
-    if (!sku || sku.length !== 11) {
+    if (!sku || sku.length !== 16) {
       return { error: "Wrong product data", status: 400 }
     }
 
@@ -92,7 +93,7 @@ const addProduct = async (data) => {
     await createProduct(data, sku)
 
     return {
-      success: `The product ${data?.product} was successfully registered`,
+      success: `The product ${data?.product?.label} was successfully registered`,
       status: 201,
     }
   } catch (error) {

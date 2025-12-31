@@ -1,6 +1,6 @@
 "use client"
 
-import MyButton from "../MyButton/MyButton"
+import Button from "../Button/Button"
 import { useContext } from "react"
 import {
   ProductFilterContext,
@@ -16,7 +16,7 @@ export default function OrderPriceButton() {
   }
 
   return (
-    <MyButton
+    <Button
       textColor="amber-400"
       onClick={handleSort}
       text={<>{prodFilter?.prodFilter?.isAscending ? "DESC" : "ASC"}</>}

@@ -6,10 +6,16 @@ import {
   modifyCategorie,
   getItems,
   deleteCategorie,
+  getItemsByType,
 } from "../controllers/index"
 
 const getCategorieItemsAction = async () => {
   const categories = await getItems()
+  return categories
+}
+
+const getItemsByTypeAction = async (type) => {
+  const categories = await getItemsByType(type)
   return categories
 }
 
@@ -71,4 +77,5 @@ export {
   modifyCategorieAction,
   getCategorieItemsAction,
   deleteCategorieItemAction,
+  getItemsByTypeAction,
 }

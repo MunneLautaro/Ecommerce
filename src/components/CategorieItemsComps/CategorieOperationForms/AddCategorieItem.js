@@ -1,8 +1,8 @@
 "use client"
 
 import Select from "@/components/ProdsComps/Select/Select"
-import MyButton from "@/components/Ui/MyButton/MyButton"
-import MyInput from "@/components/Ui/MyInput/MyInput"
+import Button from "@/components/Ui/Button/Button"
+import Input from "../../Ui/Input/Input"
 import { VALID_CATEGORIES } from "@/utils/validCategories"
 import { useState, useEffect } from "react"
 import { toast } from "react-toastify"
@@ -15,9 +15,10 @@ export default function AddCategorieItem({ onSubmit }) {
   useEffect(() => {
     if (!response) return
     if (response?.success) {
-      toast.success(response?.success)
+      toast.success(`${response?.success}`)
+      toast.info(`${response?.message}`)
     } else {
-      toast.error(response?.error)
+      toast.error(`${response?.error}`)
     }
   }, [response])
 
@@ -41,13 +42,13 @@ export default function AddCategorieItem({ onSubmit }) {
           }}
           value={item?.type}
         />
-        <MyInput
+        <Input
           type={"text"}
           placeHolder={`Enter ${item?.type}`}
           onChange={(e) => setItem({ ...item, value: e?.target?.value })}
           value={item?.value}
         />
-        <MyButton type={"submit"} text={`Add ${item?.type} Item`} />
+        <Button type={"submit"} text={`Add ${item?.type} Item`} />
       </form>
     </div>
   )

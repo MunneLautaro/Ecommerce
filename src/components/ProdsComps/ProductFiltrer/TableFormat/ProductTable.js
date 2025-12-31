@@ -3,7 +3,7 @@
 import { useContext, useState } from "react"
 import { ProductContext } from "../../../../contexts/ProductContext"
 import DropDown from "@/components/Ui/DropDown/DropDown"
-import OrderPriceButton from "@/components/Ui/MyButton/OrderPriceButton"
+import OrderPriceButton from "@/components/Ui/Button/OrderPriceButton"
 import { ProductFilterDispatchContext } from "@/contexts/ProductFilterContext"
 
 export default function ProductTable({ products }) {
@@ -153,7 +153,7 @@ export default function ProductTable({ products }) {
                     dispatchForm({ type: "SET_PRODUCT", payload: prod })
                   }
                 }}
-                className={`h-[40px] cursor-pointer focus:ring-4 focus:ring-teal-300 ${
+                className={`h-[40px] cursor-pointer focus:ring-4 focus:ring-white ${
                   index % 2 === 0
                     ? "bg-violet-400 text-white hover:bg-violet-600 transition-opacity"
                     : "bg-amber-400 text-white hover:bg-amber-600 transition-all duration-300"
@@ -161,11 +161,19 @@ export default function ProductTable({ products }) {
                 tabIndex={0}
                 role="button"
               >
-                <td className="p-2 border border-[#212121]">{prod?.product}</td>
-                <td className="p-2 border border-[#212121]">{prod?.brand}</td>
-                <td className="p-2 border border-[#212121]">{prod?.color}</td>
-                <td className="p-2 border border-[#212121]">{prod?.model}</td>
-                <td className="truncate p-2 border border-[#212121]">
+                <td className="p-2 border border-[#212121] max-w-[30px] truncate">
+                  {prod?.product}
+                </td>
+                <td className="p-2 border border-[#212121] max-w-[30px] truncate">
+                  {prod?.brand}
+                </td>
+                <td className="p-2 border border-[#212121] max-w-[30px] truncate">
+                  {prod?.color}
+                </td>
+                <td className="p-2 border border-[#212121] max-w-[30px] truncate">
+                  {prod?.model}
+                </td>
+                <td className="truncate p-2 border border-[#212121] max-w-[30px]">
                   {`$${prod?.price}`}
                 </td>
               </tr>

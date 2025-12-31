@@ -17,12 +17,13 @@ export default function CategorieItems() {
     itemFilterReducer,
     initialItems
   )
-  const fetchItems = useFetchItems(dispatchItemFilter)
+  const { fetchItems } = useFetchItems(dispatchItemFilter)
 
   useEffect(() => {
     if (!itemFilter?.response) return
     if (itemFilter?.response?.success) {
-      toast.success(itemFilter?.response?.message)
+      toast.success(`${itemFilter?.response?.success}`)
+      toast.info(`${itemFilter?.response?.message}`)
     } else {
       toast.error(itemFilter?.response?.error)
     }

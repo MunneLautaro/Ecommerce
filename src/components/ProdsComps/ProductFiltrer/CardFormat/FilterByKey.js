@@ -1,6 +1,6 @@
 "use client"
 
-import MyInput from "@/components/Ui/MyInput/MyInput"
+import Input from "@/components/Ui/Input/Input"
 import { useContext } from "react"
 import { ProductFilterDispatchContext } from "@/contexts/ProductFilterContext"
 
@@ -16,7 +16,7 @@ export default function FilterByKey({ keys }) {
 
   return (
     <div className="m-2">
-      <MyInput
+      <Input
         type="text"
         placeHolder={`Search by ${keys}`}
         onChange={handleChange}

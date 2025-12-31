@@ -1,5 +1,9 @@
 export const initialItems = {
   items: null,
+  brands: [],
+  products: [],
+  colors: [],
+  models: [],
   currentItem: null,
   loading: true,
   error: null,
@@ -98,6 +102,36 @@ export const itemFilterReducer = (state, action) => {
       return {
         ...state,
         response: action.payload,
+      }
+    }
+    case "CLEAR_RESPONSE": {
+      return {
+        ...state,
+        response: initialItems.response,
+      }
+    }
+    case "SET_BRANDS": {
+      return {
+        ...state,
+        brands: action.payload,
+      }
+    }
+    case "SET_PRODUCTS": {
+      return {
+        ...state,
+        products: action.payload,
+      }
+    }
+    case "SET_COLORS": {
+      return {
+        ...state,
+        colors: action.payload,
+      }
+    }
+    case "SET_MODELS": {
+      return {
+        ...state,
+        models: action.payload,
       }
     }
 

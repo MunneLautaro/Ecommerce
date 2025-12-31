@@ -5,8 +5,8 @@ import { toast } from "react-toastify"
 import { Trash } from "react-feather"
 import Image from "next/image"
 import ItemProductCard from "./ItemProductCard"
-import MyButton from "../Ui/MyButton/MyButton"
-import Modal from "../Ui/Modal/Modal"
+import Button from "../Ui/Button/Button"
+import ConfirmActionButton from "../Ui/Button/ConfirmActionButton"
 
 export default function ProductCard({
   product,
@@ -15,8 +15,6 @@ export default function ProductCard({
   isAdmin,
   onSubmit,
 }) {
-  const [isModalOpen, setIsModalOpen] = useState(false)
-
   function randomIntFromInterval(min, max) {
     return Math.floor(Math.random() * (max - min + 1) + min)
   }
@@ -37,7 +35,6 @@ export default function ProductCard({
     if (!response) return
     if (response?.success) {
       toast.success(response?.success)
-      setIsModalOpen(false)
     } else {
       toast.error(response?.error)
     }
@@ -80,51 +77,51 @@ export default function ProductCard({
           <div className="flex flex-col items-center mt-[10px]">
             <div className="flex flex-col items-start">
               <ItemProductCard type={"SKU"} elem={product?.sku} />
-              <ItemProductCard type={"Product"} elem={product?.product} />
+              <ItemProductCard
+                type={"Product"}
+                elem={`${
+                  product?.product?.label || product?.product
+                }`.toUpperCase()}
+              />
               <ItemProductCard
                 type={"Description"}
                 elem={product?.description}
               />
-              <ItemProductCard type={"Brand"} elem={product?.brand} />
-              <ItemProductCard type={"Model"} elem={product?.model} />
-              <ItemProductCard type={"Color"} elem={product?.color} />
-              <ItemProductCard type={"Price"} elem={product?.price} />
-
+              <ItemProductCard
+                type={"Brand"}
+                elem={`${
+                  product?.brand?.label || product?.brand
+                }`.toUpperCase()}
+              />
+              <ItemProductCard
+                type={"Model"}
+                elem={`${
+                  product?.model?.label || product?.model
+                }`.toUpperCase()}
+              />
+              <ItemProductCard
+                type={"Color"}
+                elem={`${
+                  product?.color?.label || product?.color
+                }`.toUpperCase()}
+              />
+              <ItemProductCard
+                type={"Price"}
+                elem={
+                  product?.price?.label ? product?.price?.label : product?.price
+                }
+              />
               {isAdmin && (
-                <MyButton
-                  text={<Trash />}
-                  onClick={() => setIsModalOpen(true)}
+                <ConfirmActionButton
+                  buttonChildren={<Trash />}
+                  modalTittle={`Confirm product delete`}
+                  modalMessage={`Accept to delete the product ${product?.product} with SKU: ${product?.sku}.`}
+                  onConfirm={handleDelete}
                 />
               )}
             </div>
           </div>
         </div>
-      )}
-
-      {isAdmin && (
-        <Modal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)}>
-          <h2 className="text-xl text-black font-bold mb-4">Confirm delete</h2>
-          <p className="mb-6 text-black">
-            Are you sure you want to delete the product {product?.product} with
-            SKU {product?.sku}?
-          </p>
-          <div className="flex gap-4 justify-end">
-            <button
-              onClick={() => {
-                setIsModalOpen(false)
-              }}
-              className="px-4 py-2 bg-gray-400 rounded hover:opacity-45 transition-opacity active:bg-gray-700 text-white"
-            >
-              Cancel
-            </button>
-            <button
-              onClick={() => handleDelete()}
-              className="px-4 py-2 bg-red-600 text-white rounded hover:opacity-70 transition-opacity active:bg-red-900"
-            >
-              Delete
-            </button>
-          </div>
-        </Modal>
       )}
     </>
   )

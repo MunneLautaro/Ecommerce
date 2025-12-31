@@ -2,13 +2,14 @@ import Categorie from "../models/categorieModel"
 import { connectToDatabaseUnix } from "../../connectDBUnix"
 import { validateCategorie } from "@/helpers/validateCategorie"
 
-const getItemsByCategorie = async (type) => {
+const getItemsByType = async (type) => {
   try {
     await connectToDatabaseUnix()
     const categories = await Categorie.find({
       type: type.trim().toLowerCase(),
-    }).lean()
-    return { success: "Items fetched", data: categories, status: 200 }
+    })
+    const plainCategories = JSON.parse(JSON.stringify(categories))
+    return { success: "Items fetched", data: plainCategories, status: 200 }
   } catch (error) {
     return { error: error.message, status: 500 }
   }
@@ -53,6 +54,7 @@ const addItemInCategorie = async (type, value) => {
 
     return {
       success: "Item added successfully",
+      message: `Category added with type: ${type} and value: ${value}`,
       data: {
         type: newItem.type,
         value: newItem.value,
@@ -97,7 +99,8 @@ const deleteCategorie = async (type, value) => {
     const plainCategorie = JSON.parse(JSON.stringify(categorie))
 
     return {
-      success: `The categorie with type: ${type} and value: ${value} was successfully deleted`,
+      success: `Item deleted successfully`,
+      message: `Category deleted with type: ${type} and value: ${value}`,
       data: plainCategorie,
       status: 200,
     }
@@ -164,6 +167,6 @@ export {
   addItemInCategorie,
   deleteCategorie,
   modifyCategorie,
-  getItemsByCategorie,
+  getItemsByType,
   getItems,
 }

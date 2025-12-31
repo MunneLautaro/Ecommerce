@@ -4,11 +4,19 @@ import { ItemDispatchContext } from "../../../contexts/ItemContext"
 import DatePicker from "../../DatePicker/DatePicker"
 import DropDown from "../../Ui/DropDown/DropDown"
 import { applyItemFilter } from "../../../helpers/applyFilter"
+import { Trash2, Edit } from "react-feather"
+import {
+  modifyCategorieAction,
+  deleteCategorieItemAction,
+} from "../../../actions/categorieAction"
+import { useFetchItems } from "@/hooks/fetchItems"
+import ConfirmActionButton from "../../Ui/Button/ConfirmActionButton"
 
 export default function ItemTable({ resetTrigger }) {
   const itemFilter = useContext(ItemContext)
   const dispatchItemFilter = useContext(ItemDispatchContext)
   const [inputValues, setInputValues] = useState({})
+  const { fetchItems } = useFetchItems(dispatchItemFilter)
 
   const handleDateChange = useCallback(
     (date) =>
@@ -193,32 +201,79 @@ export default function ItemTable({ resetTrigger }) {
                       })
                     }}
                     onChange={(e) => {
+                      const newValue = e.target.value
+
                       setInputValues((prev) => ({
                         ...prev,
-                        [item?.value]: e.target.value,
+                        [item.value]: newValue,
                       }))
-                      dispatchItemFilter({
-                        type: "SET_NEW_VALUE",
-                        payload: e.target.value,
-                      })
-                    }}
-                    onBlur={() => {
-                      setTimeout(() => {
-                        setInputValues((prev) => {
-                          const newValues = { ...prev }
-                          delete newValues[item?.value]
-                          return newValues
-                        })
-                        dispatchItemFilter({
-                          type: "CLEAR_NEW_VALUE",
-                        })
-                      }, 150)
                     }}
                   />
                 </td>
                 <td className="p-2 border border-[#212121]">{item?.prodId}</td>
                 <td className="p-2 border border-[#212121]">
                   {item?.createdAt}
+                </td>
+                <td>
+                  <ConfirmActionButton
+                    buttonChildren={<Edit />}
+                    modalTittle="Confirm edit"
+                    modalMessage={`Accept to modify the item: ${
+                      item.value
+                    } to ${inputValues[item.value]}.`}
+                    onCancel={() => {
+                      dispatchItemFilter({ type: "RESET_CURRENT_ITEM" })
+                      dispatchItemFilter({ type: "CLEAR_NEW_VALUE" })
+                    }}
+                    onConfirm={async () => {
+                      const newValue = inputValues[item.value]
+
+                      const modItemResponse = await modifyCategorieAction(
+                        item.type,
+                        item.value,
+                        newValue
+                      )
+                      console.log({ modItemResponse })
+                      dispatchItemFilter({
+                        type: "SET_RESPONSE",
+                        payload: modItemResponse,
+                      })
+
+                      fetchItems()
+
+                      setInputValues((prev) => {
+                        const copy = { ...prev }
+                        delete copy[item.value]
+                        return copy
+                      })
+
+                      dispatchItemFilter({ type: "RESET_CURRENT_ITEM" })
+                    }}
+                    isDisabled={inputValues[item?.value] ? false : true}
+                  />
+                  <ConfirmActionButton
+                    buttonChildren={<Trash2 />}
+                    modalTittle="Confirm delete"
+                    modalMessage={`Accept to delete the item: ${item.value}.`}
+                    onConfirm={async () => {
+                      const delItemResponse = await deleteCategorieItemAction(
+                        item.type,
+                        item.value
+                      )
+                      dispatchItemFilter({
+                        type: "SET_RESPONSE",
+                        payload: delItemResponse,
+                      })
+
+                      console.log({ delItemResponse })
+                      fetchItems()
+                      dispatchItemFilter({ type: "RESET_CURRENT_ITEM" })
+                    }}
+                    isDisabled={
+                      !itemFilter?.currentItem ||
+                      itemFilter.currentItem.value !== item.value
+                    }
+                  />
                 </td>
               </tr>
             ))}

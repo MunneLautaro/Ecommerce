@@ -1,6 +1,6 @@
-import MyButton from "../../Ui/MyButton/MyButton"
+import Button from "../../Ui/Button/Button"
 import ProductCard from "../../ProductCard/ProductCard"
-import MyInput from "@/components/Ui/MyInput/MyInput"
+import Input from "@/components/Ui/Input/Input"
 import { useContext, useEffect, useState } from "react"
 import { toast } from "react-toastify"
 import { ProductContext } from "../../../contexts/ProductContext"
@@ -32,19 +32,19 @@ export default function ModifyProductForm({ onSubmit }) {
           className="flex flex-col gap-4 w-full md:w-1/2 bg-[#424242] p-3 rounded-lg shadow-2xl border border-yellow-500"
         >
           <label className="font-semibold">Brand:</label>
-          <MyInput value={formProduct?.form?.brand || ""} disabled={true} />
+          <Input value={formProduct?.form?.brand || ""} disabled={true} />
 
           <label className="font-semibold">Product:</label>
-          <MyInput value={formProduct?.form?.product || ""} disabled={true} />
+          <Input value={formProduct?.form?.product || ""} disabled={true} />
 
           <label className="font-semibold">Color:</label>
-          <MyInput value={formProduct?.form?.color || ""} disabled={true} />
+          <Input value={formProduct?.form?.color || ""} disabled={true} />
 
           <label className="font-semibold">Model:</label>
-          <MyInput value={formProduct?.form?.model || ""} disabled={true} />
+          <Input value={formProduct?.form?.model || ""} disabled={true} />
 
           <label className="font-semibold">Image:</label>
-          <MyInput
+          <Input
             name={"img"}
             value={formProduct?.form?.img}
             placeHolder="img.jpg"
@@ -56,7 +56,7 @@ export default function ModifyProductForm({ onSubmit }) {
             }
           />
 
-          <MyInput
+          <Input
             dataTestId="imgFile"
             name={"img"}
             type="file"
@@ -86,7 +86,7 @@ export default function ModifyProductForm({ onSubmit }) {
           />
 
           <label className="font-semibold">Description:</label>
-          <MyInput
+          <Input
             name={"description"}
             value={formProduct?.form?.description}
             placeHolder="Description"
@@ -100,7 +100,7 @@ export default function ModifyProductForm({ onSubmit }) {
           />
 
           <label className="font-semibold">Price:</label>
-          <MyInput
+          <Input
             name={"price"}
             value={formProduct?.form?.price}
             placeHolder="Price"
@@ -114,7 +114,7 @@ export default function ModifyProductForm({ onSubmit }) {
           />
 
           <label className="font-semibold">Stock:</label>
-          <MyInput
+          <Input
             name={"stock"}
             value={formProduct?.form?.stock}
             placeHolder="Stock"
@@ -127,7 +127,7 @@ export default function ModifyProductForm({ onSubmit }) {
             required={true}
           />
 
-          <MyButton type="submit" text="Modify product" />
+          <Button type="submit" text="Modify product" />
         </form>
 
         <div className="w-full md:w-1/2">

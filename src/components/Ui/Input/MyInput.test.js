@@ -1,13 +1,11 @@
-import MyInput from "./MyInput"
+import Input from "./Input"
 import { fireEvent, render, screen } from "@testing-library/react"
 import "@testing-library/jest-dom"
 
-describe("MyInput", () => {
+describe("Input", () => {
   it("change values via the fireEvent.change method", () => {
     const handleChange = jest.fn()
-    render(
-      <MyInput type={"text"} onChange={handleChange} placeHolder={"Text"} />
-    )
+    render(<Input type={"text"} onChange={handleChange} placeHolder={"Text"} />)
 
     const input = screen.getByPlaceholderText(/text/i)
 

@@ -1,7 +1,7 @@
 "use client"
 import { addUserAction } from "../../../actions/index"
-import MyButton from "../../Ui/MyButton/MyButton"
-import MyInput from "../../Ui/MyInput/MyInput"
+import Button from "../../Ui/Button/Button"
+import Input from "../../Ui/Input/Input"
 import { useEffect, useState } from "react"
 import { toast } from "react-toastify"
 import CryptoJS from "crypto-js"
@@ -43,7 +43,7 @@ export default function AddUser() {
       >
         <div className="flex flex-col items-center">
           <div className="min-h-[150px] ">
-            <MyInput
+            <Input
               name={"user"}
               placeHolder={"Username"}
               required={true}
@@ -53,7 +53,7 @@ export default function AddUser() {
             />
             <input></input>
             <div className="mt-5">
-              <MyInput
+              <Input
                 type={"password"}
                 name={"password"}
                 placeHolder={"Password"}
@@ -68,7 +68,7 @@ export default function AddUser() {
               />
             </div>
           </div>
-          <MyButton text={"Add user"} type={"submit"} />
+          <Button text={"Add user"} type={"submit"} />
         </div>
       </form>
     </>

@@ -1,10 +1,10 @@
-import MyButton from "./MyButton"
+import Button from "./Button"
 import { fireEvent, render, screen } from "@testing-library/react"
 import "@testing-library/jest-dom"
 
-describe("MyButton", () => {
+describe("Button", () => {
   it("displays the button disabled and underline", () => {
-    render(<MyButton text={"Im a button"} disabled={true} />)
+    render(<Button text={"Im a button"} disabled={true} />)
 
     const button = screen.getByRole("button", { name: /Im a button/i })
 
@@ -14,7 +14,7 @@ describe("MyButton", () => {
 
   it("calls correctly the function passed", () => {
     const testFunction = jest.fn()
-    render(<MyButton onClick={testFunction} text={"Im a button"} />)
+    render(<Button onClick={testFunction} text={"Im a button"} />)
 
     const button = screen.getByRole("button", { name: /Im a button/i })
 

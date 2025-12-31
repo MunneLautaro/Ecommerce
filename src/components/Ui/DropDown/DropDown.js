@@ -1,6 +1,6 @@
 "use client"
 
-import MyButton from "../MyButton/MyButton"
+import Button from "../Button/Button"
 import { useState } from "react"
 import useOutsideClick from "../../../hooks/dropdownHook"
 import { ArrowDown, ArrowUp } from "react-feather"
@@ -25,7 +25,7 @@ export default function DropDown({
 
   return (
     <div className="z-3 relative">
-      <MyButton
+      <Button
         textColor="amber-400"
         onClick={() => setIsOpen((prevIsOpen) => !prevIsOpen)}
         text={<>{isOpen ? selected : unSelected}</>}

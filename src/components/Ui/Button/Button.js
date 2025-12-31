@@ -1,4 +1,4 @@
-export default function MyButton({
+export default function Button({
   text,
   type,
   onClick,

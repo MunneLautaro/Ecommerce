@@ -24,8 +24,8 @@ export default function Select({ elements, type, onChange, value }) {
           Select {type.toLowerCase()}
         </option>
         {elements.map((element, index) => (
-          <option className="hover:bg-violet-500" key={index} value={element}>
-            {element}
+          <option key={index} value={element.value ? element.value : element}>
+            {element.label ? element.label : element}
           </option>
         ))}
       </select>
