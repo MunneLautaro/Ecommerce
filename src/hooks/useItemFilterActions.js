@@ -51,6 +51,10 @@ export function useItemFilterActions(dispatchItemFilter) {
     dispatchItemFilter({ type: "CLEAR_NEW_VALUE" })
   }, [dispatchItemFilter])
 
+  const resetFilters = useCallback(() => {
+    dispatchItemFilter({ type: "RESET_FILTERS" })
+  }, [dispatchItemFilter])
+
   return {
     changeAscending,
     setFilter,
@@ -59,5 +63,6 @@ export function useItemFilterActions(dispatchItemFilter) {
     resetCurrentItem,
     setResponse,
     clearNewValue,
+    resetFilters,
   }
 }

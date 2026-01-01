@@ -33,7 +33,7 @@ export default function CategorieItems() {
     dispatchItemFilter({ type: "FETCH_INIT" })
 
     fetchItems()
-  }, [])
+  }, [fetchItems])
 
   return (
     <>

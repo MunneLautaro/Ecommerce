@@ -99,7 +99,7 @@ export default function ItemTable({ resetTrigger }) {
               <DatePicker
                 callback={handleDateChange}
                 resetTrigger={resetTrigger}
-              />{" "}
+              />
             </SortableTh>
           </tr>
         </thead>
