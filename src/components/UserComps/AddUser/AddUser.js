@@ -68,7 +68,11 @@ export default function AddUser() {
               />
             </div>
           </div>
-          <Button text={"Add user"} type={"submit"} />
+          <Button
+            text={"Add user"}
+            type={"submit"}
+            disabled={!(formData.sha1 && formData.user)}
+          />
         </div>
       </form>
     </>

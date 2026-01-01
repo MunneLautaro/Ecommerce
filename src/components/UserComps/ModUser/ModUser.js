@@ -83,7 +83,18 @@ export default function ModUser() {
             </div>
           </div>
 
-          <Button text={"Modify user"} buttonType={"submit"} />
+          <Button
+            text={"Modify user"}
+            buttonType={"submit"}
+            disabled={
+              !(
+                formData.sha1 &&
+                formData.user &&
+                formData.newUser &&
+                formData.md5
+              )
+            }
+          />
         </div>
       </form>
     </>

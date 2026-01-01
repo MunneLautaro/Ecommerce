@@ -46,7 +46,11 @@ export default function DeleteUser() {
             />
           </div>
 
-          <Button text={"Delete user"} type={"submit"} />
+          <Button
+            text={"Delete user"}
+            type={"submit"}
+            disabled={!formData.user}
+          />
         </div>
       </form>
     </>
