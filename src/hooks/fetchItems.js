@@ -6,13 +6,6 @@ import {
   getItemsByTypeAction,
 } from "@/actions/categorieAction"
 
-const typeToActionMap = {
-  brand: "SET_BRANDS",
-  productname: "SET_PRODUCTS",
-  color: "SET_COLORS",
-  model: "SET_MODELS",
-}
-
 export const useFetchItems = (dispatch) => {
   const fetchItems = useCallback(async () => {
     dispatch({ type: "FETCH_INIT" })
@@ -36,49 +29,43 @@ export const useFetchItems = (dispatch) => {
     }
   }, [dispatch])
 
-  const fetchItemsByType = useCallback(
-    async (type) => {
-      const actionType = typeToActionMap[type]
+  const fetchItemsByType = useCallback(async () => {
+    dispatch({ type: "FETCH_INIT" })
 
-      if (!actionType) {
-        console.warn(`Invalid type: ${type}`)
-        return
+    try {
+      const response = await getItemsByTypeAction()
+      console.log({ response })
+
+      if (!response?.data) {
+        throw new Error("No data returned")
       }
 
-      dispatch({ type: "FETCH_INIT" })
-
-      try {
-        const items = await getItemsByTypeAction(type)
-
-        if (!items?.data) {
-          throw new Error("No data returned")
-        }
-
-        const normalized = Array.from(
+      const normalize = (items = []) =>
+        Array.from(
           new Map(
-            items.data.map((item) => [
+            items.map((item) => [
               item.prodId,
-              {
-                label: item.value,
-                value: item.prodId,
-              },
+              { label: item.value, value: item.prodId },
             ])
           ).values()
         )
 
-        dispatch({
-          type: actionType,
-          payload: normalized,
-        })
-      } catch (error) {
-        dispatch({
-          type: "FETCH_FAIL",
-          payload: error?.message || "Error fetching items",
-        })
-      }
-    },
-    [dispatch]
-  )
+      dispatch({
+        type: "SET_ALL_COLLECTIONS",
+        payload: {
+          brands: normalize(response?.data?.brands),
+          models: normalize(response?.data?.models),
+          colors: normalize(response?.data?.colors),
+          productnames: normalize(response?.data?.productnames),
+        },
+      })
+    } catch (error) {
+      dispatch({
+        type: "FETCH_FAIL",
+        payload: error?.message || "Error fetching items",
+      })
+    }
+  }, [dispatch])
 
   return {
     fetchItems,

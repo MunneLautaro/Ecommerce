@@ -4,7 +4,7 @@ import Select from "../Select/Select"
 import { toast } from "react-toastify"
 import Input from "../../Ui/Input/Input"
 import Button from "../../Ui/Button/Button"
-import { useState, useEffect, useContext } from "react"
+import { useEffect, useContext } from "react"
 import { addProductAction } from "@/actions/product"
 import { ProductContext } from "../../../contexts/ProductContext"
 import LinkUi from "@/components/Ui/Link/Link"
@@ -13,32 +13,14 @@ import { ItemContext, ItemDispatchContext } from "../../../contexts/ItemContext"
 
 export default function AddProduct() {
   const [productInfo, disptachProductInfo] = useContext(ProductContext)
-  const [brands, setBrands] = useState([])
-  const [products, setProducts] = useState([])
-  const [colors, setColors] = useState([])
-  const [models, setModels] = useState([])
   const itemsState = useContext(ItemContext)
   const dispatchItems = useContext(ItemDispatchContext)
   const { fetchItemsByType } = useFetchItems(dispatchItems)
+  const { brands, models, colors, productnames, loading } = itemsState
 
   useEffect(() => {
-    fetchItemsByType("brand")
-    fetchItemsByType("productname")
-    fetchItemsByType("color")
-    fetchItemsByType("model")
-  }, [])
-
-  useEffect(() => {
-    setBrands(itemsState?.brands || [])
-    setProducts(itemsState?.products || [])
-    setColors(itemsState?.colors || [])
-    setModels(itemsState?.models || [])
-  }, [
-    itemsState?.brands,
-    itemsState?.products,
-    itemsState?.colors,
-    itemsState?.models,
-  ])
+    fetchItemsByType()
+  }, [fetchItemsByType])
 
   let formCompleted = false
   const requiredFields = [
@@ -67,7 +49,7 @@ export default function AddProduct() {
 
   const areEnoughItems =
     brands?.length >= 1 &&
-    products?.length >= 1 &&
+    productnames?.length >= 1 &&
     colors?.length >= 1 &&
     models?.length >= 1
 
@@ -113,10 +95,10 @@ export default function AddProduct() {
 
             <Select
               value={productInfo?.form?.product?.value ?? ""}
-              elements={products}
+              elements={productnames}
               type="Product"
               onChange={(e) => {
-                const selectedProduct = products.find(
+                const selectedProduct = productnames.find(
                   (product) => product.value === e.target.value
                 )
                 disptachProductInfo({

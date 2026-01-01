@@ -2,16 +2,71 @@ import Categorie from "../models/categorieModel"
 import { connectToDatabaseUnix } from "../../connectDBUnix"
 import { validateCategorie } from "@/helpers/validateCategorie"
 
-const getItemsByType = async (type) => {
+const getItemsByType = async () => {
   try {
     await connectToDatabaseUnix()
-    const categories = await Categorie.find({
-      type: type.trim().toLowerCase(),
-    })
-    const plainCategories = JSON.parse(JSON.stringify(categories))
-    return { success: "Items fetched", data: plainCategories, status: 200 }
+
+    const result = await Categorie.aggregate([
+      {
+        $match: {
+          type: {
+            $in: ["brand", "model", "color", "productname"],
+          },
+        },
+      },
+      {
+        $group: {
+          _id: "$type",
+          items: {
+            $push: {
+              _id: "$_id",
+              prodId: "$prodId",
+              value: "$value",
+              type: "$type",
+            },
+          },
+        },
+      },
+    ])
+
+    const data = {
+      brands: {},
+      models: {},
+      colors: {},
+      productnames: {},
+    }
+
+    for (const group of result) {
+      switch (group._id) {
+        case "brand":
+          data.brands = group.items
+          break
+        case "model":
+          data.models = group.items
+          break
+        case "color":
+          data.colors = group.items
+          break
+        case "productname":
+          data.productnames = group.items
+          break
+      }
+    }
+
+    const plainData = JSON.parse(JSON.stringify(data))
+
+    return {
+      success: "Items fetched",
+      data: plainData,
+      status: 200,
+    }
   } catch (error) {
-    return { error: error.message, status: 500 }
+    console.error("getItemsByType error:", error)
+
+    return {
+      error: "Error fetching items",
+      status: 500,
+    }
   }
 }
 

@@ -14,8 +14,8 @@ const getCategorieItemsAction = async () => {
   return categories
 }
 
-const getItemsByTypeAction = async (type) => {
-  const categories = await getItemsByType(type)
+const getItemsByTypeAction = async () => {
+  const categories = await getItemsByType()
   return categories
 }
 

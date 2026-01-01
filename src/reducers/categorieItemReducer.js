@@ -1,7 +1,7 @@
 export const initialItems = {
   items: null,
   brands: [],
-  products: [],
+  productnames: [],
   colors: [],
   models: [],
   currentItem: null,
@@ -64,6 +64,15 @@ export const itemFilterReducer = (state, action) => {
       }
     }
 
+    case "TOGGLE_ASCENDING":
+      return {
+        ...state,
+        itemFilter: {
+          ...state.itemFilter,
+          isAscending: !state.itemFilter.isAscending,
+        },
+      }
+
     case "SET_FILTER_DATE": {
       return {
         ...state,
@@ -110,30 +119,15 @@ export const itemFilterReducer = (state, action) => {
         response: initialItems.response,
       }
     }
-    case "SET_BRANDS": {
+    case "SET_ALL_COLLECTIONS":
       return {
         ...state,
-        brands: action.payload,
+        brands: action.payload.brands,
+        models: action.payload.models,
+        colors: action.payload.colors,
+        productnames: action.payload.productnames,
+        loading: false,
       }
-    }
-    case "SET_PRODUCTS": {
-      return {
-        ...state,
-        products: action.payload,
-      }
-    }
-    case "SET_COLORS": {
-      return {
-        ...state,
-        colors: action.payload,
-      }
-    }
-    case "SET_MODELS": {
-      return {
-        ...state,
-        models: action.payload,
-      }
-    }
 
     default: {
       console.log("unkown action")
