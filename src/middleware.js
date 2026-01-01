@@ -1,25 +1,31 @@
-import { cookies } from "next/headers"
 import { NextResponse } from "next/server"
 import { decrypt, encrypt } from "../src/lib/session"
-import { getCookie } from "cookies-next"
 
 const protectedRoutes = ["/adminPage", "/prods", "/categorieItems"]
 const publicRoutes = ["/login", "/"]
 
 export default async function middleware(req) {
   const res = NextResponse.next()
+  const path = req.nextUrl.pathname
 
-  res.headers.set("x-middleware-cache", "no-cache")
-
-  const path = req?.nextUrl?.pathname
-  const isProtectedRoute = protectedRoutes.includes(path)
+  const isProtectedRoute = protectedRoutes.some((p) => path.startsWith(p))
   const isPublicRoute = publicRoutes.includes(path)
 
-  const sessionCookie = await getCookie("session", { cookies })
+  const sessionCookie = req.cookies.get("session")?.value
 
-  if (!sessionCookie) return
+  if (!sessionCookie) {
+    if (isProtectedRoute) {
+      return NextResponse.redirect(new URL("/login", req.nextUrl))
+    }
+    return res
+  }
 
   const session = await decrypt(sessionCookie)
+
+  if (!session) {
+    res.cookies.delete("session")
+    return NextResponse.redirect(new URL("/login", req.nextUrl))
+  }
 
   if (session?.exp) {
     const now = Math.floor(Date.now() / 1000)
@@ -35,9 +41,10 @@ export default async function middleware(req) {
 
       res.cookies.set("session", newToken, {
         httpOnly: true,
-        secure: true,
+        secure: process.env.NODE_ENV === "production",
         sameSite: "lax",
         expires: new Date(Date.now() + TWO_HOURS * 1000),
+        path: "/",
       })
     }
   }
@@ -49,12 +56,18 @@ export default async function middleware(req) {
     return NextResponse.redirect(new URL("/login", req.nextUrl))
   }
 
-  if (isPublicRoute && session?.userId && session?.username && path !== "/") {
+  if (isPublicRoute && session?.userId && path !== "/") {
     return NextResponse.redirect(new URL("/", req.nextUrl))
   }
 
   return res
 }
+
 export const config = {
-  matcher: protectedRoutes,
+  matcher: [
+    "/adminPage/:path*",
+    "/prods/:path*",
+    "/categorieItems/:path*",
+    "/login",
+  ],
 }
