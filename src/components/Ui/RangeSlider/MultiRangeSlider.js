@@ -29,7 +29,7 @@ export default function MultiRangeSlider({ min = 0, max = 100, onChange }) {
 
   return (
     <div className="relative w-72 h-10">
-      <div className="absolute -top-6 left-0 w-full flex justify-between text-sm font-medium text-amber-300">
+      <div className="absolute mt-2 top-6 left-0 w-full flex justify-between text-sm font-medium text-amber-300">
         <span>${minValue}</span>
         <span>${maxValue}</span>
       </div>

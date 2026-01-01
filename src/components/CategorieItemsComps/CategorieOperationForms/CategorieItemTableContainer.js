@@ -4,7 +4,7 @@ import { useContext, useState } from "react"
 import { ItemContext, ItemDispatchContext } from "@/contexts/ItemContext"
 import { RefreshCcw } from "react-feather"
 import Button from "@/components/Ui/Button/Button"
-import ItemTable from "./ItemTable"
+import ItemTable from "../ItemTable/ItemTable"
 
 export default function CategorieItemTableContainer() {
   const itemFilter = useContext(ItemContext)
