@@ -1,30 +1,13 @@
 "use client"
 
-import { useState, useReducer } from "react"
+import { useState, useContext } from "react"
 import AddProduct from "../AddProduct/AddProduct"
 import ModifyProduct from "../ModifyProduct/ModifyProduct"
-import { ProductContext } from "../../../contexts/ProductContext"
-import {
-  initialFormState,
-  productFormReducer,
-} from "../../../reducers/productReducer"
-import { ItemContext, ItemDispatchContext } from "@/contexts/ItemContext"
-import {
-  initialItems,
-  itemFilterReducer,
-} from "../../../reducers/categorieItemReducer"
+import { ProductContext } from "@/contexts/ProductContext"
 
 export default function ProductTab() {
   const [displayAddProduct, setDisplayAddProduct] = useState(true)
-  const [itemsState, dispatchItems] = useReducer(
-    itemFilterReducer,
-    initialItems
-  )
-
-  const [formState, dispatchForm] = useReducer(
-    productFormReducer,
-    initialFormState
-  )
+  const [, dispatchForm] = useContext(ProductContext)
 
   return (
     <>
@@ -53,13 +36,8 @@ export default function ProductTab() {
               Modify
             </button>
           </div>
-          <ItemContext.Provider value={itemsState}>
-            <ItemDispatchContext.Provider value={dispatchItems}>
-              <ProductContext.Provider value={[formState, dispatchForm]}>
-                {displayAddProduct ? <AddProduct /> : <ModifyProduct />}
-              </ProductContext.Provider>
-            </ItemDispatchContext.Provider>
-          </ItemContext.Provider>
+
+          {displayAddProduct ? <AddProduct /> : <ModifyProduct />}
         </div>
       </div>
     </>

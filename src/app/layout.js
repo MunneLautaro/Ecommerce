@@ -3,6 +3,7 @@ import NavBar from "../components/Ui/NavBar/NavBar"
 import { ToastContainer } from "react-toastify"
 import { cookies } from "next/headers"
 import { decrypt } from "../lib/session"
+import Providers from "@/providers/Providers"
 
 export const metadata = {
   title: "Create Next App",
@@ -17,9 +18,11 @@ export default async function RootLayout({ children }) {
   return (
     <html lang="en">
       <body className="antialiased">
-        <NavBar session={session} />
-        <div className="pt-[90px]">{children}</div>
-        <ToastContainer theme="dark" position="bottom-right" />
+        <Providers>
+          <NavBar username={session?.username} isAdmin={session?.isAdmin} />
+          <div className="pt-[90px]">{children}</div>
+          <ToastContainer theme="dark" position="bottom-right" />
+        </Providers>
       </body>
     </html>
   )

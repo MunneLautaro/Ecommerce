@@ -5,17 +5,16 @@ import { adminRoutes } from "../../../app/routes"
 import Title from "./Title"
 import LogOutButton from "./LogOutButton"
 import Link from "../../Ui/Link/Link"
+import Cart from "@/components/Cart/Cart"
 
-export default function NavBar({ session }) {
+export default function NavBar({ username, isAdmin }) {
   const pathname = usePathname()
 
   return (
     <>
       <div className="flex bg-[#424242] justify-between items-center w-full h-[90px] fixed top-0 overflow-hidden z-10">
         <Title />
-        {session?.username &&
-        session?.isAdmin &&
-        adminRoutes[pathname]?.length > 0 ? (
+        {username && isAdmin && adminRoutes[pathname]?.length > 0 ? (
           adminRoutes[pathname].map((adminR) => (
             <Link
               key={adminR?.label}
@@ -28,11 +27,15 @@ export default function NavBar({ session }) {
           <Link url="/" text={"Catalog"} />
         ) : null}
         <div className="m-[15px] flex">
-          {session ? (
-            <LogOutButton
-              username={session?.username}
-              isAdmin={session.isAdmin}
-            />
+          {username ? (
+            <>
+              <div className="flex flex-row items-center justify-between">
+                <div className="mr-[100px]">
+                  <Cart />
+                </div>
+                <LogOutButton username={username} isAdmin={isAdmin} />
+              </div>
+            </>
           ) : (
             <Link url={"/login"} text={"Login"} />
           )}
