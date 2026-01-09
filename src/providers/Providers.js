@@ -1,6 +1,4 @@
 "use client"
-import { useReducer } from "react"
-import { cartReducer, initialCart } from "@/reducers/cartReducer"
 import {
   ItemContext,
   ItemDispatchContext,
@@ -9,20 +7,30 @@ import {
   ProductFilterDispatchContext,
   ProductContext,
 } from "@/contexts"
+import { useReducer, useEffect } from "react"
+import { initialCart, cartReducer } from "@/reducers/cartReducer"
 import {
   initialItems,
   itemFilterReducer,
 } from "@/reducers/categorieItemReducer"
-
 import {
   productIncialFilter,
   productFilterReducer,
 } from "@/reducers/productFilterReducer"
-
 import { initialFormState, productFormReducer } from "@/reducers/productReducer"
 
 export default function Providers({ children }) {
-  const [cart, dispatchCart] = useReducer(cartReducer, initialCart)
+  const [cart, dispatchCart] = useReducer(cartReducer, initialCart, (init) => {
+    if (typeof window === "undefined") return init
+    const stored = localStorage.getItem("cart")
+    return stored ? { cartProds: JSON.parse(stored) } : init
+  })
+
+  useEffect(() => {
+    localStorage.setItem("cart", JSON.stringify(cart.cartProds))
+    console.log("Cart saved to localStorage:", cart.cartProds)
+  }, [cart.cartProds])
+
   const [itemFilter, dispatchItemFilter] = useReducer(
     itemFilterReducer,
     initialItems

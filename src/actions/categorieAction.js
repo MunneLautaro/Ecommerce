@@ -10,11 +10,25 @@ import {
 } from "../controllers/index"
 
 const getCategorieItemsAction = async () => {
+  const { authorized, error } = await requireAuth({
+    requireAdmin: true,
+  })
+
+  if (!authorized) {
+    return { error }
+  }
   const categories = await getItems()
   return categories
 }
 
 const getItemsByTypeAction = async () => {
+  const { authorized, error } = await requireAuth({
+    requireAdmin: true,
+  })
+
+  if (!authorized) {
+    return { error }
+  }
   const categories = await getItemsByType()
   return categories
 }

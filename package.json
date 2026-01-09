@@ -13,7 +13,6 @@
     "jest": "jest --watch"
   },
   "dependencies": {
-    "aws4": "^1.13.2",
     "cookies-next": "^6.1.0",
     "crypto-js": "^4.2.0",
     "dotenv": "^17.2.2",
@@ -26,13 +25,11 @@
     "mongoose": "^8.18.0",
     "next": "^15.5.2",
     "path": "^0.12.7",
-    "portable-mongodb": "^2.1.14",
     "postcss-nested": "^7.0.2",
     "react": "^19.1.1",
     "react-dom": "^19.1.1",
     "react-feather": "^2.0.10",
-    "react-toastify": "^11.0.5",
-    "tunnel-ssh": "^5.2.0"
+    "react-toastify": "^11.0.5"
   },
   "devDependencies": {
     "@babel/preset-react": "^7.27.1",

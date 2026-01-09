@@ -1,14 +1,15 @@
 "use client"
-import { useState, useEffect } from "react"
+import { useState, useEffect, useContext } from "react"
 import { deleteProductAction } from "@/actions/product"
 import { toast } from "react-toastify"
-import { Trash } from "react-feather"
+import { Trash, Plus, Minus } from "react-feather"
 import Image from "next/image"
 import Product from "./Product"
 import Button from "../Ui/Button/Button"
 import Skeleton from "./Skeleton"
 import ProductDetailsModal from "./ProductDetailsModal"
 import DeleteProductModal from "./DeleteProductModal"
+import { CartContext } from "@/contexts/CartContext"
 
 export default function ProductCard({
   product,
@@ -20,6 +21,8 @@ export default function ProductCard({
   function randomIntFromInterval(min, max) {
     return Math.floor(Math.random() * (max - min + 1) + min)
   }
+
+  const { cart, dispatchCart } = useContext(CartContext)
 
   const [response, setResponse] = useState(null)
   const [loading, setLoading] = useState(true)
@@ -87,11 +90,30 @@ export default function ProductCard({
             </div>
             <Product product={product} />
             {isAdmin && (
-              <div className="mt-2">
+              <div className="mt-2 flex flex-row gap-2">
+                <Button
+                  type="button"
+                  onClick={(e) => {
+                    e.stopPropagation()
+                    dispatchCart({
+                      type: "REMOVE_FROM_CART",
+                      payload: product,
+                    })
+                  }}
+                  text={<Minus size={16} />}
+                />
                 <Button
                   type="button"
                   onClick={handleDeleteClick}
                   text={<Trash size={16} />}
+                />
+                <Button
+                  type="button"
+                  onClick={(e) => {
+                    e.stopPropagation()
+                    dispatchCart({ type: "ADD_TO_CART", payload: product })
+                  }}
+                  text={<Plus size={16} />}
                 />
               </div>
             )}

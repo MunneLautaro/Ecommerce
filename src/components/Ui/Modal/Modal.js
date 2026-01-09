@@ -21,7 +21,7 @@ export default function Modal({ isOpen, onClose, children }) {
   return (
     <div className="fixed inset-0 bg-black/70 z-50" onClick={onClose}>
       <div
-        className="fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-[#212121] p-6 rounded-lg"
+        className="fixed top-1/3 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-[#212121] p-6 rounded-lg"
         onClick={(e) => e.stopPropagation()}
       >
         {children}

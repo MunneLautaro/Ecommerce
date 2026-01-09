@@ -11,11 +11,6 @@ export default function Product({ product, truncate = true }) {
           truncate={truncate}
         />
         <ItemProductCard
-          type={"Description"}
-          elem={product?.description}
-          truncate={truncate}
-        />
-        <ItemProductCard
           type={"Brand"}
           elem={`${product?.brand?.label || product?.brand}`.toUpperCase()}
           truncate={truncate}
