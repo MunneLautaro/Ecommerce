@@ -272,7 +272,15 @@ export default function DatePicker({ callback, resetTrigger }) {
                         <span className="relative z-10 ">{day}</span>
 
                         {isInRange(day) && (
-                          <div className="absolute inset-2 bg-violet-500 rounded-full" />
+                          <div
+                            className={`absolute top-1/2 -translate-y-1/2 bg-violet-500 h-1 ${
+                              isStart(day)
+                                ? "inset-x-0 left-1/2"
+                                : isEnd(day)
+                                ? "inset-x-0 right-1/2"
+                                : "inset-x-0"
+                            }`}
+                          />
                         )}
 
                         {(isStart(day) || isEnd(day)) && (
