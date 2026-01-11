@@ -25,7 +25,7 @@ export default function AddCategorieItem({ onSubmit }) {
   return (
     <div className="flex">
       <form
-        className="flex flex-col bg-[#424242] p-3 rounded-lg shadow-2xl border border-yellow-500 "
+        className="flex flex-col bg-[#424242] p-3 rounded-lg shadow-2xl mt-2"
         onSubmit={async (e) => {
           e.preventDefault()
           const addItemResponse = await addCategorieItemAction(item)
