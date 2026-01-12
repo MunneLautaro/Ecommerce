@@ -1,21 +1,23 @@
+import { capitalizeText } from "./capitalizeText"
+
 const applyFilter = (products, prodFilter = {}) => {
   if (Array.isArray(products) === false) return []
 
   const filtered = products.filter((prod) => {
     return (
       (prodFilter.product
-        ? prod?.product
-            ?.toLowerCase()
-            .includes(prodFilter.product.toLowerCase())
+        ? capitalizeText(prod?.product).includes(
+            capitalizeText(prodFilter.product)
+          )
         : true) &&
       (prodFilter.brand
-        ? prod?.brand?.toLowerCase().includes(prodFilter.brand.toLowerCase())
+        ? capitalizeText(prod?.brand).includes(capitalizeText(prodFilter.brand))
         : true) &&
       (prodFilter.model
-        ? prod?.model?.toLowerCase().includes(prodFilter.model.toLowerCase())
+        ? capitalizeText(prod?.model).includes(capitalizeText(prodFilter.model))
         : true) &&
       (prodFilter.color
-        ? prod?.color?.toLowerCase().includes(prodFilter.color.toLowerCase())
+        ? capitalizeText(prod?.color).includes(capitalizeText(prodFilter.color))
         : true) &&
       (prodFilter.price?.min != null && prodFilter?.price?.max != null
         ? prod?.price >= prodFilter?.price?.min &&
@@ -40,7 +42,7 @@ const applyItemFilter = (items, itemFilter = {}) => {
 
   return items.filter((item) => {
     const typeMatch = itemFilter.type
-      ? item?.type?.toLowerCase().includes(itemFilter.type.toLowerCase())
+      ? item?.type?.includes(itemFilter.type)
       : true
 
     const dateMatch =

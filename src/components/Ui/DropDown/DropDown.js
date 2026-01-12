@@ -2,7 +2,7 @@
 
 import Button from "../Button/Button"
 import { useState } from "react"
-import useOutsideClick from "../../../hooks/dropdownHook"
+import useOutsideClick from "../../../hooks/useOnBlur"
 import { ArrowDown, ArrowUp } from "react-feather"
 
 export default function DropDown({

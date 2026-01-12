@@ -4,12 +4,13 @@ import { ItemDispatchContext } from "../../../contexts/ItemContext"
 import DatePicker from "../../DatePicker/DatePicker"
 import DropDown from "../../Ui/DropDown/DropDown"
 import { applyItemFilter } from "../../../helpers/applyFilter"
+import { capitalizeText } from "@/helpers/capitalizeText"
 import { Trash2, Edit } from "react-feather"
 import {
   modifyCategorieAction,
   deleteCategorieItemAction,
 } from "../../../actions/categorieAction"
-import { useFetchItems } from "@/hooks/fetchItems"
+import { useFetchItems } from "@/hooks/useFetchItems"
 import ConfirmActionButton from "../../Ui/Button/ConfirmActionButton"
 import { useItemFilterActions } from "@/hooks/useItemFilterActions"
 import SortableTh from "./SortableTh"
@@ -130,7 +131,11 @@ export default function ItemTable({ resetTrigger }) {
                   setItem(item)
                 }}
               >
-                <TableData>{item?.type}</TableData>
+                <TableData>
+                  {capitalizeText(
+                    item?.type === "productname" ? "Product Name" : item?.type
+                  )}
+                </TableData>
                 <TableData>
                   <input
                     value={inputValues[item?.value] || ""}

@@ -1,6 +1,7 @@
 import Categorie from "../models/categorieModel"
 import { connectToDatabaseUnix } from "../../connectDBUnix"
 import { validateCategorie } from "@/helpers/validateCategorie"
+import { capitalizeText } from "@/helpers/capitalizeText"
 
 const getItemsByType = async () => {
   try {
@@ -91,8 +92,8 @@ const addItemInCategorie = async (type, value) => {
     await connectToDatabaseUnix()
 
     const existing = await Categorie.findOne({
-      type: type.trim().toLowerCase(),
-      value: value.trim().toLowerCase(),
+      type: capitalizeText(type.trim()),
+      value: capitalizeText(value.trim()),
     }).lean()
 
     if (existing) {
@@ -103,8 +104,8 @@ const addItemInCategorie = async (type, value) => {
     }
 
     const newItem = await Categorie.create({
-      type: type.trim().toLowerCase(),
-      value: value.trim().toLowerCase(),
+      type: capitalizeText(type.trim()),
+      value: capitalizeText(value.trim()),
     })
 
     return {
@@ -143,8 +144,8 @@ const deleteCategorie = async (type, value) => {
     await connectToDatabaseUnix()
 
     const categorie = await Categorie.findOneAndDelete({
-      type: type.trim().toLowerCase(),
-      value: value.trim().toLowerCase(),
+      type: capitalizeText(type.trim()),
+      value: capitalizeText(value.trim()),
     })
 
     if (!categorie) {
@@ -178,8 +179,8 @@ const modifyCategorie = async (type, oldValue, newValue) => {
     await connectToDatabaseUnix()
 
     const existing = await Categorie.findOne({
-      type: type.trim().toLowerCase(),
-      value: oldValue.trim().toLowerCase(),
+      type: capitalizeText(type.trim()),
+      value: capitalizeText(oldValue.trim()),
     })
     if (!existing) {
       return {
@@ -189,8 +190,8 @@ const modifyCategorie = async (type, oldValue, newValue) => {
     }
 
     const duplicate = await Categorie.findOne({
-      type: type.trim().toLowerCase(),
-      value: newValue.trim().toLowerCase(),
+      type: capitalizeText(type.trim()),
+      value: capitalizeText(newValue.trim()),
     })
 
     if (duplicate) {
@@ -201,8 +202,11 @@ const modifyCategorie = async (type, oldValue, newValue) => {
     }
 
     const updatedCategorie = await Categorie.findOneAndUpdate(
-      { type: type.trim().toLowerCase(), value: oldValue.trim().toLowerCase() },
-      { value: newValue.trim().toLowerCase() },
+      {
+        type: capitalizeText(type.trim()),
+        value: capitalizeText(oldValue.trim()),
+      },
+      { value: capitalizeText(newValue.trim()) },
       { new: true }
     )
     const plainUpdatedCategorie = JSON.parse(JSON.stringify(updatedCategorie))

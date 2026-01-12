@@ -29,7 +29,7 @@ export default function DeleteUser() {
           const delResponse = await deleteUserAction(formData)
           setResponse(delResponse)
         }}
-        className="flex flex-col justify-between items-center shadow-2xl border bg-[#424242] h-[200px] w-[300px] rounded-[10px]"
+        className="flex flex-col justify-between items-center shadow-2xl bg-[#424242] h-[200px] w-[300px] rounded-[10px]"
       >
         <div className="flex flex-col items-center ">
           <div className="min-h-[150px] ">

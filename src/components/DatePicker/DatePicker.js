@@ -4,7 +4,7 @@ import DropDown from "@/components/Ui/DropDown/DropDown"
 import { initialMatrix, matrizReducer } from "@/reducers/matrizReducer"
 import { useReducer, useEffect, useState, useRef } from "react"
 import { ArrowLeftCircle, ArrowRightCircle, Calendar } from "react-feather"
-import useOutsideClick from "../../hooks/dropdownHook"
+import useOutsideClick from "../../hooks/useOnBlur"
 
 export default function DatePicker({ callback, resetTrigger }) {
   const [matriz, dispatchMatriz] = useReducer(matrizReducer, initialMatrix)

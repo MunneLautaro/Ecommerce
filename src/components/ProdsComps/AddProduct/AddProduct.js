@@ -8,7 +8,7 @@ import { useEffect, useContext } from "react"
 import { addProductAction } from "@/actions/product"
 import { ProductContext } from "../../../contexts/ProductContext"
 import LinkUi from "@/components/Ui/Link/Link"
-import { useFetchItems } from "@/hooks/fetchItems"
+import { useFetchItems } from "@/hooks/useFetchItems"
 import { ItemContext, ItemDispatchContext } from "../../../contexts/ItemContext"
 
 export default function AddProduct() {
@@ -16,7 +16,7 @@ export default function AddProduct() {
   const itemsState = useContext(ItemContext)
   const dispatchItems = useContext(ItemDispatchContext)
   const { fetchItemsByType } = useFetchItems(dispatchItems)
-  const { brands, models, colors, productnames, loading } = itemsState
+  const { brands, models, colors, productnames } = itemsState
 
   useEffect(() => {
     fetchItemsByType()

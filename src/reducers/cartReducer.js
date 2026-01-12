@@ -1,5 +1,6 @@
 export const initialCart = {
   cartProds: [],
+  response: null,
 }
 
 export const cartReducer = (state, action) => {
@@ -26,7 +27,7 @@ export const cartReducer = (state, action) => {
       }
     }
 
-    case "REMOVE_FROM_CART": {
+    case "REMOVE_UNIT_FROM_CART": {
       const existingProd = state.cartProds.find(
         (prod) => prod.sku === action.payload.sku
       )
@@ -49,6 +50,29 @@ export const cartReducer = (state, action) => {
         cartProds: state.cartProds.filter(
           (prod) => prod.sku !== action.payload.sku
         ),
+      }
+    }
+
+    case "DELETE_PRODUCT": {
+      return {
+        ...state,
+        cartProds: state.cartProds.filter(
+          (prod) => prod.sku !== action.payload.sku
+        ),
+      }
+    }
+
+    case "SET_RESPONSE": {
+      return {
+        ...state,
+        response: action.payload,
+      }
+    }
+
+    case "CLEAR_RESPONSE": {
+      return {
+        ...state,
+        response: null,
       }
     }
 

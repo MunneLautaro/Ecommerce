@@ -8,6 +8,7 @@ import {
   ProductContext,
 } from "@/contexts"
 import { useReducer, useEffect } from "react"
+import { toast } from "react-toastify"
 import { initialCart, cartReducer } from "@/reducers/cartReducer"
 import {
   initialItems,
@@ -23,13 +24,25 @@ export default function Providers({ children }) {
   const [cart, dispatchCart] = useReducer(cartReducer, initialCart, (init) => {
     if (typeof window === "undefined") return init
     const stored = localStorage.getItem("cart")
-    return stored ? { cartProds: JSON.parse(stored) } : init
+    return stored
+      ? { cartProds: JSON.parse(stored), response: null }
+      : init
   })
 
   useEffect(() => {
     localStorage.setItem("cart", JSON.stringify(cart.cartProds))
     console.log("Cart saved to localStorage:", cart.cartProds)
   }, [cart.cartProds])
+
+  useEffect(() => {
+    if (!cart.response) return
+    if (cart.response?.success) {
+      toast.success(cart.response.success)
+    } else {
+      toast.error(cart.response?.error)
+    }
+    dispatchCart({ type: "CLEAR_RESPONSE" })
+  }, [cart.response, dispatchCart])
 
   const [itemFilter, dispatchItemFilter] = useReducer(
     itemFilterReducer,

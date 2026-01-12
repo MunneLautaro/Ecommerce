@@ -7,6 +7,7 @@ import { VALID_CATEGORIES } from "@/utils/validCategories"
 import { useState, useEffect } from "react"
 import { toast } from "react-toastify"
 import { addCategorieItemAction } from "../../../actions/categorieAction"
+import { set } from "mongoose"
 
 export default function AddCategorieItem({ onSubmit }) {
   const [item, setItem] = useState({ type: "", value: "" })
@@ -20,6 +21,7 @@ export default function AddCategorieItem({ onSubmit }) {
     } else {
       toast.error(`${response?.error}`)
     }
+    setResponse(null)
   }, [response])
 
   return (
@@ -48,7 +50,11 @@ export default function AddCategorieItem({ onSubmit }) {
           onChange={(e) => setItem({ ...item, value: e?.target?.value })}
           value={item?.value}
         />
-        <Button type={"submit"} text={`Add ${item?.type} Item`} />
+        <Button
+          type={"submit"}
+          text={`Add ${item?.type} Item`}
+          disabled={item?.type === "" || item?.value === ""}
+        />
       </form>
     </div>
   )

@@ -5,10 +5,10 @@ import {
   ProductFilterContext,
   ProductFilterDispatchContext,
 } from "@/contexts/ProductFilterContext"
-import ShowProds from "./ShowProds"
+import ShowProds from "../CardFormat/ShowProds"
 import { useEffect, useContext } from "react"
 import FilterByPrice from "./FilterByPrice"
-import { useFetchProducts } from "../../../../hooks/fetchProducts"
+import { useFetchProducts } from "../../../../hooks/useFetchProducts"
 
 export default function ProductFilter({ isAdmin = false }) {
   const prodFilter = useContext(ProductFilterContext)

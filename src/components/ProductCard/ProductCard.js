@@ -10,20 +10,15 @@ import Skeleton from "./Skeleton"
 import ProductDetailsModal from "./ProductDetailsModal"
 import DeleteProductModal from "./DeleteProductModal"
 import { CartContext } from "@/contexts/CartContext"
+import { useCart } from "@/hooks/useCart"
 
-export default function ProductCard({
-  product,
-  isCarrito,
-  display,
-  isAdmin,
-  onSubmit,
-}) {
+export default function ProductCard({ product, isAdmin, onSubmit }) {
   function randomIntFromInterval(min, max) {
     return Math.floor(Math.random() * (max - min + 1) + min)
   }
 
   const { cart, dispatchCart } = useContext(CartContext)
-
+  const { addToCart, removeUnitFromCart } = useCart(dispatchCart)
   const [response, setResponse] = useState(null)
   const [loading, setLoading] = useState(true)
   const [isProductModalOpen, setIsProductModalOpen] = useState(false)
@@ -36,16 +31,16 @@ export default function ProductCard({
     setTimeout(() => {
       setLoading(false)
     }, tiempoDeCarga)
-  }, [])
+  }, [tiempoDeCarga])
 
   useEffect(() => {
-    console.log("Response:", response)
     if (!response) return
     if (response?.success) {
       toast.success(response?.success)
     } else {
       toast.error(response?.error)
     }
+    setResponse(null)
   }, [response])
 
   const handleDelete = async (e) => {
@@ -95,10 +90,7 @@ export default function ProductCard({
                   type="button"
                   onClick={(e) => {
                     e.stopPropagation()
-                    dispatchCart({
-                      type: "REMOVE_FROM_CART",
-                      payload: product,
-                    })
+                    removeUnitFromCart(product)
                   }}
                   text={<Minus size={16} />}
                 />
@@ -111,7 +103,7 @@ export default function ProductCard({
                   type="button"
                   onClick={(e) => {
                     e.stopPropagation()
-                    dispatchCart({ type: "ADD_TO_CART", payload: product })
+                    addToCart(product)
                   }}
                   text={<Plus size={16} />}
                 />
