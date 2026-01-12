@@ -1,7 +1,7 @@
 "use client"
 
 import { useState, useEffect, useContext } from "react"
-import { useFetchItems } from "@/hooks/fetchItems"
+import { useFetchItems } from "@/hooks/useFetchItems"
 import { toast } from "react-toastify"
 import AddCategorieItem from "./CategorieOperationForms/AddCategorieItem"
 import CategorieItemTableContainer from "./CategorieOperationForms/CategorieItemTableContainer"
@@ -11,7 +11,6 @@ export default function CategorieItems() {
   const [displayAddItem, setDisplayAddItem] = useState(true)
   const dispatchItemFilter = useContext(ItemDispatchContext)
   const itemFilter = useContext(ItemContext)
-
   const { fetchItems } = useFetchItems(dispatchItemFilter)
 
   useEffect(() => {
@@ -22,7 +21,8 @@ export default function CategorieItems() {
     } else {
       toast.error(itemFilter?.response?.error)
     }
-  }, [itemFilter?.response])
+    dispatchItemFilter({ type: "CLEAR_RESPONSE" })
+  }, [itemFilter?.response, dispatchItemFilter])
 
   useEffect(() => {
     dispatchItemFilter({ type: "FETCH_INIT" })
