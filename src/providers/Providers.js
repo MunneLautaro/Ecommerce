@@ -17,16 +17,14 @@ import {
 import {
   productIncialFilter,
   productFilterReducer,
-} from "@/reducers/productFilterReducer"
+} from "@/reducers/productFilter/productFilterReducer"
 import { initialFormState, productFormReducer } from "@/reducers/productReducer"
 
 export default function Providers({ children }) {
   const [cart, dispatchCart] = useReducer(cartReducer, initialCart, (init) => {
     if (typeof window === "undefined") return init
     const stored = localStorage.getItem("cart")
-    return stored
-      ? { cartProds: JSON.parse(stored), response: null }
-      : init
+    return stored ? { cartProds: JSON.parse(stored), response: null } : init
   })
 
   useEffect(() => {
