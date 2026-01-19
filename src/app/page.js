@@ -1,5 +1,4 @@
 "use server"
-import Carrousel from "../components/Ui/Carrousel/Carrousel"
 import ProductFilter from "@/components/ProdsComps/ProductFiltrer/CardFormat/ProductFilter"
 import { cookies } from "next/headers"
 import { decrypt } from "../lib/session"
@@ -12,7 +11,6 @@ export default async function Productos() {
     <>
       <div className="flex items-center justify-center flex-col">
         <ProductFilter isAdmin={!!session?.isAdmin} />
-        <Carrousel />
       </div>
     </>
   )

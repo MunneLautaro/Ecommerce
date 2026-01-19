@@ -64,7 +64,7 @@ export function LoginForm() {
           }
         />
 
-        <Button text={"submit"} type={"submit"} />
+        <Button text={"Log in"} type={"submit"} />
       </form>
       <div
         className={`

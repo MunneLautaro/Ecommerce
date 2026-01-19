@@ -19,7 +19,7 @@ export default function ProductTable({ products }) {
         onDoubleClick={() => setIsAdjusted((prevIsAdjusted) => !prevIsAdjusted)}
         className={`table-${
           isAdjusted ? "adjusted" : "fixed"
-        } border-collapse border border-[#212121] w-lg max-w-5xl`}
+        } border-collapse border border-[#212121] lg:w-lg lg:max-w-5xl md:w-md sm:w-sm`}
       >
         <thead className="bg-[#212121] text-amber-400">
           <tr>
@@ -161,19 +161,19 @@ export default function ProductTable({ products }) {
                 tabIndex={0}
                 role="button"
               >
-                <td className="p-2 border border-[#212121] max-w-[30px] truncate">
+                <td className="p-2 border border-[#212121] lg:max-w-[30px] md:max-w-[20px] sm:max-w-[10px] truncate">
                   {prod?.product}
                 </td>
-                <td className="p-2 border border-[#212121] max-w-[30px] truncate">
+                <td className="p-2 border border-[#212121] lg:max-w-[30px] md:max-w-[20px] sm:max-w-[10px] truncate">
                   {prod?.brand}
                 </td>
-                <td className="p-2 border border-[#212121] max-w-[30px] truncate">
+                <td className="p-2 border border-[#212121] lg:max-w-[30px] md:max-w-[20px] sm:max-w-[10px] truncate">
                   {prod?.color}
                 </td>
-                <td className="p-2 border border-[#212121] max-w-[30px] truncate">
+                <td className="p-2 border border-[#212121] lg:max-w-[30px] md:max-w-[20px] sm:max-w-[10px] truncate">
                   {prod?.model}
                 </td>
-                <td className="truncate p-2 border border-[#212121] max-w-[30px]">
+                <td className="truncate p-2 border border-[#212121] lg:max-w-[30px] md:max-w-[20px] sm:max-w-[10px]">
                   {`$${prod?.price}`}
                 </td>
               </tr>

@@ -20,8 +20,8 @@ export default function ModifyProductForm({ onSubmit }) {
   }, [response])
 
   return (
-    <div className="flex flex-col items-center px-4 justify-center">
-      <div className="flex flex-col md:flex-row mt-6 gap-10 w-full max-w-5xl">
+    <div className="flex flex-col items-start w-full">
+      <div className="flex flex-col lg:flex-row gap-4 w-full max-w-4xl">
         <form
           onSubmit={async (e) => {
             e.preventDefault()
@@ -29,20 +29,8 @@ export default function ModifyProductForm({ onSubmit }) {
             setResponse(modedProduct)
             onSubmit()
           }}
-          className="flex flex-col gap-4 w-full md:w-1/2 bg-[#424242] p-3 rounded-lg shadow-2xl"
+          className="flex flex-col gap-4 w-full lg:w-1/2 min-w-0 bg-[#424242] p-3 rounded-lg shadow-2xl"
         >
-          <label className="font-semibold">Brand:</label>
-          <Input value={formProduct?.form?.brand || ""} disabled={true} />
-
-          <label className="font-semibold">Product:</label>
-          <Input value={formProduct?.form?.product || ""} disabled={true} />
-
-          <label className="font-semibold">Color:</label>
-          <Input value={formProduct?.form?.color || ""} disabled={true} />
-
-          <label className="font-semibold">Model:</label>
-          <Input value={formProduct?.form?.model || ""} disabled={true} />
-
           <label className="font-semibold">Image:</label>
           <Input
             name={"img"}
@@ -130,7 +118,7 @@ export default function ModifyProductForm({ onSubmit }) {
           <Button type="submit" text="Modify product" />
         </form>
 
-        <div className="w-full md:w-1/2">
+        <div className="hidden md:block w-full lg:w-1/2 min-w-0">
           <ProductCard product={formProduct?.form} display />
         </div>
       </div>

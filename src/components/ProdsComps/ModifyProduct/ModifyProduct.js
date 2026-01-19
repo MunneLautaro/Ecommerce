@@ -26,10 +26,10 @@ export default function ModifyProduct() {
       </h1>
 
       <div
-        className="grid grid-cols-2 gap-4 md:grid-cols-1 lg:grid-cols-2"
+        className="grid grid-cols-1 lg:grid-cols-[1.6fr_minmax(340px,1fr)]"
         data-testid="ModProductComponent "
       >
-        <div className="flex flex-col items-start justify-start gap-4">
+        <div className="order-2 lg:order-1 flex flex-col items-start justify-start gap-4 min-w-0">
           <div className="flex flex-col-reverse items-end">
             <ShowProds />
             <Button
@@ -39,7 +39,7 @@ export default function ModifyProduct() {
           </div>
         </div>
 
-        <div className="grid grid-flow-col justify-center gap-4">
+        <div className="order-1 lg:order-2 grid justify-start lg:justify-start lg:sticky lg:top-4">
           <ModifyProductForm onSubmit={fetchProductsWithPriceRange} />
         </div>
       </div>
