@@ -77,7 +77,7 @@ export const productFilterReducer = (state, action) => {
     }
 
     default: {
-      console.log("unkown action")
+      console.log("unknown action")
       return state
     }
   }

@@ -130,7 +130,7 @@ export const itemFilterReducer = (state, action) => {
       }
 
     default: {
-      console.log("unkown action")
+      console.log("unknown action")
       return state
     }
   }
