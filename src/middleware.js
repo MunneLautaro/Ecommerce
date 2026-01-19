@@ -17,6 +17,7 @@ export default async function middleware(req) {
     if (isProtectedRoute) {
       return NextResponse.redirect(new URL("/login", req.nextUrl))
     }
+    res.headers.set("Cache-Control", "public, max-age=3600, s-maxage=3600")
     return res
   }
 

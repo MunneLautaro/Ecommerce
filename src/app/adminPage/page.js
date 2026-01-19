@@ -3,13 +3,10 @@ import AddUser from "../../components/UserComps/AddUser/AddUser"
 import ShowUsers from "../../components/UserComps/ShowUsers/ShowUsers"
 import ModUser from "../../components/UserComps/ModUser/ModUser"
 import DeleteUser from "../../components/UserComps/DeleteUser/DeleteUser"
+import { getUsersAction } from "@/actions/userAction"
 
 export default async function Home() {
-  const res = await fetch(`${process.env.NEXT_PUBLIC_FULL_URL}/api/users`, {
-    next: { tags: ["users"] },
-  })
-
-  const users = await res.json()
+  const users = await getUsersAction()
 
   return (
     <>

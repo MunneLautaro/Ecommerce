@@ -1,7 +1,7 @@
 "use server"
 import { actionUser } from "./serverActionUser"
 import { requireAuth } from "../lib/session"
-import { addUser, modifyUser, deleteUser } from "../controllers/index"
+import { addUser, modifyUser, deleteUser, getUsers } from "../controllers/index"
 
 const addUserAction = async (formData) => {
   const { authorized, error, session } = await requireAuth({
@@ -70,4 +70,16 @@ const deleteUserAction = async (formData) => {
   return res
 }
 
-export { addUserAction, modUserAction, deleteUserAction }
+const getUsersAction = async () => {
+  const { authorized, error, session } = await requireAuth({
+    requireAdmin: true,
+  })
+  if (!authorized) {
+    return { error }
+  }
+
+  const users = await getUsers()
+  return users
+}
+
+export { addUserAction, modUserAction, deleteUserAction, getUsersAction }
