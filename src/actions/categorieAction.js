@@ -8,6 +8,7 @@ import {
   deleteCategorie,
   getItemsByType,
 } from "../controllers/index"
+import { actionItem } from "./serverActionUser"
 
 const getCategorieItemsAction = async () => {
   const { authorized, error } = await requireAuth({
@@ -51,6 +52,8 @@ const addCategorieItemAction = async (formData) => {
 
   const res = await addItemInCategorie(type, value)
 
+  actionItem()
+
   return res
 }
 
@@ -69,6 +72,8 @@ const modifyCategorieAction = async (type, oldValue, newValue) => {
 
   const res = await modifyCategorie(type, oldValue, newValue)
 
+  actionItem()
+
   return res
 }
 
@@ -83,6 +88,8 @@ const deleteCategorieItemAction = async (type, value) => {
     return { error }
   }
   const res = await deleteCategorie(type, value)
+
+  actionItem()
   return res
 }
 
