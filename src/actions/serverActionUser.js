@@ -7,11 +7,15 @@ const actionUser = async () => {
 }
 
 const actionProds = async () => {
-  revalidateTag("prods")
+  revalidateTag("products")
 }
 
 const actionAlert = async () => {
   revalidateTag("alert")
 }
 
-export { actionUser, actionProds, actionAlert }
+const actionItem = async () => {
+  revalidateTag("items")
+}
+
+export { actionUser, actionProds, actionAlert, actionItem }
