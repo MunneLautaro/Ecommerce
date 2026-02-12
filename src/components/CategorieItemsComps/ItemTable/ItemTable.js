@@ -20,7 +20,6 @@ export default function ItemTable({ resetTrigger }) {
   const itemFilter = useContext(ItemContext)
   const dispatchItemFilter = useContext(ItemDispatchContext)
   const [inputValues, setInputValues] = useState({})
-  const { fetchItems } = useFetchItems(dispatchItemFilter)
   const {
     changeAscending,
     setFilter,
@@ -60,19 +59,7 @@ export default function ItemTable({ resetTrigger }) {
                 }}
               />
             </SortableTh>
-            <th className="p-2 border border-[#212121]">
-              <div className="flex flex-row justify-center items-center">
-                <div
-                  onClick={() => {
-                    setFilter("fieldToSort", "value")
-                    changeAscending()
-                  }}
-                  className="mr-2 hover:underline cursor-pointer"
-                >
-                  Product Name
-                </div>
-              </div>
-            </th>
+
             <SortableTh
               label={"Product Name"}
               sortField="value"
@@ -109,11 +96,11 @@ export default function ItemTable({ resetTrigger }) {
             .sort((a, b) => {
               if (itemFilter?.itemFilter?.isAscending) {
                 return a[itemFilter?.itemFilter?.fieldToSort].localeCompare(
-                  b[itemFilter?.itemFilter?.fieldToSort]
+                  b[itemFilter?.itemFilter?.fieldToSort],
                 )
               }
               return b[itemFilter?.itemFilter?.fieldToSort].localeCompare(
-                a[itemFilter?.itemFilter?.fieldToSort]
+                a[itemFilter?.itemFilter?.fieldToSort],
               )
             })
 
@@ -133,14 +120,14 @@ export default function ItemTable({ resetTrigger }) {
               >
                 <TableData>
                   {capitalizeText(
-                    item?.type === "productname" ? "Product Name" : item?.type
+                    item?.type === "productname" ? "Product Name" : item?.type,
                   )}
                 </TableData>
                 <TableData>
                   <input
                     value={inputValues[item?.value] || ""}
                     placeholder={item?.value}
-                    className="w-full bg-transparent focus:outline-none text-center"
+                    className="w-full bg-transparent focus:outline-none text-center placeholder:text-black placeholder:opacity-100"
                     onClick={(e) => {
                       e.stopPropagation()
                       setItem(item)
@@ -153,6 +140,7 @@ export default function ItemTable({ resetTrigger }) {
                         [item.value]: newValue,
                       }))
                     }}
+                    aria-label={`Edit ${item?.type} value`}
                   />
                 </TableData>
 
@@ -175,11 +163,9 @@ export default function ItemTable({ resetTrigger }) {
                       const modItemResponse = await modifyCategorieAction(
                         item.type,
                         item.value,
-                        newValue
+                        newValue,
                       )
                       setResponse(modItemResponse)
-
-                      fetchItems()
 
                       setInputValues((prev) => {
                         const copy = { ...prev }
@@ -198,11 +184,10 @@ export default function ItemTable({ resetTrigger }) {
                     onConfirm={async () => {
                       const delItemResponse = await deleteCategorieItemAction(
                         item.type,
-                        item.value
+                        item.value,
                       )
                       setResponse(delItemResponse)
 
-                      fetchItems()
                       resetCurrentItem()
                     }}
                     isDisabled={

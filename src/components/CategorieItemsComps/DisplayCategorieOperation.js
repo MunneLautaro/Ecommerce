@@ -7,7 +7,7 @@ import AddCategorieItem from "./CategorieOperationForms/AddCategorieItem"
 import CategorieItemTableContainer from "./CategorieOperationForms/CategorieItemTableContainer"
 import { ItemDispatchContext, ItemContext } from "@/contexts/ItemContext"
 
-export default function CategorieItems() {
+export default function DisplayCategorieOperation({ items }) {
   const [displayAddItem, setDisplayAddItem] = useState(true)
   const dispatchItemFilter = useContext(ItemDispatchContext)
   const itemFilter = useContext(ItemContext)
@@ -25,10 +25,8 @@ export default function CategorieItems() {
   }, [itemFilter?.response, dispatchItemFilter])
 
   useEffect(() => {
-    dispatchItemFilter({ type: "FETCH_INIT" })
-
-    fetchItems()
-  }, [fetchItems])
+    fetchItems(items)
+  }, [fetchItems, items])
 
   return (
     <>
@@ -53,7 +51,7 @@ export default function CategorieItems() {
               </button>
             </div>
             {displayAddItem ? (
-              <AddCategorieItem onSubmit={fetchItems} />
+              <AddCategorieItem />
             ) : (
               <>
                 <CategorieItemTableContainer />

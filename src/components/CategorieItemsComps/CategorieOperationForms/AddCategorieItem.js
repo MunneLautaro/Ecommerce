@@ -7,7 +7,6 @@ import { VALID_CATEGORIES } from "@/utils/validCategories"
 import { useState, useEffect } from "react"
 import { toast } from "react-toastify"
 import { addCategorieItemAction } from "../../../actions/categorieAction"
-import { set } from "mongoose"
 
 export default function AddCategorieItem({ onSubmit }) {
   const [item, setItem] = useState({ type: "", value: "" })
@@ -33,7 +32,7 @@ export default function AddCategorieItem({ onSubmit }) {
           const addItemResponse = await addCategorieItemAction(item)
           setResponse(addItemResponse)
           setItem({ type: "", value: "" })
-          onSubmit()
+          //onSubmit()
         }}
       >
         <Select
@@ -44,7 +43,14 @@ export default function AddCategorieItem({ onSubmit }) {
           }}
           value={item?.type}
         />
+        <label
+          htmlFor="itemValue"
+          className="text-sm font-medium text-gray-200 mt-2"
+        >
+          Item Value
+        </label>
         <Input
+          id="itemValue"
           type={"text"}
           placeHolder={`Enter ${item?.type}`}
           onChange={(e) => setItem({ ...item, value: e?.target?.value })}

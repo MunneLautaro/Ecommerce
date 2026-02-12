@@ -11,7 +11,7 @@ import LinkUi from "@/components/Ui/Link/Link"
 import { useFetchItems } from "@/hooks/useFetchItems"
 import { ItemContext, ItemDispatchContext } from "../../../contexts/ItemContext"
 
-export default function AddProduct() {
+export default function AddProduct({ items }) {
   const [productInfo, disptachProductInfo] = useContext(ProductContext)
   const itemsState = useContext(ItemContext)
   const dispatchItems = useContext(ItemDispatchContext)
@@ -19,8 +19,8 @@ export default function AddProduct() {
   const { brands, models, colors, productnames } = itemsState
 
   useEffect(() => {
-    fetchItemsByType()
-  }, [fetchItemsByType])
+    fetchItemsByType(items)
+  }, [fetchItemsByType, items])
 
   let formCompleted = false
   const requiredFields = [
@@ -53,6 +53,7 @@ export default function AddProduct() {
     colors?.length >= 1 &&
     models?.length >= 1
 
+  console.log({ productInfo })
   return (
     <div
       data-testid="AddProductComponent"
@@ -68,7 +69,7 @@ export default function AddProduct() {
             onSubmit={async (e) => {
               e.preventDefault()
               const addResponse = await addProductAction(productInfo?.form)
-              console.log({ productInfo })
+
               disptachProductInfo({ type: "CLEAR_FORM" })
               disptachProductInfo({
                 type: "SET_RESPONSE",
@@ -79,12 +80,12 @@ export default function AddProduct() {
             className="flex flex-col gap-4 w-full md:w-1/2"
           >
             <Select
-              value={productInfo?.form?.brand}
+              value={productInfo?.form?.brand?.value ?? ""}
               elements={brands}
               type="Brand"
               onChange={(e) => {
                 const selectedBrand = brands.find(
-                  (brand) => brand.value === e.target.value
+                  (brand) => brand.value === e.target.value,
                 )
                 disptachProductInfo({
                   type: "SET_PRODUCT",
@@ -99,7 +100,7 @@ export default function AddProduct() {
               type="Product"
               onChange={(e) => {
                 const selectedProduct = productnames.find(
-                  (product) => product.value === e.target.value
+                  (product) => product.value === e.target.value,
                 )
                 disptachProductInfo({
                   type: "SET_PRODUCT",
@@ -114,7 +115,7 @@ export default function AddProduct() {
               type="Model"
               onChange={(e) => {
                 const selectedColor = colors.find(
-                  (color) => color.value === e.target.value
+                  (color) => color.value === e.target.value,
                 )
                 disptachProductInfo({
                   type: "SET_PRODUCT",
@@ -130,7 +131,7 @@ export default function AddProduct() {
               type="Model"
               onChange={(e) => {
                 const selectedModel = models.find(
-                  (model) => model.value === e.target.value
+                  (model) => model.value === e.target.value,
                 )
                 disptachProductInfo({
                   type: "SET_PRODUCT",
@@ -140,7 +141,14 @@ export default function AddProduct() {
               required
             />
 
+            <label
+              htmlFor="img-url-add"
+              className="text-sm font-medium text-gray-200 mt-2"
+            >
+              Image URL
+            </label>
             <Input
+              id="img-url-add"
               name={"img"}
               value={productInfo?.form?.img}
               placeHolder="img.jpg"
@@ -152,7 +160,14 @@ export default function AddProduct() {
               }}
             />
 
+            <label
+              htmlFor="img-file-add"
+              className="text-sm font-medium text-gray-200 mt-2"
+            >
+              Upload Image
+            </label>
             <Input
+              id="img-file-add"
               dataTestId="imgFile"
               name={"img"}
               type="file"
@@ -181,7 +196,14 @@ export default function AddProduct() {
               }}
             />
 
+            <label
+              htmlFor="description-add"
+              className="text-sm font-medium text-gray-200 mt-2"
+            >
+              Description
+            </label>
             <Input
+              id="description-add"
               name={"description"}
               value={productInfo?.form?.description || ""}
               placeHolder="Description"
@@ -194,7 +216,14 @@ export default function AddProduct() {
               required={true}
             />
 
+            <label
+              htmlFor="price-add"
+              className="text-sm font-medium text-gray-200 mt-2"
+            >
+              Price
+            </label>
             <Input
+              id="price-add"
               name={"price"}
               value={productInfo?.form?.price || ""}
               placeHolder="Price"
@@ -207,7 +236,14 @@ export default function AddProduct() {
               required={true}
             />
 
+            <label
+              htmlFor="stock-add"
+              className="text-sm font-medium text-gray-200 mt-2"
+            >
+              Stock
+            </label>
             <Input
+              id="stock-add"
               name={"stock"}
               value={productInfo?.form?.stock || ""}
               placeHolder="Stock"
@@ -234,7 +270,7 @@ export default function AddProduct() {
       ) : (
         <h2>
           Please add some items before adding a product.{" "}
-          <LinkUi url={"/categorieItems"} text={"Go to Categories"}></LinkUi>
+          <LinkUi url={"/categorieItems"}>Go to Categories</LinkUi>
         </h2>
       )}
     </div>

@@ -12,20 +12,17 @@ import { useFetchProducts } from "../../../../hooks/useFetchProducts"
 import Carrousel from "../../../Ui/Carrousel/Carrousel"
 import { Filter, X } from "react-feather"
 
-export default function ProductFilter({ isAdmin = false }) {
+export default function ProductFilter({ isAdmin = false, products }) {
   const [isFilterOpen, setIsFilterOpen] = useState(false)
   const [enableTransition, setEnableTransition] = useState(false)
   const prodFilter = useContext(ProductFilterContext)
   const dispatchProdFilter = useContext(ProductFilterDispatchContext)
 
-  const { fetchProductsWithPriceRange } = useFetchProducts(
-    null,
-    dispatchProdFilter,
-  )
+  const { fetchProductsWithPriceRange } = useFetchProducts(dispatchProdFilter)
 
   useEffect(() => {
-    fetchProductsWithPriceRange()
-  }, [fetchProductsWithPriceRange])
+    fetchProductsWithPriceRange(products)
+  }, [fetchProductsWithPriceRange, products])
 
   useEffect(() => {
     if (typeof window === "undefined") return
@@ -71,7 +68,7 @@ export default function ProductFilter({ isAdmin = false }) {
           gap-3 lg:gap-0
           h-screen lg:h-auto
           overflow-y-auto lg:overflow-visible
-          pt-20 lg:pt-0
+          pt-20 lg:pt-0 
         `}
       >
         <div className="lg:hidden flex items-center justify-between my-15 px-2">
@@ -84,14 +81,16 @@ export default function ProductFilter({ isAdmin = false }) {
             <X size={24} />
           </button>
         </div>
-        <FilterByKey keys="brand" />
-        <FilterByKey keys="model" />
-        <FilterByKey keys="color" />
-        <FilterByKey keys="product" />
-        <FilterByPrice
-          min={prodFilter?.prodFilter?.range?.min || 0}
-          max={prodFilter?.prodFilter?.range?.max || 100}
-        />
+        <div className="flex flex-row my-15">
+          <FilterByKey keys="brand" />
+          <FilterByKey keys="model" />
+          <FilterByKey keys="color" />
+          <FilterByKey keys="product" />
+          <FilterByPrice
+            min={prodFilter?.prodFilter?.range?.min || 0}
+            max={prodFilter?.prodFilter?.range?.max || 100}
+          />
+        </div>
       </div>
 
       {isFilterOpen && (
@@ -102,7 +101,7 @@ export default function ProductFilter({ isAdmin = false }) {
         />
       )}
 
-      <div className="w-full flex items-center justify-center mt-20 ">
+      <div className="w-full flex items-center justify-center mt-45 ">
         <Carrousel />
       </div>
 

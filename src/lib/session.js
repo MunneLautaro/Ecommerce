@@ -51,7 +51,7 @@ export async function getSession() {
 export async function requireAuth(options = {}) {
   const session = await getSession()
 
-  if (!session) {
+  if (options.requireSession && !session) {
     return { authorized: false, error: "You must login", session: null }
   }
 

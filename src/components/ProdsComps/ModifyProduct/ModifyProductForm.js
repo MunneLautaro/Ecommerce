@@ -1,26 +1,34 @@
 import Button from "../../Ui/Button/Button"
 import ProductCard from "../../ProductCard/ProductCard"
 import Input from "@/components/Ui/Input/Input"
-import { useContext, useEffect, useState } from "react"
+import { useContext, useEffect } from "react"
 import { toast } from "react-toastify"
 import { ProductContext } from "../../../contexts/ProductContext"
 import { modProductAction } from "../../../actions/product"
+import { useProduct } from "@/hooks/useProduct"
 
 export default function ModifyProductForm({ onSubmit }) {
   const [formProduct, dispatchFormProduct] = useContext(ProductContext)
-  const [response, setResponse] = useState(null)
+  const { setResponse, setProductField } = useProduct(dispatchFormProduct)
+  const isProductSelected = !!formProduct?.form?.sku
 
   useEffect(() => {
-    if (!response) return
-    if (response?.success) {
-      toast.success(response?.success)
+    if (!formProduct?.response) return
+    if (formProduct?.response?.success) {
+      toast.success(formProduct?.response?.success)
     } else {
-      toast.error(response?.error)
+      toast.error(formProduct?.response?.error)
     }
-  }, [response])
+  }, [formProduct?.response])
 
+  console.log({ formProduct })
   return (
     <div className="flex flex-col items-start w-full">
+      {!isProductSelected && (
+        <div className="mb-4 p-3 bg-blue-500/20 border border-blue-500 rounded-lg text-blue-200 text-sm">
+          👆 Select a product from the table to modify it
+        </div>
+      )}
       <div className="flex flex-col lg:flex-row gap-4 w-full max-w-4xl">
         <form
           onSubmit={async (e) => {
@@ -31,24 +39,25 @@ export default function ModifyProductForm({ onSubmit }) {
           }}
           className="flex flex-col gap-4 w-full lg:w-1/2 min-w-0 bg-[#424242] p-3 rounded-lg shadow-2xl"
         >
-          <label className="font-semibold">Image:</label>
+          <label htmlFor="img-url" className="font-semibold">
+            Image:
+          </label>
           <Input
+            id="img-url"
             name={"img"}
             value={formProduct?.form?.img}
             placeHolder="img.jpg"
-            onChange={(e) =>
-              dispatchFormProduct({
-                type: "SET_PRODUCT",
-                payload: { img: e?.target?.value },
-              })
-            }
+            disabled={!isProductSelected}
+            onChange={(e) => setProductField("img", e?.target?.value)}
           />
 
           <Input
+            id="img-file"
             dataTestId="imgFile"
             name={"img"}
             type="file"
             accept="image/png, image/jpeg, image/webp"
+            disabled={!isProductSelected}
             onChange={async (e) => {
               const file = e.target.files[0]
               if (!file) return
@@ -62,10 +71,7 @@ export default function ModifyProductForm({ onSubmit }) {
                 ctx.drawImage(img, 0, 0)
 
                 const webpDataUrl = canvas.toDataURL("image/webp", 0.8)
-                dispatchFormProduct({
-                  type: "SET_PRODUCT",
-                  payload: { img: webpDataUrl },
-                })
+                setProductField("img", webpDataUrl)
 
                 e.target.value = null
               }
@@ -73,49 +79,50 @@ export default function ModifyProductForm({ onSubmit }) {
             }}
           />
 
-          <label className="font-semibold">Description:</label>
+          <label htmlFor="description" className="font-semibold">
+            Description:
+          </label>
           <Input
+            id="description"
             name={"description"}
             value={formProduct?.form?.description}
             placeHolder="Description"
-            onChange={(e) =>
-              dispatchFormProduct({
-                type: "SET_PRODUCT",
-                payload: { description: e?.target?.value },
-              })
-            }
+            disabled={!isProductSelected}
+            onChange={(e) => setProductField("description", e?.target?.value)}
             required={true}
           />
 
-          <label className="font-semibold">Price:</label>
+          <label htmlFor="price" className="font-semibold">
+            Price:
+          </label>
           <Input
+            id="price"
             name={"price"}
             value={formProduct?.form?.price}
             placeHolder="Price"
-            onChange={(e) =>
-              dispatchFormProduct({
-                type: "SET_PRODUCT",
-                payload: { price: e.target.value },
-              })
-            }
+            disabled={!isProductSelected}
+            onChange={(e) => setProductField("price", e?.target?.value)}
             required={true}
           />
 
-          <label className="font-semibold">Stock:</label>
+          <label htmlFor="stock" className="font-semibold">
+            Stock:
+          </label>
           <Input
+            id="stock"
             name={"stock"}
             value={formProduct?.form?.stock}
             placeHolder="Stock"
-            onChange={(e) =>
-              dispatchFormProduct({
-                type: "SET_PRODUCT",
-                payload: { stock: e.target.value },
-              })
-            }
+            disabled={!isProductSelected}
+            onChange={(e) => setProductField("stock", e?.target?.value)}
             required={true}
           />
 
-          <Button type="submit" text="Modify product" />
+          <Button
+            type="submit"
+            text="Modify product"
+            disabled={!isProductSelected}
+          />
         </form>
 
         <div className="hidden md:block w-full lg:w-1/2 min-w-0">
