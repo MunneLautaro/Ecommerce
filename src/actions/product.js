@@ -12,7 +12,12 @@ import {
 const addProductAction = async (formData) => {
   const { authorized, error, session } = await requireAuth({
     requireAdmin: true,
+    requireSession: true,
   })
+
+  if (!session) {
+    return { error }
+  }
 
   if (!authorized) {
     return { error }
@@ -28,7 +33,12 @@ const addProductAction = async (formData) => {
 const modProductAction = async (formData) => {
   const { authorized, error, session } = await requireAuth({
     requireAdmin: true,
+    requireSession: true,
   })
+
+  if (!session) {
+    return { error }
+  }
 
   if (!authorized) {
     return { error }
@@ -44,7 +54,12 @@ const modProductAction = async (formData) => {
 const deleteProductAction = async (sku) => {
   const { authorized, error, session } = await requireAuth({
     requireAdmin: true,
+    requireSession: true,
   })
+
+  if (!session) {
+    return { error }
+  }
 
   if (!authorized) {
     return { error }
@@ -59,8 +74,6 @@ const deleteProductAction = async (sku) => {
 
 const getProductsAction = async (sku) => {
   const res = await getProducts(sku)
-
-  actionProds()
 
   return res
 }
