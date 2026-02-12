@@ -7,34 +7,34 @@ import OrderPriceButton from "@/components/Ui/Button/OrderPriceButton"
 import { ProductFilterDispatchContext } from "@/contexts/ProductFilterContext"
 
 export default function ProductTable({ products }) {
-  const [formState, dispatchForm] = useContext(ProductContext)
+  const [, dispatchForm] = useContext(ProductContext)
   const [isAdjusted, setIsAdjusted] = useState(false)
   const [fieldToSort, setFieldToSort] = useState("product")
   const [isAscending, setIsAscending] = useState(true)
   const dispatch = useContext(ProductFilterDispatchContext)
 
   return (
-    <>
+    <div className="w-full overflow-x-auto">
       <table
         onDoubleClick={() => setIsAdjusted((prevIsAdjusted) => !prevIsAdjusted)}
         className={`table-${
           isAdjusted ? "adjusted" : "fixed"
-        } border-collapse border border-[#212121] lg:w-lg lg:max-w-5xl md:w-md sm:w-sm`}
+        } w-full border-collapse border border-[#212121] text-sm lg:text-base`}
       >
         <thead className="bg-[#212121] text-amber-400">
           <tr>
-            <th className="p-2 border border-[#212121]">
-              <div className="flex flex-row justify-center items-center">
+            <th className="p-1 sm:p-2 border border-[#212121]">
+              <div className="flex flex-row justify-center items-center gap-0.5 sm:gap-1">
                 <div
                   onClick={() => {
                     setFieldToSort("product")
                     setIsAscending((prevIsAscending) => !prevIsAscending)
                   }}
-                  className="mr-2 hover:underline cursor-pointer"
+                  className="hover:underline cursor-pointer text-xs sm:text-sm lg:text-base"
                 >
                   Product
                 </div>
-                <div>
+                <div className="scale-75 sm:scale-100">
                   <DropDown
                     elements={products}
                     name={"product"}
@@ -48,18 +48,18 @@ export default function ProductTable({ products }) {
                 </div>
               </div>
             </th>
-            <th className="p-2 border border-[#212121]">
-              <div className="flex flex-row justify-center items-center">
+            <th className="p-1 sm:p-2 border border-[#212121]">
+              <div className="flex flex-row justify-center items-center gap-0.5 sm:gap-1">
                 <div
                   onClick={() => {
                     setFieldToSort("brand")
                     setIsAscending((prevIsAscending) => !prevIsAscending)
                   }}
-                  className="mr-2 hover:underline cursor-pointer"
+                  className="hover:underline cursor-pointer text-xs sm:text-sm lg:text-base"
                 >
                   Brand
                 </div>
-                <div>
+                <div className="scale-75 sm:scale-100">
                   <DropDown
                     elements={products}
                     name={"brand"}
@@ -73,18 +73,18 @@ export default function ProductTable({ products }) {
                 </div>
               </div>
             </th>
-            <th className="p-2 border border-[#212121]">
-              <div className="flex flex-row justify-center items-center">
+            <th className="p-1 sm:p-2 border border-[#212121]">
+              <div className="flex flex-row justify-center items-center gap-0.5 sm:gap-1">
                 <div
                   onClick={() => {
                     setFieldToSort("color")
                     setIsAscending((prevIsAscending) => !prevIsAscending)
                   }}
-                  className="mr-2 hover:underline cursor-pointer"
+                  className="hover:underline cursor-pointer text-xs sm:text-sm lg:text-base"
                 >
                   Color
                 </div>
-                <div>
+                <div className="scale-75 sm:scale-100">
                   <DropDown
                     elements={products}
                     name={"color"}
@@ -98,18 +98,18 @@ export default function ProductTable({ products }) {
                 </div>
               </div>
             </th>
-            <th className="p-2 border border-[#212121]">
-              <div className="flex flex-row justify-center items-center">
+            <th className="p-1 sm:p-2 border border-[#212121]">
+              <div className="flex flex-row justify-center items-center gap-0.5 sm:gap-1">
                 <div
                   onClick={() => {
                     setFieldToSort("model")
                     setIsAscending((prevIsAscending) => !prevIsAscending)
                   }}
-                  className="mr-2 hover:underline cursor-pointer"
+                  className="hover:underline cursor-pointer text-xs sm:text-sm lg:text-base"
                 >
                   Model
                 </div>
-                <div>
+                <div className="scale-75 sm:scale-100">
                   <DropDown
                     elements={products}
                     name={"model"}
@@ -123,10 +123,10 @@ export default function ProductTable({ products }) {
                 </div>
               </div>
             </th>
-            <th className="p-2 border border-[#212121]">
-              <div className="flex flex-row justify-center items-center">
-                <div className="mr-2">Price</div>
-                <div>
+            <th className="p-1 sm:p-2 border border-[#212121]">
+              <div className="flex flex-row justify-center items-center gap-0.5 sm:gap-1">
+                <div className="text-xs sm:text-sm lg:text-base">Price</div>
+                <div className="scale-75 sm:scale-100">
                   <OrderPriceButton />
                 </div>
               </div>
@@ -153,7 +153,7 @@ export default function ProductTable({ products }) {
                     dispatchForm({ type: "SET_PRODUCT", payload: prod })
                   }
                 }}
-                className={`h-[40px] cursor-pointer focus:ring-4 focus:ring-white ${
+                className={`h-[32px] sm:h-[40px] cursor-pointer focus:ring-4 focus:ring-white ${
                   index % 2 === 0
                     ? "bg-violet-400 text-white hover:bg-violet-600 transition-opacity"
                     : "bg-amber-400 text-white hover:bg-amber-600 transition-all duration-300"
@@ -161,25 +161,25 @@ export default function ProductTable({ products }) {
                 tabIndex={0}
                 role="button"
               >
-                <td className="p-2 border border-[#212121] lg:max-w-[30px] md:max-w-[20px] sm:max-w-[10px] truncate">
+                <td className="p-1 sm:p-2 border border-[#212121] max-w-[80px] sm:max-w-[120px] lg:max-w-[150px] truncate">
                   {prod?.product}
                 </td>
-                <td className="p-2 border border-[#212121] lg:max-w-[30px] md:max-w-[20px] sm:max-w-[10px] truncate">
+                <td className="p-1 sm:p-2 border border-[#212121] max-w-[60px] sm:max-w-[100px] lg:max-w-[120px] truncate">
                   {prod?.brand}
                 </td>
-                <td className="p-2 border border-[#212121] lg:max-w-[30px] md:max-w-[20px] sm:max-w-[10px] truncate">
+                <td className="p-1 sm:p-2 border border-[#212121] max-w-[50px] sm:max-w-[80px] lg:max-w-[100px] truncate">
                   {prod?.color}
                 </td>
-                <td className="p-2 border border-[#212121] lg:max-w-[30px] md:max-w-[20px] sm:max-w-[10px] truncate">
+                <td className="p-1 sm:p-2 border border-[#212121] max-w-[60px] sm:max-w-[90px] lg:max-w-[110px] truncate">
                   {prod?.model}
                 </td>
-                <td className="truncate p-2 border border-[#212121] lg:max-w-[30px] md:max-w-[20px] sm:max-w-[10px]">
+                <td className="p-1 sm:p-2 border border-[#212121] max-w-[60px] sm:max-w-[80px] lg:max-w-[100px] truncate">
                   {`$${prod?.price}`}
                 </td>
               </tr>
             ))}
         </tbody>
       </table>
-    </>
+    </div>
   )
 }

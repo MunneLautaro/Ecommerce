@@ -24,7 +24,7 @@ export default function ProductCard({ product, isAdmin, onSubmit }) {
   const [isProductModalOpen, setIsProductModalOpen] = useState(false)
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false)
   const [tiempoDeCarga, setTiempoDeCarga] = useState(
-    randomIntFromInterval(500, 1500)
+    randomIntFromInterval(500, 1500),
   )
 
   useEffect(() => {

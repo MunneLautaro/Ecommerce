@@ -1,3 +1,4 @@
+import Image from "next/image"
 import CarrouselProductCardSkeleton from "./CarrouselProductCardSkeleton"
 
 export default function CarrouselProductCard({
@@ -20,18 +21,20 @@ export default function CarrouselProductCard({
             Sin productos
           </div>
         ) : (
-          <img
+          <Image
             src={image}
             alt={name}
-            loading="eager"
-            decoding="async"
-            className="h-full w-full object-cover transition duration-500 ease-out"
+            width={320}
+            height={200}
+            priority
+            className="h-full w-full object-cover"
+            sizes="320px"
           />
         )}
         <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/40 to-transparent" />
       </div>
 
-      <div className="mt-3 min-h-[32px]">
+      <div className="mt-3 h-[32px] flex items-center justify-center">
         <h3 className="text-center text-lg font-semibold leading-snug tracking-tight line-clamp-1">
           {name}
         </h3>

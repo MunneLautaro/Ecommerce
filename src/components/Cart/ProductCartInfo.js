@@ -7,7 +7,7 @@ import Image from "next/image"
 
 export default function ProductCartInfo({ product }) {
   const [isExpanded, setIsExpanded] = useState(false)
-  const { cart, dispatchCart } = useContext(CartContext)
+  const { dispatchCart } = useContext(CartContext)
   const { addToCart, removeUnitFromCart, deleteProductFromCart } =
     useCart(dispatchCart)
 

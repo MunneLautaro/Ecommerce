@@ -4,7 +4,7 @@ import "@testing-library/jest-dom"
 
 describe("Link", () => {
   it("displays correctyle the link", () => {
-    render(<Link text={"Im a link"} url={"testUrl"} />)
+    render(<Link url={"testUrl"}>Im a link</Link>)
 
     const link = screen.getByRole("link", { name: /Im a link/i })
 

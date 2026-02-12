@@ -43,7 +43,14 @@ export default function AddUser() {
       >
         <div className="flex flex-col items-center">
           <div className="min-h-[150px] ">
+            <label
+              htmlFor="addUsername"
+              className="text-sm font-medium text-gray-200"
+            >
+              Username
+            </label>
             <Input
+              id="addUsername"
               name={"user"}
               placeHolder={"Username"}
               required={true}
@@ -51,9 +58,15 @@ export default function AddUser() {
                 setFormData((prev) => ({ ...prev, user: e?.target?.value }))
               }
             />
-            <input></input>
             <div className="mt-5">
+              <label
+                htmlFor="addPassword"
+                className="text-sm font-medium text-gray-200"
+              >
+                Password
+              </label>
               <Input
+                id="addPassword"
                 type={"password"}
                 name={"password"}
                 placeHolder={"Password"}
