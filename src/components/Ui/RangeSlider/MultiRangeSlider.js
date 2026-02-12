@@ -52,6 +52,7 @@ export default function MultiRangeSlider({ min = 0, max = 100, onChange }) {
         value={minValue}
         onChange={handleMinChange}
         className="range-min"
+        aria-label="Minimum price"
       />
 
       <input
@@ -62,6 +63,7 @@ export default function MultiRangeSlider({ min = 0, max = 100, onChange }) {
         value={maxValue}
         onChange={handleMaxChange}
         className="range-max"
+        aria-label="Maximum price"
       />
     </div>
   )

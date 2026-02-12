@@ -3,6 +3,7 @@ import { ShoppingCart } from "react-feather"
 import { CartContext } from "@/contexts/CartContext"
 import Modal from "../Ui/Modal/Modal"
 import ProductCartInfo from "./ProductCartInfo"
+import LinkUi from "../Ui/Link/Link"
 
 export default function Cart() {
   const [isOpen, setIsOpen] = useState(false)
@@ -38,22 +39,26 @@ export default function Cart() {
             <p className="text-lg text-white">Your cart is empty!</p>
           </div>
         ) : (
-          <div className="flex flex-col p-10 items-center justify-center gap-4">
-            <h1 className="text-white text-2xl font-bold">Your products!</h1>
-            <div className="flex flex-wrap justify-center">
-              {cart?.cartProds?.map((product) => (
-                <ProductCartInfo key={product.sku} product={product} />
-              ))}
+          <div className="flex flex-col items-center justify-center">
+            <div className="flex flex-col p-10 items-center justify-center gap-4">
+              <h1 className="text-white text-2xl font-bold">Your products!</h1>
+              <div className="flex flex-wrap justify-center">
+                {cart?.cartProds?.map((product) => (
+                  <ProductCartInfo key={product.sku} product={product} />
+                ))}
+              </div>
+              <span className="flex font-bold text-lg">
+                Total: $
+                {cart?.cartProds
+                  .reduce(
+                    (total, product) =>
+                      total + product.price * product.quantity,
+                    0,
+                  )
+                  .toFixed(2)}
+              </span>
             </div>
-            <span className="flex font-bold text-lg">
-              Total: $
-              {cart?.cartProds
-                .reduce(
-                  (total, product) => total + product.price * product.quantity,
-                  0
-                )
-                .toFixed(2)}
-            </span>
+            <LinkUi url="/buy">Go to Buy Page</LinkUi>
           </div>
         )}
       </Modal>

@@ -24,12 +24,14 @@ export default function DeleteProductModal({
             type="button"
             onClick={() => setIsDeleteModalOpen(false)}
             className="px-4 py-2 bg-red-600 text-white rounded hover:opacity-70 transition-opacity active:bg-red-900 font-bold"
+            aria-label="Cancel deletion"
           >
             Cancel
           </button>
           <button
             onClick={handleDelete}
             className="px-4 py-2 bg-green-400 rounded hover:opacity-45 transition-opacity active:bg-green-700 text-white font-bold"
+            aria-label={`Delete product ${product?.product}`}
           >
             Accept
           </button>

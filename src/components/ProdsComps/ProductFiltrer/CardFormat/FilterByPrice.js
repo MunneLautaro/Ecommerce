@@ -13,24 +13,28 @@ export default function FilterByPrice({ min = 0, max = 100 }) {
 
   return (
     <div className="m-2">
-      {prodFilter.products && prodFilter.products.length > 1 ? (
-        <MultiRangeSlider
-          min={min}
-          max={max}
-          onChange={({ min, max }) => {
-            dispatchFilter({
-              type: "SET_PRICE_FILTER",
-              payload: { attribute: "min", value: min },
-            })
-            dispatchFilter({
-              type: "SET_PRICE_FILTER",
-              payload: { attribute: "max", value: max },
-            })
-          }}
-        />
-      ) : (
-        ""
-      )}
+      <MultiRangeSlider
+        min={min}
+        max={max}
+        onChange={({ min, max }) => {
+          dispatchFilter({
+            type: "SET_PRICE_FILTER",
+            payload: {
+              attribute: "min",
+              value:
+                prodFilter.products && prodFilter.products.length > 1 ? min : 0,
+            },
+          })
+          dispatchFilter({
+            type: "SET_PRICE_FILTER",
+            payload: {
+              attribute: "max",
+              value:
+                prodFilter.products && prodFilter.products.length > 1 ? max : 0,
+            },
+          })
+        }}
+      />
     </div>
   )
 }

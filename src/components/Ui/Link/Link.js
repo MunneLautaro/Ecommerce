@@ -1,13 +1,13 @@
 import Link from "next/link"
 
-export default function LinkUi({ url, text, id }) {
+export default function LinkUi({ url, href, children, id }) {
   return (
     <Link
       id={id}
-      href={url}
+      href={href || url}
       className="text-violet-400 hover:underline mr-10 text-xl font-bold"
     >
-      {text}
+      {children}
     </Link>
   )
 }

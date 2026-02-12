@@ -45,7 +45,11 @@ export default function ModUser() {
       >
         <div className="flex flex-col items-center ">
           <div className="min-h-[150px] ">
+            <label htmlFor="user" className="text-sm font-medium text-gray-200">
+              Current Username
+            </label>
             <Input
+              id="user"
               name={"user"}
               placeHolder={"Username"}
               required={true}
@@ -54,7 +58,14 @@ export default function ModUser() {
               }
             />
             <div className="mt-4">
+              <label
+                htmlFor="newUser"
+                className="text-sm font-medium text-gray-200"
+              >
+                New Username
+              </label>
               <Input
+                id="newUser"
                 name={"newUser"}
                 placeHolder={"New username"}
                 required={true}
@@ -67,7 +78,14 @@ export default function ModUser() {
               />
             </div>
             <div className="mt-4">
+              <label
+                htmlFor="newPassword"
+                className="text-sm font-medium text-gray-200"
+              >
+                New Password
+              </label>
               <Input
+                id="newPassword"
                 type={"password"}
                 name={"newPassword"}
                 placeHolder={"New password"}

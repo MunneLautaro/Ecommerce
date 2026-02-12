@@ -16,7 +16,14 @@ export default function FilterByKey({ keys }) {
 
   return (
     <div className="m-2">
+      <label
+        htmlFor={`filter-${keys}`}
+        className="text-sm font-medium text-gray-200 block mb-1"
+      >
+        Search by {keys}
+      </label>
       <Input
+        id={`filter-${keys}`}
         type="text"
         placeHolder={`Search by ${keys}`}
         onChange={handleChange}

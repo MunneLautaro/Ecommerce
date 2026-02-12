@@ -33,7 +33,14 @@ export default function DeleteUser() {
       >
         <div className="flex flex-col items-center ">
           <div className="min-h-[150px] ">
+            <label
+              htmlFor="deleteUser"
+              className="text-sm font-medium text-gray-200"
+            >
+              Username to Delete
+            </label>
             <Input
+              id="deleteUser"
               name={"user"}
               placeHolder={"Username"}
               required={true}
