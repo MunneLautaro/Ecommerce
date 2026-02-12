@@ -17,6 +17,7 @@
     "crypto-js": "^4.2.0",
     "dotenv": "^17.2.2",
     "feather-icons": "^4.29.2",
+    "google-auth-library": "^10.5.0",
     "jest-config": "^30.0.5",
     "jest-fixed-jsdom": "^0.0.9",
     "jose": "^6.0.12",
