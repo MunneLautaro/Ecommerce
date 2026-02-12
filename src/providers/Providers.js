@@ -6,6 +6,7 @@ import {
   ProductFilterContext,
   ProductFilterDispatchContext,
   ProductContext,
+  SessionContext,
 } from "@/contexts"
 import { useReducer, useEffect } from "react"
 import { toast } from "react-toastify"
@@ -19,7 +20,7 @@ import {
   productFilterReducer,
 } from "@/reducers/productFilter/productFilterReducer"
 import { initialFormState, productFormReducer } from "@/reducers/productReducer"
-
+import { initialSession, sessionReducer } from "@/reducers/sessionReducer"
 export default function Providers({ children }) {
   const [cart, dispatchCart] = useReducer(cartReducer, initialCart, (init) => {
     if (typeof window === "undefined") return init
@@ -43,31 +44,45 @@ export default function Providers({ children }) {
 
   const [itemFilter, dispatchItemFilter] = useReducer(
     itemFilterReducer,
-    initialItems
+    initialItems,
   )
   const [prodFilter, dispatchProdFilter] = useReducer(
     productFilterReducer,
-    productIncialFilter
+    productIncialFilter,
   )
 
   const [formState, dispatchForm] = useReducer(
     productFormReducer,
-    initialFormState
+    initialFormState,
   )
 
+  const [session, dispatchSession] = useReducer(sessionReducer, initialSession)
+
+  useEffect(() => {
+    const storedSession = localStorage.getItem("session")
+    const storedUser = localStorage.getItem("user")
+
+    if (storedSession && storedUser) {
+      dispatchSession({ type: "SET_USER", payload: JSON.parse(storedUser) })
+      dispatchSession({ type: "SET_SESSION" })
+    }
+  }, [])
+
   return (
-    <ProductFilterContext.Provider value={prodFilter}>
-      <ProductFilterDispatchContext.Provider value={dispatchProdFilter}>
-        <ProductContext.Provider value={[formState, dispatchForm]}>
-          <ItemContext.Provider value={itemFilter}>
-            <ItemDispatchContext.Provider value={dispatchItemFilter}>
-              <CartContext.Provider value={{ cart, dispatchCart }}>
-                {children}
-              </CartContext.Provider>
-            </ItemDispatchContext.Provider>
-          </ItemContext.Provider>
-        </ProductContext.Provider>
-      </ProductFilterDispatchContext.Provider>
-    </ProductFilterContext.Provider>
+    <SessionContext.Provider value={[session, dispatchSession]}>
+      <ProductFilterContext.Provider value={prodFilter}>
+        <ProductFilterDispatchContext.Provider value={dispatchProdFilter}>
+          <ProductContext.Provider value={[formState, dispatchForm]}>
+            <ItemContext.Provider value={itemFilter}>
+              <ItemDispatchContext.Provider value={dispatchItemFilter}>
+                <CartContext.Provider value={{ cart, dispatchCart }}>
+                  {children}
+                </CartContext.Provider>
+              </ItemDispatchContext.Provider>
+            </ItemContext.Provider>
+          </ProductContext.Provider>
+        </ProductFilterDispatchContext.Provider>
+      </ProductFilterContext.Provider>
+    </SessionContext.Provider>
   )
 }

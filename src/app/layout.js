@@ -11,15 +11,11 @@ export const metadata = {
 }
 
 export default async function RootLayout({ children }) {
-  const cookieStore = await cookies()
-  const token = cookieStore.get("session")?.value || null
-  const session = token ? await decrypt(token) : null
-
   return (
     <html lang="en">
       <body className="antialiased">
         <Providers>
-          <NavBar username={session?.username} isAdmin={session?.isAdmin} />
+          <NavBar />
           <div className="pt-[90px]">{children}</div>
           <ToastContainer theme="dark" position="bottom-right" />
         </Providers>

@@ -1,53 +1,57 @@
 "use client"
 
 import { usePathname } from "next/navigation"
-import { useState } from "react"
+import { useContext, useEffect, useState } from "react"
 import { Menu, X } from "react-feather"
 import { adminRoutes } from "../../../app/routes"
 import Title from "./Title"
 import LogOutButton from "./LogOutButton"
 import Link from "../../Ui/Link/Link"
 import Cart from "@/components/Cart/Cart"
+import { SessionContext } from "@/contexts/SessionContext"
 
-export default function NavBar({ username, isAdmin }) {
+export default function NavBar() {
   const pathname = usePathname()
   const [isMenuOpen, setIsMenuOpen] = useState(false)
+  const [sessionState] = useContext(SessionContext)
 
   const links =
-    username && isAdmin && adminRoutes[pathname]?.length > 0
+    sessionState?.user?.user &&
+    sessionState?.user?.isAdmin &&
+    adminRoutes[pathname]?.length > 0
       ? adminRoutes[pathname]
       : pathname !== "/"
-      ? [{ label: "Catalog", url: "/" }]
-      : []
+        ? [{ label: "Catalog", url: "/" }]
+        : []
 
   return (
     <>
-      <div className="flex bg-[#424242] justify-between items-center w-full h-[90px] fixed top-0 px-4 md:px-6 z-10">
+      <div className="flex bg-[#424242] justify-between items-center w-full h-[90px] fixed top-0 px-4 md:px-6 z-10 transition-all">
         <Title />
-        <div className="hidden md:flex items-center gap-4">
+        <div className="hidden md:flex items-center gap-4 transition-opacity duration-300 ease-in-out md:opacity-100 opacity-0">
           {links.map((item) => (
-            <Link
-              key={item.label}
-              id={item.label}
-              url={item.url}
-              text={item.label}
-            />
+            <Link key={item.label} id={item.label} url={item.url}>
+              {item.label}
+            </Link>
           ))}
         </div>
 
-        <div className="hidden md:flex items-center gap-4">
-          {username ? (
+        <div className="hidden md:flex items-center gap-4 transition-opacity duration-300 ease-in-out md:opacity-100 opacity-0">
+          {sessionState?.user?.user ? (
             <>
               <Cart />
-              <LogOutButton username={username} isAdmin={isAdmin} />
+              <LogOutButton
+                username={sessionState?.user?.user}
+                isAdmin={sessionState?.user?.isAdmin}
+              />
             </>
           ) : (
-            <Link url={"/login"} text={"Login"} />
+            <Link url={"/login"}>Login</Link>
           )}
         </div>
 
         <button
-          className="md:hidden p-2 text-white"
+          className="md:hidden p-2 text-white transition-all duration-300 hover:scale-110 opacity-100 md:opacity-0"
           aria-label="Toggle navigation menu"
           onClick={() => setIsMenuOpen((prev) => !prev)}
         >
@@ -55,36 +59,42 @@ export default function NavBar({ username, isAdmin }) {
         </button>
       </div>
 
-      {isMenuOpen && (
-        <div className="md:hidden fixed top-[90px] left-0 right-0 bg-[#2c2c2c] border-t border-[#5a5a5a] z-20 px-4 py-3 space-y-3 shadow-lg">
-          <div className="flex flex-col gap-3">
-            {links.map((item) => (
-              <Link
-                key={item.label}
-                id={item.label}
-                url={item.url}
-                text={item.label}
-                onClick={() => setIsMenuOpen(false)}
-              />
-            ))}
-          </div>
-
-          <div className="flex items-center justify-between pt-2">
-            {username ? (
-              <>
-                <Cart />
-                <LogOutButton username={username} isAdmin={isAdmin} />
-              </>
-            ) : (
-              <Link
-                url={"/login"}
-                text={"Login"}
-                onClick={() => setIsMenuOpen(false)}
-              />
-            )}
-          </div>
+      <div
+        className={`
+          md:hidden fixed top-[90px] left-0 right-0 bg-[#2c2c2c] border-t border-[#5a5a5a] z-20 px-4 py-3 space-y-3 shadow-lg
+          transition-all duration-300 ease-in-out origin-top
+          ${isMenuOpen ? "opacity-100 scale-y-100" : "opacity-0 scale-y-0 pointer-events-none"}
+        `}
+      >
+        <div className="flex flex-col gap-3">
+          {links.map((item) => (
+            <Link
+              key={item.label}
+              id={item.label}
+              url={item.url}
+              onClick={() => setIsMenuOpen(false)}
+            >
+              {item.label}
+            </Link>
+          ))}
         </div>
-      )}
+
+        <div className="flex items-center justify-between pt-2">
+          {sessionState?.user?.user ? (
+            <>
+              <Cart />
+              <LogOutButton
+                username={sessionState?.user?.user}
+                isAdmin={sessionState?.user?.isAdmin}
+              />
+            </>
+          ) : (
+            <Link url={"/login"} onClick={() => setIsMenuOpen(false)}>
+              Login
+            </Link>
+          )}
+        </div>
+      </div>
     </>
   )
 }
