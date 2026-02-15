@@ -10,16 +10,19 @@ import {
   modifyCategorieAction,
   deleteCategorieItemAction,
 } from "../../../actions/categorieAction"
-import { useFetchItems } from "@/hooks/useFetchItems"
 import ConfirmActionButton from "../../Ui/Button/ConfirmActionButton"
 import { useItemFilterActions } from "@/hooks/useItemFilterActions"
 import SortableTh from "./SortableTh"
 import TableData from "./TableData"
+import Pagination from "../../UserComps/Pagination/Pagination"
+
+const ITEMS_PER_PAGE = 10
 
 export default function ItemTable({ resetTrigger }) {
   const itemFilter = useContext(ItemContext)
   const dispatchItemFilter = useContext(ItemDispatchContext)
   const [inputValues, setInputValues] = useState({})
+  const [currentPage, setCurrentPage] = useState(1)
   const {
     changeAscending,
     setFilter,
@@ -31,6 +34,25 @@ export default function ItemTable({ resetTrigger }) {
   } = useItemFilterActions(dispatchItemFilter)
 
   let items = applyItemFilter(itemFilter?.items, itemFilter?.itemFilter)
+
+  const sortedItems = items.sort((a, b) => {
+    if (itemFilter?.itemFilter?.isAscending) {
+      return a[itemFilter?.itemFilter?.fieldToSort].localeCompare(
+        b[itemFilter?.itemFilter?.fieldToSort],
+      )
+    }
+    return b[itemFilter?.itemFilter?.fieldToSort].localeCompare(
+      a[itemFilter?.itemFilter?.fieldToSort],
+    )
+  })
+
+  const totalPages = Math.ceil(sortedItems.length / ITEMS_PER_PAGE)
+  const startIndex = (currentPage - 1) * ITEMS_PER_PAGE
+  const paginatedItems = sortedItems.slice(
+    startIndex,
+    startIndex + ITEMS_PER_PAGE,
+  )
+
   return (
     <>
       <table
@@ -92,114 +114,109 @@ export default function ItemTable({ resetTrigger }) {
           </tr>
         </thead>
         <tbody>
-          {items
-            .sort((a, b) => {
-              if (itemFilter?.itemFilter?.isAscending) {
-                return a[itemFilter?.itemFilter?.fieldToSort].localeCompare(
-                  b[itemFilter?.itemFilter?.fieldToSort],
-                )
-              }
-              return b[itemFilter?.itemFilter?.fieldToSort].localeCompare(
-                a[itemFilter?.itemFilter?.fieldToSort],
-              )
-            })
+          {paginatedItems.map((item, index) => (
+            <tr
+              key={item?.value}
+              className={`h-[40px] cursor-pointer focus:ring-4 focus:ring-teal-300 items-center justify-center ${
+                index % 2 === 0
+                  ? "bg-violet-400 text-white hover:bg-violet-600 transition-opacity"
+                  : "bg-amber-400 text-white hover:bg-amber-600 transition-all duration-300"
+              }`}
+              tabIndex={0}
+              role="button"
+              onClick={() => {
+                setItem(item)
+              }}
+            >
+              <TableData>
+                {capitalizeText(
+                  item?.type === "productname" ? "Product Name" : item?.type,
+                )}
+              </TableData>
+              <TableData>
+                <input
+                  value={inputValues[item?.value] || ""}
+                  placeholder={item?.value}
+                  className="w-full bg-transparent focus:outline-none text-center placeholder:text-black placeholder:opacity-100"
+                  onClick={(e) => {
+                    e.stopPropagation()
+                    setItem(item)
+                  }}
+                  onChange={(e) => {
+                    const newValue = e.target.value
 
-            .map((item, index) => (
-              <tr
-                key={item?.value}
-                className={`h-[40px] cursor-pointer focus:ring-4 focus:ring-teal-300 items-center justify-center ${
-                  index % 2 === 0
-                    ? "bg-violet-400 text-white hover:bg-violet-600 transition-opacity"
-                    : "bg-amber-400 text-white hover:bg-amber-600 transition-all duration-300"
-                }`}
-                tabIndex={0}
-                role="button"
-                onClick={() => {
-                  setItem(item)
-                }}
-              >
-                <TableData>
-                  {capitalizeText(
-                    item?.type === "productname" ? "Product Name" : item?.type,
-                  )}
-                </TableData>
-                <TableData>
-                  <input
-                    value={inputValues[item?.value] || ""}
-                    placeholder={item?.value}
-                    className="w-full bg-transparent focus:outline-none text-center placeholder:text-black placeholder:opacity-100"
-                    onClick={(e) => {
-                      e.stopPropagation()
-                      setItem(item)
-                    }}
-                    onChange={(e) => {
-                      const newValue = e.target.value
+                    setInputValues((prev) => ({
+                      ...prev,
+                      [item.value]: newValue,
+                    }))
+                  }}
+                  aria-label={`Edit ${item?.type} value`}
+                />
+              </TableData>
 
-                      setInputValues((prev) => ({
-                        ...prev,
-                        [item.value]: newValue,
-                      }))
-                    }}
-                    aria-label={`Edit ${item?.type} value`}
-                  />
-                </TableData>
+              <TableData> {item?.prodId}</TableData>
+              <TableData>{item?.createdAt}</TableData>
+              <TableData>
+                <ConfirmActionButton
+                  buttonChildren={<Edit />}
+                  modalTittle="Confirm edit"
+                  modalMessage={`Accept to modify the item: ${
+                    item.value
+                  } to ${inputValues[item.value]}.`}
+                  onCancel={() => {
+                    resetCurrentItem()
+                    clearNewValue()
+                  }}
+                  onConfirm={async () => {
+                    const newValue = inputValues[item.value]
 
-                <TableData> {item?.prodId}</TableData>
-                <TableData>{item?.createdAt}</TableData>
-                <TableData>
-                  <ConfirmActionButton
-                    buttonChildren={<Edit />}
-                    modalTittle="Confirm edit"
-                    modalMessage={`Accept to modify the item: ${
-                      item.value
-                    } to ${inputValues[item.value]}.`}
-                    onCancel={() => {
-                      resetCurrentItem()
-                      clearNewValue()
-                    }}
-                    onConfirm={async () => {
-                      const newValue = inputValues[item.value]
+                    const modItemResponse = await modifyCategorieAction(
+                      item.type,
+                      item.value,
+                      newValue,
+                    )
+                    setResponse(modItemResponse)
 
-                      const modItemResponse = await modifyCategorieAction(
-                        item.type,
-                        item.value,
-                        newValue,
-                      )
-                      setResponse(modItemResponse)
+                    setInputValues((prev) => {
+                      const copy = { ...prev }
+                      delete copy[item.value]
+                      return copy
+                    })
 
-                      setInputValues((prev) => {
-                        const copy = { ...prev }
-                        delete copy[item.value]
-                        return copy
-                      })
+                    resetCurrentItem()
+                  }}
+                  isDisabled={inputValues[item?.value] ? false : true}
+                />
+                <ConfirmActionButton
+                  buttonChildren={<Trash2 />}
+                  modalTittle="Confirm delete"
+                  modalMessage={`Accept to delete the item: ${item.value}.`}
+                  onConfirm={async () => {
+                    const delItemResponse = await deleteCategorieItemAction(
+                      item.type,
+                      item.value,
+                    )
+                    setResponse(delItemResponse)
 
-                      resetCurrentItem()
-                    }}
-                    isDisabled={inputValues[item?.value] ? false : true}
-                  />
-                  <ConfirmActionButton
-                    buttonChildren={<Trash2 />}
-                    modalTittle="Confirm delete"
-                    modalMessage={`Accept to delete the item: ${item.value}.`}
-                    onConfirm={async () => {
-                      const delItemResponse = await deleteCategorieItemAction(
-                        item.type,
-                        item.value,
-                      )
-                      setResponse(delItemResponse)
-
-                      resetCurrentItem()
-                    }}
-                    isDisabled={
-                      !itemFilter?.currentItem ||
-                      itemFilter.currentItem.value !== item.value
-                    }
-                  />
-                </TableData>
-              </tr>
-            ))}
+                    resetCurrentItem()
+                  }}
+                  isDisabled={
+                    !itemFilter?.currentItem ||
+                    itemFilter.currentItem.value !== item.value
+                  }
+                />
+              </TableData>
+            </tr>
+          ))}
         </tbody>
       </table>
+      {totalPages > 1 && (
+        <Pagination
+          currentPage={currentPage}
+          setCurrentPage={setCurrentPage}
+          totalPages={totalPages}
+        />
+      )}
     </>
   )
 }

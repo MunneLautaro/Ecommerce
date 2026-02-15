@@ -19,7 +19,7 @@ export default function DropDown({
     ...new Set(
       elements?.map((elem) => {
         return name ? elem?.[name] : elem
-      })
+      }),
     ),
   ]
 

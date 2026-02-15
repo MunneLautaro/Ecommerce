@@ -26,9 +26,12 @@ export default function NavBar() {
 
   return (
     <>
-      <div className="flex bg-[#424242] justify-between items-center w-full h-[90px] fixed top-0 px-4 md:px-6 z-10 transition-all">
-        <Title />
-        <div className="hidden md:flex items-center gap-4 transition-opacity duration-300 ease-in-out md:opacity-100 opacity-0">
+      <div className="flex bg-[#424242] justify-between items-center w-full max-w-full h-[90px] fixed top-0 px-4 md:px-6 z-10 overflow-hidden">
+        <div className="min-w-0 shrink">
+          <Title />
+        </div>
+
+        <div className="hidden md:flex items-center gap-4">
           {links.map((item) => (
             <Link key={item.label} id={item.label} url={item.url}>
               {item.label}
@@ -36,7 +39,7 @@ export default function NavBar() {
           ))}
         </div>
 
-        <div className="hidden md:flex items-center gap-4 transition-opacity duration-300 ease-in-out md:opacity-100 opacity-0">
+        <div className="hidden md:flex items-center gap-4">
           {sessionState?.user?.user ? (
             <>
               <Cart />
@@ -51,7 +54,7 @@ export default function NavBar() {
         </div>
 
         <button
-          className="md:hidden p-2 text-white transition-all duration-300 hover:scale-110 opacity-100 md:opacity-0"
+          className="md:hidden shrink-0 p-2 text-white transition-all duration-300 hover:scale-110"
           aria-label="Toggle navigation menu"
           onClick={() => setIsMenuOpen((prev) => !prev)}
         >

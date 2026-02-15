@@ -84,31 +84,32 @@ export default function ProductCard({ product, isAdmin, onSubmit }) {
               )}
             </div>
             <Product product={product} />
-            {isAdmin && (
-              <div className="mt-2 flex flex-row gap-2">
-                <Button
-                  type="button"
-                  onClick={(e) => {
-                    e.stopPropagation()
-                    removeUnitFromCart(product)
-                  }}
-                  text={<Minus size={16} />}
-                />
+
+            <div className="mt-2 flex flex-row gap-2">
+              <Button
+                type="button"
+                onClick={(e) => {
+                  e.stopPropagation()
+                  removeUnitFromCart(product)
+                }}
+                text={<Minus size={16} />}
+              />
+              {isAdmin && (
                 <Button
                   type="button"
                   onClick={handleDeleteClick}
                   text={<Trash size={16} />}
                 />
-                <Button
-                  type="button"
-                  onClick={(e) => {
-                    e.stopPropagation()
-                    addToCart(product)
-                  }}
-                  text={<Plus size={16} />}
-                />
-              </div>
-            )}
+              )}
+              <Button
+                type="button"
+                onClick={(e) => {
+                  e.stopPropagation()
+                  addToCart(product)
+                }}
+                text={<Plus size={16} />}
+              />
+            </div>
           </div>
 
           <ProductDetailsModal
