@@ -1,14 +1,19 @@
 import { useContext, useEffect, useState } from "react"
-import { ShoppingCart } from "react-feather"
+import { ShoppingCart, ShoppingBag, ArrowRight } from "react-feather"
 import { CartContext } from "@/contexts/CartContext"
-import Modal from "../Ui/Modal/Modal"
+import CartDrawer from "./CartDrawer"
 import ProductCartInfo from "./ProductCartInfo"
-import LinkUi from "../Ui/Link/Link"
+import Link from "next/link"
 
 export default function Cart() {
   const [isOpen, setIsOpen] = useState(false)
   const { cart } = useContext(CartContext)
   const [cartCount, setCartCount] = useState(0)
+
+  const total =
+    cart?.cartProds
+      ?.reduce((sum, p) => sum + p.price * p.quantity, 0)
+      ?.toFixed(2) || "0.00"
 
   useEffect(() => {
     if (!cart || !cart.cartProds) {
@@ -32,36 +37,37 @@ export default function Cart() {
         )}
       </button>
 
-      <Modal isOpen={isOpen} onClose={() => setIsOpen(false)}>
+      <CartDrawer isOpen={isOpen} onClose={() => setIsOpen(false)}>
         {cartCount === 0 ? (
-          <div className="flex flex-col items-center justify-center p-16 gap-3">
-            <div className="text-6xl mb-2">🛍️</div>
-            <p className="text-lg text-white">Your cart is empty!</p>
+          <div className="flex-1 flex flex-col items-center justify-center gap-3 px-6">
+            <ShoppingBag className="w-12 h-12 text-gray-600" />
+            <p className="text-gray-400 text-base">Your cart is empty</p>
           </div>
         ) : (
-          <div className="flex flex-col items-center justify-center">
-            <div className="flex flex-col p-10 items-center justify-center gap-4">
-              <h1 className="text-white text-2xl font-bold">Your products!</h1>
-              <div className="flex flex-wrap justify-center">
-                {cart?.cartProds?.map((product) => (
-                  <ProductCartInfo key={product.sku} product={product} />
-                ))}
-              </div>
-              <span className="flex font-bold text-lg">
-                Total: $
-                {cart?.cartProds
-                  .reduce(
-                    (total, product) =>
-                      total + product.price * product.quantity,
-                    0,
-                  )
-                  .toFixed(2)}
-              </span>
+          <>
+            <div className="flex-1 min-h-0 overflow-y-auto px-4 py-3 space-y-2">
+              {cart?.cartProds?.map((product) => (
+                <ProductCartInfo key={product.sku} product={product} />
+              ))}
             </div>
-            <LinkUi url="/buy">Go to Buy Page</LinkUi>
-          </div>
+
+            <div className="shrink-0 border-t border-white/10 px-5 py-3">
+              <div className="flex justify-between items-center mb-2">
+                <span className="text-sm text-gray-400">Total</span>
+                <span className="text-lg font-bold text-white">${total}</span>
+              </div>
+              <Link
+                href="/buy"
+                onClick={() => setIsOpen(false)}
+                className="flex items-center justify-center gap-2 w-full py-2.5 rounded-lg bg-violet-600 hover:bg-violet-500 text-white font-semibold transition-colors text-sm"
+              >
+                Go to Checkout
+                <ArrowRight className="w-4 h-4" />
+              </Link>
+            </div>
+          </>
         )}
-      </Modal>
+      </CartDrawer>
     </div>
   )
 }

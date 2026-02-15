@@ -7,7 +7,7 @@ export const cartReducer = (state, action) => {
   switch (action.type) {
     case "ADD_TO_CART": {
       const existingProd = state.cartProds.find(
-        (Prod) => Prod.sku === action.payload.sku
+        (Prod) => Prod.sku === action.payload.sku,
       )
 
       if (existingProd) {
@@ -16,7 +16,7 @@ export const cartReducer = (state, action) => {
           cartProds: state.cartProds.map((Prod) =>
             Prod.sku === action.payload.sku
               ? { ...Prod, quantity: (Prod.quantity || 1) + 1 }
-              : Prod
+              : Prod,
           ),
         }
       }
@@ -29,7 +29,7 @@ export const cartReducer = (state, action) => {
 
     case "REMOVE_UNIT_FROM_CART": {
       const existingProd = state.cartProds.find(
-        (prod) => prod.sku === action.payload.sku
+        (prod) => prod.sku === action.payload.sku,
       )
 
       if (!existingProd) return state
@@ -40,7 +40,7 @@ export const cartReducer = (state, action) => {
           cartProds: state.cartProds.map((prod) =>
             prod.sku === action.payload.sku
               ? { ...prod, quantity: prod.quantity - 1 }
-              : prod
+              : prod,
           ),
         }
       }
@@ -48,7 +48,7 @@ export const cartReducer = (state, action) => {
       return {
         ...state,
         cartProds: state.cartProds.filter(
-          (prod) => prod.sku !== action.payload.sku
+          (prod) => prod.sku !== action.payload.sku,
         ),
       }
     }
@@ -57,7 +57,7 @@ export const cartReducer = (state, action) => {
       return {
         ...state,
         cartProds: state.cartProds.filter(
-          (prod) => prod.sku !== action.payload.sku
+          (prod) => prod.sku !== action.payload.sku,
         ),
       }
     }
@@ -76,6 +76,12 @@ export const cartReducer = (state, action) => {
       }
     }
 
+    case "CLEAR_CART": {
+      return {
+        ...state,
+        cartProds: [],
+      }
+    }
     default:
       return state
   }
