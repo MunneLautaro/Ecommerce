@@ -1,11 +1,17 @@
 import { useContext } from "react"
 import { logout } from "../../../actions/index"
 import { SessionContext } from "@/contexts/SessionContext"
+import { CartContext } from "@/contexts/CartContext"
 
 export default function LogOutButton({ username, isAdmin }) {
   const [, dispatchSession] = useContext(SessionContext)
+  const { dispatchCart } = useContext(CartContext)
+  const handleLogout = () => {
+    dispatchSession({ type: "CLEAR_SESSION" })
+    dispatchCart({ type: "CLEAR_CART" })
+    logout()
+  }
 
-  console.log(isAdmin)
   return (
     <div className="flex flex-col items-center justify-center">
       <h2
@@ -18,10 +24,7 @@ export default function LogOutButton({ username, isAdmin }) {
       <button
         className="bg-gray-300 hover:bg-gray-600 text-gray-900 p-1 rounded"
         onClick={() => {
-          logout()
-          localStorage.removeItem("user")
-          localStorage.removeItem("cart")
-          dispatchSession({ type: "CLEAR_SESSION" })
+          handleLogout()
         }}
         aria-label={`Logout ${username}`}
       >

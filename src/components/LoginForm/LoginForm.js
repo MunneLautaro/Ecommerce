@@ -26,13 +26,21 @@ export function LoginForm() {
       const data = await result.json()
 
       if (data.success) {
-        dispatchSession({ type: "SET_SESSION" })
-        dispatchSession({ type: "SET_USER", payload: data.user })
+        // Obtener sesión actualizada desde el servidor
+        const sessionResponse = await fetch("/api/session")
+        const sessionData = await sessionResponse.json()
+
+        if (sessionData.session) {
+          dispatchSession({ type: "SET_SESSION" })
+          dispatchSession({ type: "SET_USER", payload: sessionData.user })
+        }
+
         if (data.user.isAdmin) {
           router.push("/adminPage")
         } else {
           router.push("/")
         }
+        router.refresh() // Recargar Server Components con nueva sesión
       } else {
         setError(data.error || "Error al iniciar sesión con Google")
         setShowError(true)
@@ -55,13 +63,16 @@ export function LoginForm() {
   useEffect(() => {
     if (!response) return
     if (response?.user?.user) {
+      // Actualizar contexto con datos de sesión
       dispatchSession({ type: "SET_SESSION" })
       dispatchSession({ type: "SET_USER", payload: response.user })
+
       if (response?.user?.isAdmin) {
         router.push("/adminPage")
       } else {
         router.push("/")
       }
+      router.refresh() // Refrescar Server Components con nueva sesión
     } else {
       setError(response?.errors?.login)
       setResponse(null)

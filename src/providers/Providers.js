@@ -21,7 +21,8 @@ import {
 } from "@/reducers/productFilter/productFilterReducer"
 import { initialFormState, productFormReducer } from "@/reducers/productReducer"
 import { initialSession, sessionReducer } from "@/reducers/sessionReducer"
-export default function Providers({ children }) {
+
+export default function Providers({ children, initialSessionData }) {
   const [cart, dispatchCart] = useReducer(cartReducer, initialCart, (init) => {
     if (typeof window === "undefined") return init
     const stored = localStorage.getItem("cart")
@@ -56,17 +57,10 @@ export default function Providers({ children }) {
     initialFormState,
   )
 
-  const [session, dispatchSession] = useReducer(sessionReducer, initialSession)
-
-  useEffect(() => {
-    const storedSession = localStorage.getItem("session")
-    const storedUser = localStorage.getItem("user")
-
-    if (storedSession && storedUser) {
-      dispatchSession({ type: "SET_USER", payload: JSON.parse(storedUser) })
-      dispatchSession({ type: "SET_SESSION" })
-    }
-  }, [])
+  const [session, dispatchSession] = useReducer(
+    sessionReducer,
+    initialSessionData || initialSession,
+  )
 
   return (
     <SessionContext.Provider value={[session, dispatchSession]}>
