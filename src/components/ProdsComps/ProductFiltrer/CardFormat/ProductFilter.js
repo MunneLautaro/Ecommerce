@@ -81,7 +81,7 @@ export default function ProductFilter({ isAdmin = false, products }) {
             <X size={24} />
           </button>
         </div>
-        <div className="flex flex-row my-15">
+        <div className="flex flex-col lg:flex-row my-15">
           <FilterByKey keys="brand" />
           <FilterByKey keys="model" />
           <FilterByKey keys="color" />

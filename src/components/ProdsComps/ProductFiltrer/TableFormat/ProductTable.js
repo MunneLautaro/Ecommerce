@@ -5,12 +5,16 @@ import { ProductContext } from "../../../../contexts/ProductContext"
 import DropDown from "@/components/Ui/DropDown/DropDown"
 import OrderPriceButton from "@/components/Ui/Button/OrderPriceButton"
 import { ProductFilterDispatchContext } from "@/contexts/ProductFilterContext"
+import Pagination from "@/components/UserComps/Pagination/Pagination"
+
+const PRODUCTS_PER_PAGE = 10
 
 export default function ProductTable({ products }) {
   const [, dispatchForm] = useContext(ProductContext)
   const [isAdjusted, setIsAdjusted] = useState(false)
   const [fieldToSort, setFieldToSort] = useState("product")
   const [isAscending, setIsAscending] = useState(true)
+  const [currentPage, setCurrentPage] = useState(1)
   const dispatch = useContext(ProductFilterDispatchContext)
 
   return (
@@ -141,6 +145,10 @@ export default function ProductTable({ products }) {
               }
               return b[fieldToSort].localeCompare(a[fieldToSort])
             })
+            .slice(
+              (currentPage - 1) * PRODUCTS_PER_PAGE,
+              currentPage * PRODUCTS_PER_PAGE,
+            )
             .map((prod, index) => (
               <tr
                 key={prod?.sku}
@@ -180,6 +188,13 @@ export default function ProductTable({ products }) {
             ))}
         </tbody>
       </table>
+      {Math.ceil(products.length / PRODUCTS_PER_PAGE) > 1 && (
+        <Pagination
+          currentPage={currentPage}
+          setCurrentPage={setCurrentPage}
+          totalPages={Math.ceil(products.length / PRODUCTS_PER_PAGE)}
+        />
+      )}
     </div>
   )
 }
