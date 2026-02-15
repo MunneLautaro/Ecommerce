@@ -22,44 +22,42 @@ export default function DeleteUser() {
   }, [response])
 
   return (
-    <>
-      <form
-        onSubmit={async (e) => {
-          e.preventDefault()
-          const delResponse = await deleteUserAction(formData)
-          setResponse(delResponse)
-        }}
-        className="flex flex-col justify-between items-center shadow-2xl bg-[#424242] h-[200px] w-[300px] rounded-[10px]"
-      >
-        <div className="flex flex-col items-center ">
-          <div className="min-h-[150px] ">
-            <label
-              htmlFor="deleteUser"
-              className="text-sm font-medium text-gray-200"
-            >
-              Username to Delete
-            </label>
-            <Input
-              id="deleteUser"
-              name={"user"}
-              placeHolder={"Username"}
-              required={true}
-              onChange={(e) =>
-                setFormData((prev) => ({
-                  ...prev,
-                  user: e?.target?.value,
-                }))
-              }
-            />
-          </div>
+    <form
+      onSubmit={async (e) => {
+        e.preventDefault()
+        const delResponse = await deleteUserAction(formData)
+        setResponse(delResponse)
+      }}
+      className="flex flex-col gap-4 w-full max-w-sm bg-[#2a2a2a] border border-white/10 shadow-lg rounded-xl p-5"
+    >
+      <h3 className="text-base font-semibold text-gray-100 text-center">
+        Delete User
+      </h3>
 
-          <Button
-            text={"Delete user"}
-            type={"submit"}
-            disabled={!formData.user}
+      <div className="flex flex-col gap-3">
+        <div className="flex flex-col gap-1">
+          <label
+            htmlFor="deleteUser"
+            className="text-sm font-medium text-gray-300"
+          >
+            Username to Delete
+          </label>
+          <Input
+            id="deleteUser"
+            name={"user"}
+            placeHolder={"Username"}
+            required={true}
+            onChange={(e) =>
+              setFormData((prev) => ({
+                ...prev,
+                user: e?.target?.value,
+              }))
+            }
           />
         </div>
-      </form>
-    </>
+      </div>
+
+      <Button text={"Delete user"} type={"submit"} disabled={!formData.user} />
+    </form>
   )
 }
