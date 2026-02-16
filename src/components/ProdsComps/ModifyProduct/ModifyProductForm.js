@@ -21,7 +21,6 @@ export default function ModifyProductForm({ onSubmit }) {
     }
   }, [formProduct?.response])
 
-  console.log({ formProduct })
   return (
     <div className="flex flex-col items-start w-full">
       {!isProductSelected && (
@@ -126,7 +125,7 @@ export default function ModifyProductForm({ onSubmit }) {
         </form>
 
         <div className="hidden md:block w-full lg:w-1/2 min-w-0">
-          <ProductCard product={formProduct?.form} display />
+          <ProductCard product={formProduct?.form} display={false} />
         </div>
       </div>
     </div>

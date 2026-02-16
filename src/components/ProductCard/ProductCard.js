@@ -12,7 +12,12 @@ import DeleteProductModal from "./DeleteProductModal"
 import { CartContext } from "@/contexts/CartContext"
 import { useCart } from "@/hooks/useCart"
 
-export default function ProductCard({ product, isAdmin, onSubmit }) {
+export default function ProductCard({
+  product,
+  isAdmin,
+  onSubmit,
+  display = true,
+}) {
   function randomIntFromInterval(min, max) {
     return Math.floor(Math.random() * (max - min + 1) + min)
   }
@@ -46,7 +51,6 @@ export default function ProductCard({ product, isAdmin, onSubmit }) {
   const handleDelete = async (e) => {
     e.preventDefault()
     const deletedProduct = await deleteProductAction(product?.sku)
-    console.log("Deleted Product:", deletedProduct)
     if (deletedProduct?.success) {
       toast.success(deletedProduct.success)
     } else {
@@ -85,31 +89,33 @@ export default function ProductCard({ product, isAdmin, onSubmit }) {
             </div>
             <Product product={product} />
 
-            <div className="mt-2 flex flex-row gap-2">
-              <Button
-                type="button"
-                onClick={(e) => {
-                  e.stopPropagation()
-                  removeUnitFromCart(product)
-                }}
-                text={<Minus size={16} />}
-              />
-              {isAdmin && (
+            {display && (
+              <div className="mt-2 flex flex-row gap-2">
                 <Button
                   type="button"
-                  onClick={handleDeleteClick}
-                  text={<Trash size={16} />}
+                  onClick={(e) => {
+                    e.stopPropagation()
+                    removeUnitFromCart(product)
+                  }}
+                  text={<Minus size={16} />}
                 />
-              )}
-              <Button
-                type="button"
-                onClick={(e) => {
-                  e.stopPropagation()
-                  addToCart(product)
-                }}
-                text={<Plus size={16} />}
-              />
-            </div>
+                {isAdmin && (
+                  <Button
+                    type="button"
+                    onClick={handleDeleteClick}
+                    text={<Trash size={16} />}
+                  />
+                )}
+                <Button
+                  type="button"
+                  onClick={(e) => {
+                    e.stopPropagation()
+                    addToCart(product)
+                  }}
+                  text={<Plus size={16} />}
+                />
+              </div>
+            )}
           </div>
 
           <ProductDetailsModal

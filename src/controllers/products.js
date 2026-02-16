@@ -49,7 +49,7 @@ const updateProduct = async (data) => {
         description: data?.description,
         price: data?.price,
         stock: data?.stock,
-      }
+      },
     )
   } catch (error) {
     return { error: error, status: 500 }
@@ -72,7 +72,6 @@ const getProducts = async () => {
 
 const addProduct = async (data) => {
   try {
-    console.log({ data })
     await connectToDatabaseUnix()
     const validationError = validateProductData(data)
     if (validationError) {

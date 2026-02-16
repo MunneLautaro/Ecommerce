@@ -53,7 +53,6 @@ export default function AddProduct({ items }) {
     colors?.length >= 1 &&
     models?.length >= 1
 
-  console.log({ productInfo })
   return (
     <div
       data-testid="AddProductComponent"
@@ -75,7 +74,6 @@ export default function AddProduct({ items }) {
                 type: "SET_RESPONSE",
                 payload: addResponse,
               })
-              console.log(addResponse)
             }}
             className="flex flex-col gap-4 w-full md:w-1/2"
           >
@@ -264,7 +262,7 @@ export default function AddProduct({ items }) {
           </form>
 
           <div className="w-full md:w-1/2">
-            <ProductCard product={productInfo?.form} display />
+            <ProductCard product={productInfo?.form} display={false} />
           </div>
         </div>
       ) : (

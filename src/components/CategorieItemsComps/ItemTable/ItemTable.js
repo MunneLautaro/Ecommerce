@@ -116,7 +116,7 @@ export default function ItemTable({ resetTrigger }) {
         <tbody>
           {paginatedItems.map((item, index) => (
             <tr
-              key={item?.value}
+              key={`${item?.type}-${item?.value}`}
               className={`h-[40px] cursor-pointer focus:ring-4 focus:ring-teal-300 items-center justify-center ${
                 index % 2 === 0
                   ? "bg-violet-400 text-white hover:bg-violet-600 transition-opacity"

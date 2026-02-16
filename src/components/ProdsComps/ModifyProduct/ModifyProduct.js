@@ -20,7 +20,6 @@ export default function ModifyProduct({ products }) {
     fetchProductsWithPriceRange(products)
   }, [fetchProductsWithPriceRange, products])
 
-  console.log({ stateProdFilter })
   const isRefreshDisabled =
     !stateProdFilter?.prodFilter?.product &&
     !stateProdFilter?.prodFilter?.brand &&
