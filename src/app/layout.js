@@ -36,7 +36,7 @@ export default async function RootLayout({ children }) {
         <Providers initialSessionData={initialSessionData}>
           <NavBar />
           <div className="pt-[90px]">{children}</div>
-          <ToastContainer theme="dark" position="bottom-right" />
+          <ToastContainer theme="dark" position="bottom-left" />
         </Providers>
       </body>
     </html>
