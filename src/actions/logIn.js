@@ -23,9 +23,9 @@ export async function login(formData) {
     return { errors: { login: "Invalid credentials" } }
   }
   await createSession(
-    currentUser?.user?._id,
+    currentUser?.user?._id.toString(),
     currentUser?.user?.user,
-    currentUser?.user?.isAdmin
+    currentUser?.user?.isAdmin,
   )
 
   return { user: JSON.parse(JSON.stringify(currentUser?.user)) }

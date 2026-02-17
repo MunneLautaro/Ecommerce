@@ -7,6 +7,7 @@ import {
   deleteCategorie,
   getItemsByType,
 } from "./categories"
+import { createOrder, updateOrderStatus, getOrdersByUser } from "./orders"
 
 export {
   getUser,
@@ -23,4 +24,7 @@ export {
   modifyCategorie,
   deleteCategorie,
   getItemsByType,
+  createOrder,
+  updateOrderStatus,
+  getOrdersByUser,
 }

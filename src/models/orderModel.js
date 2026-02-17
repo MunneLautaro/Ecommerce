@@ -1,4 +1,4 @@
-import mongoose from "mongoose";
+import mongoose from "mongoose"
 
 const purchaseOrderSchema = new mongoose.Schema({
   orderNumber: { type: String, required: true, unique: true },
@@ -15,11 +15,11 @@ const purchaseOrderSchema = new mongoose.Schema({
       product: {
         sku: { type: String, required: true },
         name: { type: String, required: true },
-        img: { type: String, required: true },
-        description: { type: String, required: true },
-        brand: { type: String, required: true },
-        model: { type: String, required: true },
-        color: { type: String, required: true },
+        img: { type: String, default: "" },
+        description: { type: String, default: "" },
+        brand: { type: String, default: "-" },
+        model: { type: String, default: "-" },
+        color: { type: String, default: "-" },
         price: { type: Number, required: true },
         cantidad: { type: Number, required: true },
       },
@@ -33,8 +33,9 @@ const purchaseOrderSchema = new mongoose.Schema({
     default: "Pending",
   },
   totalAmount: { type: Number, required: true },
-});
+  preferenceId: { type: String, index: true },
+  paymentId: { type: String },
+})
 
-module.exports =
-  mongoose.models.PurchaseOrder ||
-  mongoose.model("PurchaseOrder", purchaseOrderSchema);
+export default mongoose.models.PurchaseOrder ||
+  mongoose.model("PurchaseOrder", purchaseOrderSchema)

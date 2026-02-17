@@ -1,0 +1,8 @@
+import "server-only"
+import { MercadoPagoConfig, Preference } from "mercadopago"
+
+const client = new MercadoPagoConfig({
+  accessToken: process.env.MP_ACCESS_TOKEN,
+})
+
+export { client, Preference }
