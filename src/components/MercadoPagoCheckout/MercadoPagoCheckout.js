@@ -1,6 +1,6 @@
 "use client"
 
-import { useContext, useState, useEffect } from "react"
+import { useContext, useState, useEffect, useRef } from "react"
 import { initMercadoPago, Wallet } from "@mercadopago/sdk-react"
 import { CartContext } from "@/contexts/CartContext"
 import { createPreference } from "@/actions/payment"
@@ -14,9 +14,24 @@ export default function MercadoPagoCheckout() {
   const [error, setError] = useState(null)
   const [mounted, setMounted] = useState(false)
 
+  const cartSnapshotRef = useRef(null)
+
   useEffect(() => {
     setMounted(true)
   }, [])
+
+  useEffect(() => {
+    if (!preferenceId || !cartSnapshotRef.current) return
+
+    const currentFingerprint = JSON.stringify(
+      cart?.cartProds?.map((p) => `${p.sku}:${p.quantity}`).sort(),
+    )
+    if (currentFingerprint !== cartSnapshotRef.current) {
+      setPreferenceId(null)
+      cartSnapshotRef.current = null
+    }
+  }, [cart?.cartProds, preferenceId])
+
   const total =
     cart?.cartProds
       ?.reduce((sum, p) => sum + p.price * p.quantity, 0)
@@ -46,6 +61,9 @@ export default function MercadoPagoCheckout() {
     }
 
     setPreferenceId(result.preferenceId)
+    cartSnapshotRef.current = JSON.stringify(
+      cart.cartProds.map((p) => `${p.sku}:${p.quantity}`).sort(),
+    )
     setLoading(false)
   }
 
@@ -63,7 +81,6 @@ export default function MercadoPagoCheckout() {
 
   return (
     <div className="flex flex-col items-center gap-6 w-full max-w-md mx-auto">
-      {/* Resumen del carrito */}
       <div className="w-full space-y-3">
         {cart.cartProds.map((product) => (
           <div
@@ -88,7 +105,6 @@ export default function MercadoPagoCheckout() {
         </div>
       </div>
 
-      {/* Botón de pago */}
       {error && <p className="text-red-400 text-sm">{error}</p>}
 
       {!preferenceId ? (

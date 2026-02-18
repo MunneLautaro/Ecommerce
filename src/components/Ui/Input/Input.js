@@ -10,9 +10,6 @@ export default function Input({
   dataTestId,
   disabled = false,
 }) {
-  // For file inputs we must NOT set the `value` prop (controlled file inputs
-  // prevent programmatic file assignment in tests). Keep value only for
-  // non-file inputs.
   const valueProp = type === "file" ? {} : { value }
 
   return (

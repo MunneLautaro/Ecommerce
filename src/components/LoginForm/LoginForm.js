@@ -26,7 +26,6 @@ export function LoginForm() {
       const data = await result.json()
 
       if (data.success) {
-        // Obtener sesión actualizada desde el servidor
         const sessionResponse = await fetch("/api/session")
         const sessionData = await sessionResponse.json()
 
@@ -40,7 +39,7 @@ export function LoginForm() {
         } else {
           router.push("/")
         }
-        router.refresh() // Recargar Server Components con nueva sesión
+        router.refresh()
       } else {
         setError(data.error || "Error al iniciar sesión con Google")
         setShowError(true)
@@ -63,7 +62,6 @@ export function LoginForm() {
   useEffect(() => {
     if (!response) return
     if (response?.user?.user) {
-      // Actualizar contexto con datos de sesión
       dispatchSession({ type: "SET_SESSION" })
       dispatchSession({ type: "SET_USER", payload: response.user })
 
@@ -72,7 +70,7 @@ export function LoginForm() {
       } else {
         router.push("/")
       }
-      router.refresh() // Refrescar Server Components con nueva sesión
+      router.refresh()
     } else {
       setError(response?.errors?.login)
       setResponse(null)

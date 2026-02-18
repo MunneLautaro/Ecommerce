@@ -1,9 +1,10 @@
 "use client"
 
 import { usePathname } from "next/navigation"
-import { useContext, useEffect, useState } from "react"
+import { useContext, useState } from "react"
 import { Menu, X } from "react-feather"
 import { adminRoutes } from "../../../app/routes"
+import { userRoutes } from "../../../app/routes"
 import Title from "./Title"
 import LogOutButton from "./LogOutButton"
 import Link from "../../Ui/Link/Link"
@@ -15,14 +16,13 @@ export default function NavBar() {
   const [isMenuOpen, setIsMenuOpen] = useState(false)
   const [sessionState] = useContext(SessionContext)
 
-  const links =
-    sessionState?.user?.user &&
-    sessionState?.user?.isAdmin &&
-    adminRoutes[pathname]?.length > 0
+  const links = sessionState?.user?.user
+    ? sessionState?.user?.isAdmin && adminRoutes[pathname]?.length > 0
       ? adminRoutes[pathname]
-      : pathname !== "/"
-        ? [{ label: "Catalog", url: "/" }]
-        : []
+      : userRoutes[pathname] || []
+    : pathname !== "/"
+      ? [{ label: "Catalog", url: "/" }]
+      : []
 
   return (
     <>

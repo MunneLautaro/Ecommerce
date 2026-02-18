@@ -12,19 +12,14 @@ const customWithin = (element) => within(element, allQueries)
 const customRender = (ui, options) =>
   render(ui, { queries: allQueries, ...options })
 
-// re-export everything
 export * from "@testing-library/react"
 
-// override render method
 export {
   customScreen as screen,
   customWithin as within,
   customRender as render,
 }
 
-// The queryAllByAttribute is a shortcut for attribute-based matchers
-// You can also use document.querySelector or a combination of existing
-// testing library utilities to find matching nodes for your query
 const queryAllByDataCy = (...args) =>
   queryHelpers.queryAllByAttribute("data-cy", ...args)
 

@@ -7,7 +7,13 @@ import {
   deleteCategorie,
   getItemsByType,
 } from "./categories"
-import { createOrder, updateOrderStatus, getOrdersByUser } from "./orders"
+import {
+  createOrder,
+  updateOrderStatus,
+  getOrdersByUser,
+  getOrdersByUserWithFilter,
+  getAllOrdersFiltered,
+} from "./orders"
 
 export {
   getUser,
@@ -27,4 +33,6 @@ export {
   createOrder,
   updateOrderStatus,
   getOrdersByUser,
+  getOrdersByUserWithFilter,
+  getAllOrdersFiltered,
 }

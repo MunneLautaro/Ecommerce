@@ -35,6 +35,7 @@ const purchaseOrderSchema = new mongoose.Schema({
   totalAmount: { type: Number, required: true },
   preferenceId: { type: String, index: true },
   paymentId: { type: String },
+  stockDeducted: { type: Boolean, default: false },
 })
 
 export default mongoose.models.PurchaseOrder ||

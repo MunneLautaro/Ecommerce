@@ -2,7 +2,15 @@
 
 import { client, Preference } from "../lib/mercadopago"
 import { getSession } from "../lib/session"
-import { createOrder, updateOrderStatus } from "../controllers/orders"
+import {
+  createOrder,
+  updateOrderStatus,
+  findPendingOrderForUser,
+  cancelExpiredOrders,
+  cancelPendingOrdersForUser,
+  checkStockAvailability,
+  deductStockForOrder,
+} from "../controllers/orders"
 
 export async function createPreference(cartItems) {
   try {
@@ -15,12 +23,36 @@ export async function createPreference(cartItems) {
       return { error: "Debés iniciar sesión para comprar" }
     }
 
+    await cancelExpiredOrders(30)
+
+    const stockCheck = await checkStockAvailability(cartItems)
+    if (stockCheck.error) {
+      return { error: stockCheck.error }
+    }
+
     const totalAmount = cartItems.reduce(
       (sum, item) => sum + Number(item.price) * Number(item.quantity),
       0,
     )
 
-    // 1. Crear la orden PRIMERO para tener el orderNumber
+    const existingOrder = await findPendingOrderForUser(
+      String(session.userId),
+      cartItems,
+      totalAmount,
+    )
+    if (existingOrder && existingOrder.preferenceId) {
+      console.log(
+        "Reutilizando preferencia existente:",
+        existingOrder.preferenceId,
+      )
+      return {
+        preferenceId: existingOrder.preferenceId,
+        orderNumber: existingOrder.orderNumber,
+      }
+    }
+
+    await cancelPendingOrdersForUser(String(session.userId))
+
     const order = await createOrder({
       userId: String(session.userId),
       items: cartItems,
@@ -31,7 +63,10 @@ export async function createPreference(cartItems) {
 
     const appUrl = process.env.NEXT_PUBLIC_APP_URL
 
-    // 2. Crear la preferencia con external_reference = orderNumber
+    const now = new Date()
+    const expirationFrom = now.toISOString()
+    const expirationTo = new Date(now.getTime() + 30 * 60 * 1000).toISOString()
+
     const preference = new Preference(client)
     const result = await preference.create({
       body: {
@@ -44,18 +79,19 @@ export async function createPreference(cartItems) {
         })),
         external_reference: order.orderNumber,
         back_urls: {
-          success: `${appUrl}/buy?status=approved&order=${order.orderNumber}`,
-          failure: `${appUrl}/buy?status=failure&order=${order.orderNumber}`,
-          pending: `${appUrl}/buy?status=pending&order=${order.orderNumber}`,
+          success: `${appUrl}/buy/success?status=approved&order=${order.orderNumber}`,
+          failure: `${appUrl}/buy/failure?status=failure&order=${order.orderNumber}`,
+          pending: `${appUrl}/buy/pending?status=pending&order=${order.orderNumber}`,
         },
         auto_return: "approved",
         notification_url: `${appUrl}/api/webhooks/mercadopago`,
+        expiration_date_from: expirationFrom,
+        expiration_date_to: expirationTo,
       },
     })
 
     console.log("Preference creada:", result.id)
 
-    // 3. Guardar el preferenceId en la orden
     await updateOrderStatus(order.orderNumber, "Pending", null, result.id)
 
     return { preferenceId: result.id, orderNumber: order.orderNumber }
@@ -75,7 +111,6 @@ export async function verifyPayment(orderNumber) {
       return { error: "No se proporcionó el número de orden" }
     }
 
-    // Buscar pagos por external_reference (nuestro orderNumber)
     const response = await fetch(
       `https://api.mercadopago.com/v1/payments/search?external_reference=${orderNumber}`,
       {
@@ -113,6 +148,10 @@ export async function verifyPayment(orderNumber) {
         orderStatus,
         String(payment.id),
       )
+
+      if (orderStatus === "Payed" && order && order.status === "Payed") {
+        await deductStockForOrder(order)
+      }
 
       return {
         status: payment.status,

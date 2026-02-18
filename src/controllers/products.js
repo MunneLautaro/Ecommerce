@@ -1,4 +1,3 @@
-//import { connectToDataBase } from "../dbMongo"
 import Product from "../models/productModel"
 import { validateProductData } from "@/helpers/validateProductData"
 import { createSku } from "@/helpers/createSku"

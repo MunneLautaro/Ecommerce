@@ -12,7 +12,6 @@ export default function ProductCartInfo({ product }) {
 
   return (
     <div className="flex gap-3 p-3 rounded-lg bg-white/5 hover:bg-white/[0.07] transition-colors">
-      {/* Image */}
       <div className="relative w-16 h-16 flex-shrink-0 rounded-md overflow-hidden bg-gray-800">
         <Image
           className="object-cover"
@@ -23,7 +22,6 @@ export default function ProductCartInfo({ product }) {
         />
       </div>
 
-      {/* Info */}
       <div className="flex-1 min-w-0 flex flex-col justify-between">
         <div>
           <h3 className="text-sm font-semibold text-white truncate">
@@ -48,7 +46,6 @@ export default function ProductCartInfo({ product }) {
         </div>
       </div>
 
-      {/* Price & delete */}
       <div className="flex flex-col items-end justify-between flex-shrink-0">
         <span className="text-sm font-bold text-white">
           ${(product?.price * product?.quantity).toFixed(2)}

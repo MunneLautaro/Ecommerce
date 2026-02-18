@@ -2,6 +2,7 @@ import { NextResponse } from "next/server"
 import { decrypt, encrypt } from "../src/lib/session"
 
 const protectedRoutes = ["/adminPage", "/prods", "/categorieItems"]
+const authRequiredRoutes = ["/orders"]
 const publicRoutes = ["/login", "/"]
 
 export default async function middleware(req) {
@@ -9,12 +10,13 @@ export default async function middleware(req) {
   const path = req.nextUrl.pathname
 
   const isProtectedRoute = protectedRoutes.some((p) => path.startsWith(p))
+  const isAuthRequired = authRequiredRoutes.some((p) => path.startsWith(p))
   const isPublicRoute = publicRoutes.includes(path)
 
   const sessionCookie = req.cookies.get("session")?.value
 
   if (!sessionCookie) {
-    if (isProtectedRoute) {
+    if (isProtectedRoute || isAuthRequired) {
       return NextResponse.redirect(new URL("/login", req.nextUrl))
     }
     res.headers.set("Cache-Control", "public, max-age=3600, s-maxage=3600")
@@ -50,6 +52,10 @@ export default async function middleware(req) {
     }
   }
 
+  if (isAuthRequired && !session?.userId) {
+    return NextResponse.redirect(new URL("/login", req.nextUrl))
+  }
+
   if (
     isProtectedRoute &&
     (!session?.userId || !session?.username || !session?.isAdmin)
@@ -69,6 +75,7 @@ export const config = {
     "/adminPage/:path*",
     "/prods/:path*",
     "/categorieItems/:path*",
+    "/orders/:path*",
     "/login",
   ],
 }
