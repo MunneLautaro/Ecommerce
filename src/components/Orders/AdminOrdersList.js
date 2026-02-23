@@ -5,8 +5,8 @@ import { getAllOrders } from "@/actions/orderActions"
 import {
   OrderCard,
   OrderDetailModal,
-  StatusFilter,
 } from "@/components/Orders/OrderComponents"
+import Select from "@/components/ProdsComps/Select/Select"
 
 export default function AdminOrdersList() {
   const [orders, setOrders] = useState([])
@@ -34,14 +34,22 @@ export default function AdminOrdersList() {
   return (
     <div className="w-full max-w-3xl mx-auto">
       <div className="flex flex-col sm:flex-row gap-3 mb-6">
-        <StatusFilter
+        <Select
           value={statusFilter}
-          onChange={setStatusFilter}
-          className="flex-1"
+          elements={[
+            { value: "all", label: "All statuses" },
+            { value: "Pending", label: "Pending" },
+            { value: "Payed", label: "Paid" },
+            { value: "Shipped", label: "Shipped" },
+            { value: "Delivered", label: "Delivered" },
+            { value: "Cancelled", label: "Cancelled" },
+          ]}
+          type="Status"
+          onChange={(e) => setStatusFilter(e.target.value)}
         />
         <input
           type="text"
-          placeholder="Buscar por usuario o email..."
+          placeholder="Search by user or email..."
           value={userSearch}
           onChange={(e) => setUserSearch(e.target.value)}
           className="flex-1 px-3 py-2 rounded-lg bg-white/5 border border-white/10 text-white text-sm placeholder-gray-500 focus:outline-none focus:border-violet-500"
@@ -50,8 +58,7 @@ export default function AdminOrdersList() {
 
       {!loading && (
         <p className="text-sm text-gray-400 mb-4">
-          {orders.length} {orders.length === 1 ? "orden" : "órdenes"} encontrada
-          {orders.length !== 1 ? "s" : ""}
+          {orders.length} {orders.length === 1 ? "order" : "orders"} found
         </p>
       )}
 
@@ -60,9 +67,7 @@ export default function AdminOrdersList() {
           <div className="w-8 h-8 border-2 border-violet-500 border-t-transparent rounded-full animate-spin" />
         </div>
       ) : orders.length === 0 ? (
-        <p className="text-center text-gray-400 py-10">
-          No se encontraron órdenes
-        </p>
+        <p className="text-center text-gray-400 py-10">No orders found</p>
       ) : (
         <div className="space-y-3">
           {orders.map((order) => (

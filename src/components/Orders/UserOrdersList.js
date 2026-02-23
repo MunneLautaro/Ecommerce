@@ -5,8 +5,8 @@ import { getUserOrders } from "@/actions/orderActions"
 import {
   OrderCard,
   OrderDetailModal,
-  StatusFilter,
 } from "@/components/Orders/OrderComponents"
+import Select from "@/components/ProdsComps/Select/Select"
 
 export default function UserOrdersList() {
   const [orders, setOrders] = useState([])
@@ -30,17 +30,24 @@ export default function UserOrdersList() {
   return (
     <div className="w-full max-w-3xl mx-auto">
       <div className="flex gap-3 mb-6">
-        <StatusFilter
+        <Select
           value={statusFilter}
-          onChange={setStatusFilter}
-          className="w-full sm:w-64"
+          elements={[
+            { value: "all", label: "All statuses" },
+            { value: "Pending", label: "Pending" },
+            { value: "Payed", label: "Paid" },
+            { value: "Shipped", label: "Shipped" },
+            { value: "Delivered", label: "Delivered" },
+            { value: "Cancelled", label: "Cancelled" },
+          ]}
+          type="Status"
+          onChange={(e) => setStatusFilter(e.target.value)}
         />
       </div>
 
       {!loading && (
         <p className="text-sm text-gray-400 mb-4">
-          {orders.length} {orders.length === 1 ? "orden" : "órdenes"} encontrada
-          {orders.length !== 1 ? "s" : ""}
+          {orders.length} {orders.length === 1 ? "order" : "orders"} found
         </p>
       )}
 
@@ -50,7 +57,7 @@ export default function UserOrdersList() {
         </div>
       ) : orders.length === 0 ? (
         <p className="text-center text-gray-400 py-10">
-          No tenés órdenes {statusFilter !== "all" ? "con ese estado" : ""}
+          No orders found {statusFilter !== "all" ? "with that status" : ""}
         </p>
       ) : (
         <div className="space-y-3">

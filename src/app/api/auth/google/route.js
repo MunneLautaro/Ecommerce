@@ -51,7 +51,7 @@ export async function POST(request) {
       },
     })
   } catch (error) {
-    console.error("Error en autenticación de Google:", error)
+    console.error("Error in Google authentication:", error)
     return NextResponse.json(
       { success: false, error: "Error al autenticar con Google" },
       { status: 401 },

@@ -74,7 +74,7 @@ export default function MercadoPagoCheckout() {
   if (!cart?.cartProds?.length) {
     return (
       <div className="text-center text-gray-400 py-10">
-        <p>Tu carrito está vacío</p>
+        <p>Your cart is empty</p>
       </div>
     )
   }

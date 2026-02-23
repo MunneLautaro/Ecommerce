@@ -9,7 +9,7 @@ import {
 export async function getUserOrders(statusFilter = "") {
   const session = await getSession()
   if (!session) {
-    return { error: "Debés iniciar sesión" }
+    return { error: "You must be logged in" }
   }
 
   const orders = await getOrdersByUserWithFilter(session.userId, statusFilter)
@@ -19,7 +19,7 @@ export async function getUserOrders(statusFilter = "") {
 export async function getAllOrders(statusFilter = "", userSearch = "") {
   const { authorized, error } = await requireAuth({ requireAdmin: true })
   if (!authorized) {
-    return { error: error || "No autorizado" }
+    return { error: error || "Unauthorized" }
   }
 
   const orders = await getAllOrdersFiltered(statusFilter, userSearch)

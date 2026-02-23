@@ -1,6 +1,5 @@
 "use client"
 
-import { useState } from "react"
 import Image from "next/image"
 
 const statusColors = {
@@ -12,11 +11,11 @@ const statusColors = {
 }
 
 const statusLabels = {
-  Pending: "Pendiente",
-  Payed: "Pagado",
-  Shipped: "Enviado",
-  Delivered: "Entregado",
-  Cancelled: "Cancelado",
+  Pending: "Pending",
+  Payed: "Paid",
+  Shipped: "Shipped",
+  Delivered: "Delivered",
+  Cancelled: "Cancelled",
 }
 
 export function StatusBadge({ status }) {
@@ -192,22 +191,5 @@ export function OrderDetailModal({ order, onClose }) {
         </button>
       </div>
     </div>
-  )
-}
-
-export function StatusFilter({ value, onChange, className = "" }) {
-  return (
-    <select
-      value={value}
-      onChange={(e) => onChange(e.target.value)}
-      className={`px-3 py-2 rounded-lg bg-white/5 border border-white/10 text-white text-sm focus:outline-none focus:border-violet-500 ${className}`}
-    >
-      <option value="all">Todos los estados</option>
-      <option value="Pending">Pendiente</option>
-      <option value="Payed">Pagado</option>
-      <option value="Shipped">Enviado</option>
-      <option value="Delivered">Entregado</option>
-      <option value="Cancelled">Cancelado</option>
-    </select>
   )
 }

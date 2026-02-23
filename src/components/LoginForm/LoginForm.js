@@ -41,7 +41,7 @@ export function LoginForm() {
         }
         router.refresh()
       } else {
-        setError(data.error || "Error al iniciar sesión con Google")
+        setError(data.error || "Error signing in with Google")
         setShowError(true)
         setTimeout(() => {
           setShowError(false)
@@ -50,7 +50,7 @@ export function LoginForm() {
       }
     } catch (err) {
       console.error("Error:", err)
-      setError("Error al conectar con Google")
+      setError("Error connecting to Google")
       setShowError(true)
       setTimeout(() => {
         setShowError(false)

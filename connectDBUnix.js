@@ -5,7 +5,7 @@ dotenv.config({ path: ".env.local" })
 const MONGODB_URI = process.env.MONGODB_URI
 
 if (!MONGODB_URI) {
-  throw new Error("MONGODB_URI no está definida en .env.local")
+  throw new Error("MONGODB_URI is not defined in .env.local")
 }
 
 let isConnected = false
@@ -16,9 +16,9 @@ export const connectToDatabaseUnix = async () => {
   try {
     await mongoose.connect(MONGODB_URI)
     isConnected = true
-    console.log("MongoDB conectado con Mongoose")
+    console.log("MongoDB connected with Mongoose")
   } catch (error) {
-    console.error("Error conectando a MongoDB", error)
+    console.error("Error connecting to MongoDB", error)
     throw error
   }
 }
