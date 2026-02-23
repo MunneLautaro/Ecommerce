@@ -2,6 +2,7 @@ import { useContext } from "react"
 import { logout } from "../../../actions/index"
 import { SessionContext } from "@/contexts/SessionContext"
 import { CartContext } from "@/contexts/CartContext"
+import { LogOut } from "react-feather"
 
 export default function LogOutButton({ username, isAdmin }) {
   const [, dispatchSession] = useContext(SessionContext)
@@ -28,7 +29,7 @@ export default function LogOutButton({ username, isAdmin }) {
         }}
         aria-label={`Logout ${username}`}
       >
-        LOGOUT
+        <LogOut className="w-4 h-4" />
       </button>
     </div>
   )

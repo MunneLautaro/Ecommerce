@@ -10,6 +10,7 @@ import LogOutButton from "./LogOutButton"
 import Link from "../../Ui/Link/Link"
 import Cart from "@/components/Cart/Cart"
 import { SessionContext } from "@/contexts/SessionContext"
+import { LogIn } from "react-feather"
 
 export default function NavBar() {
   const pathname = usePathname()
@@ -27,19 +28,19 @@ export default function NavBar() {
   return (
     <>
       <div className="flex bg-[#424242] justify-between items-center w-full max-w-full h-[90px] fixed top-0 px-4 md:px-6 z-10 overflow-hidden">
-        <div className="min-w-0 shrink">
+        <div className="min-w-0 flex-1 relative left-0 top-0 ">
           <Title />
         </div>
 
-        <div className="hidden md:flex items-center gap-4">
-          {links.map((item) => (
-            <Link key={item.label} id={item.label} url={item.url}>
-              {item.label}
+        <div className="hidden md:flex items-center justify-center gap-4">
+          {links.map((link) => (
+            <Link key={link.label} id={link.label} url={link.url}>
+              {link.label}
             </Link>
           ))}
         </div>
 
-        <div className="hidden md:flex items-center gap-4">
+        <div className="hidden md:flex flex-1 items-center justify-end gap-4">
           {sessionState?.user?.user ? (
             <>
               <Cart />
@@ -48,9 +49,11 @@ export default function NavBar() {
                 isAdmin={sessionState?.user?.isAdmin}
               />
             </>
-          ) : (
-            <Link url={"/login"}>Login</Link>
-          )}
+          ) : pathname !== "/login" ? (
+            <Link url={"/login"} className="flex items-center gap-1">
+              <LogIn className="w-7 h-7 hover:scale-110 hover:text-violet-700 transition-all duration-300" />
+            </Link>
+          ) : null}
         </div>
 
         <button
@@ -91,11 +94,11 @@ export default function NavBar() {
                 isAdmin={sessionState?.user?.isAdmin}
               />
             </>
-          ) : (
+          ) : pathname !== "/login" ? (
             <Link url={"/login"} onClick={() => setIsMenuOpen(false)}>
-              Login
+              <LogIn className="w-4 h-4 hover:scale-110 hover:text-violet-700 transition-all duration-300" />
             </Link>
-          )}
+          ) : null}
         </div>
       </div>
     </>

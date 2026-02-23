@@ -5,7 +5,7 @@ export default function LinkUi({ url, href, children, id }) {
     <Link
       id={id}
       href={href || url}
-      className="text-violet-400 hover:underline mr-10 text-xl font-bold"
+      className="flex text-violet-400 items-center justify-center hover:underline text-xl font-bold"
     >
       {children}
     </Link>
