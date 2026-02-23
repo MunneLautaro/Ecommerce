@@ -1,6 +1,6 @@
 "use server"
 
-import { client, Preference } from "../lib/mercadopago"
+import { client, Preference, PaymentRefund } from "../lib/mercadopago"
 import { getSession } from "../lib/session"
 import {
   createOrder,
@@ -10,17 +10,43 @@ import {
   cancelPendingOrdersForUser,
   checkStockAvailability,
   deductStockForOrder,
+  findOrderByNumber,
+  markOrderAsRefund,
 } from "../controllers/orders"
+
+async function refundPayment(paymentId) {
+  try {
+    const refund = new PaymentRefund(client)
+    await refund.create({ payment_id: Number(paymentId), body: {} })
+    console.log(`Refund successful for paymentId=${paymentId}`)
+    return { success: true }
+  } catch (error) {
+    const msg = error?.message || String(error)
+    console.error(`Error refunding paymentId=${paymentId}:`, msg)
+
+    const isTestEnv =
+      msg.includes("Unauthorized use of live credentials") ||
+      msg.includes("unauthorized")
+
+    return {
+      success: false,
+      error: isTestEnv
+        ? "Refund not available in test environment (sandbox)"
+        : msg,
+      isTestEnv,
+    }
+  }
+}
 
 export async function createPreference(cartItems) {
   try {
     if (!cartItems || cartItems.length === 0) {
-      return { error: "El carrito está vacío" }
+      return { error: "Your cart is empty" }
     }
 
     const session = await getSession()
     if (!session) {
-      return { error: "Debés iniciar sesión para comprar" }
+      return { error: "You must be logged in to make a purchase" }
     }
 
     await cancelExpiredOrders(30)
@@ -41,10 +67,7 @@ export async function createPreference(cartItems) {
       totalAmount,
     )
     if (existingOrder && existingOrder.preferenceId) {
-      console.log(
-        "Reutilizando preferencia existente:",
-        existingOrder.preferenceId,
-      )
+      console.log("Reusing existing preference:", existingOrder.preferenceId)
       return {
         preferenceId: existingOrder.preferenceId,
         orderNumber: existingOrder.orderNumber,
@@ -59,7 +82,7 @@ export async function createPreference(cartItems) {
       totalAmount,
     })
 
-    console.log("Orden creada:", order.orderNumber)
+    console.log("Order created:", order.orderNumber)
 
     const appUrl = process.env.NEXT_PUBLIC_APP_URL
 
@@ -90,25 +113,25 @@ export async function createPreference(cartItems) {
       },
     })
 
-    console.log("Preference creada:", result.id)
+    console.log("Preference created:", result.id)
 
     await updateOrderStatus(order.orderNumber, "Pending", null, result.id)
 
     return { preferenceId: result.id, orderNumber: order.orderNumber }
   } catch (error) {
     console.error(
-      "Error creando preferencia de Mercado Pago:",
+      "Error creating MercadoPago preference:",
       error?.message || error,
     )
-    console.error("Detalle:", JSON.stringify(error?.cause || error, null, 2))
-    return { error: "Error al crear la preferencia de pago" }
+    console.error("Details:", JSON.stringify(error?.cause || error, null, 2))
+    return { error: "Error creating payment preference" }
   }
 }
 
 export async function verifyPayment(orderNumber) {
   try {
     if (!orderNumber) {
-      return { error: "No se proporcionó el número de orden" }
+      return { error: "No order number provided" }
     }
 
     const response = await fetch(
@@ -143,15 +166,68 @@ export async function verifyPayment(orderNumber) {
 
       const orderStatus = statusMap[payment.status] || "Pending"
 
+      if (orderStatus === "Payed") {
+        const currentOrder = await findOrderByNumber(orderNumber)
+
+        if (!currentOrder) {
+          return { status: "not_found", orderStatus: "Pending" }
+        }
+
+        if (currentOrder.status === "Payed") {
+          return {
+            status: payment.status,
+            orderStatus: "Payed",
+            orderNumber: currentOrder.orderNumber,
+          }
+        }
+
+        if (currentOrder.status === "Cancelled" && currentOrder.refundReason) {
+          return {
+            status: "refunded",
+            orderStatus: "Cancelled",
+            orderNumber: currentOrder.orderNumber,
+            error: currentOrder.refundReason,
+          }
+        }
+
+        const stockResult = await deductStockForOrder(currentOrder)
+
+        if (!stockResult.success) {
+          const refundResult = await refundPayment(payment.id)
+
+          const reason = refundResult.success
+            ? `Automatic refund: ${stockResult.error}`
+            : `Refund failed (manual action required): ${stockResult.error}`
+
+          await markOrderAsRefund(orderNumber, payment.id, reason)
+
+          return {
+            status: "refunded",
+            orderStatus: "Cancelled",
+            orderNumber,
+            error: stockResult.error,
+            refunded: refundResult.success,
+          }
+        }
+
+        const order = await updateOrderStatus(
+          orderNumber,
+          "Payed",
+          String(payment.id),
+        )
+
+        return {
+          status: payment.status,
+          orderStatus: "Payed",
+          orderNumber: order?.orderNumber,
+        }
+      }
+
       const order = await updateOrderStatus(
         orderNumber,
         orderStatus,
         String(payment.id),
       )
-
-      if (orderStatus === "Payed" && order && order.status === "Payed") {
-        await deductStockForOrder(order)
-      }
 
       return {
         status: payment.status,
@@ -162,7 +238,7 @@ export async function verifyPayment(orderNumber) {
 
     return { status: "not_found", orderStatus: "Pending" }
   } catch (error) {
-    console.error("Error verificando pago:", error)
-    return { error: "Error al verificar el pago" }
+    console.error("Error verifying payment:", error)
+    return { error: "Error verifying payment" }
   }
 }

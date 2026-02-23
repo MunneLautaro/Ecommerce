@@ -4,10 +4,6 @@ import User from "../models/userModel"
 import crypto from "crypto"
 import { connectToDatabaseUnix } from "../../connectDBUnix"
 
-/**
- * Verifica que haya stock suficiente para todos los items del carrito.
- * Retorna { ok: true } si hay stock, o { error: "..." } con detalle si no.
- */
 export async function checkStockAvailability(cartItems) {
   await connectToDatabaseUnix()
 
@@ -19,19 +15,19 @@ export async function checkStockAvailability(cartItems) {
 
     const product = await Product.findOne({ sku })
     if (!product) {
-      insufficientItems.push(`"${item.title}" no existe`)
+      insufficientItems.push(`"${item.title}" does not exist`)
       continue
     }
 
     if (product.stock < requestedQty) {
       insufficientItems.push(
-        `"${item.title}" — stock disponible: ${product.stock}, pedido: ${requestedQty}`,
+        `"${item.title}" — available stock: ${product.stock}, requested: ${requestedQty}`,
       )
     }
   }
 
   if (insufficientItems.length > 0) {
-    return { error: `Stock insuficiente: ${insufficientItems.join("; ")}` }
+    return { error: `Insufficient stock: ${insufficientItems.join("; ")}` }
   }
 
   return { ok: true }
@@ -48,30 +44,53 @@ export async function deductStockForOrder(order) {
 
   if (!updated) {
     console.log(
-      `Stock ya fue descontado para orden ${order.orderNumber}, saltando`,
+      `Stock already deducted for order ${order.orderNumber}, skipping`,
     )
-    return 0
+    return { success: true, alreadyDeducted: true }
   }
 
-  const bulkOps = order.items.map((item) => ({
-    updateOne: {
-      filter: { sku: item.product.sku, stock: { $gte: item.product.cantidad } },
-      update: { $inc: { stock: -item.product.cantidad } },
-    },
-  }))
+  const deductedItems = []
 
-  if (bulkOps.length === 0) return 0
+  for (const item of order.items) {
+    const result = await Product.findOneAndUpdate(
+      { sku: item.product.sku, stock: { $gte: item.product.cantidad } },
+      { $inc: { stock: -item.product.cantidad } },
+      { new: true },
+    )
 
-  const result = await Product.bulkWrite(bulkOps)
+    if (!result) {
+      console.warn(
+        `Insufficient stock for SKU ${item.product.sku} (order ${order.orderNumber}). Reverting deductions...`,
+      )
+
+      for (const deducted of deductedItems) {
+        await Product.updateOne(
+          { sku: deducted.sku },
+          { $inc: { stock: deducted.quantity } },
+        )
+      }
+
+      await PurchaseOrder.updateOne(
+        { orderNumber: order.orderNumber },
+        { stockDeducted: false },
+      )
+
+      return {
+        success: false,
+        error: `Insufficient stock for "${item.product.name}" (SKU: ${item.product.sku})`,
+      }
+    }
+
+    deductedItems.push({
+      sku: item.product.sku,
+      quantity: item.product.cantidad,
+    })
+  }
+
   console.log(
-    `Stock descontado: ${result.modifiedCount}/${bulkOps.length} productos`,
+    `Stock deducted successfully: ${deductedItems.length} products (order ${order.orderNumber})`,
   )
-
-  if (result.modifiedCount < bulkOps.length) {
-    console.warn("Algunos productos no tenían stock suficiente al descontar")
-  }
-
-  return result.modifiedCount
+  return { success: true }
 }
 
 export async function findPendingOrderForUser(userId, cartItems, totalAmount) {
@@ -124,7 +143,7 @@ export async function cancelExpiredOrders(minutesOld = 30) {
   )
 
   if (result.modifiedCount > 0) {
-    console.log(`Órdenes expiradas canceladas: ${result.modifiedCount}`)
+    console.log(`Expired orders cancelled: ${result.modifiedCount}`)
   }
 
   return result.modifiedCount
@@ -150,7 +169,7 @@ export async function cancelPendingOrdersForUser(userId) {
 
   if (result.modifiedCount > 0) {
     console.log(
-      `Órdenes pendientes canceladas para usuario ${userIdStr}: ${result.modifiedCount}`,
+      `Pending orders cancelled for user ${userIdStr}: ${result.modifiedCount}`,
     )
   }
 
@@ -200,6 +219,24 @@ export async function createOrder({ userId, items, totalAmount }) {
   return order
 }
 
+export async function findOrderByNumber(orderNumber) {
+  await connectToDatabaseUnix()
+  return PurchaseOrder.findOne({ orderNumber })
+}
+
+export async function markOrderAsRefund(orderNumber, paymentId, reason) {
+  await connectToDatabaseUnix()
+  return PurchaseOrder.findOneAndUpdate(
+    { orderNumber },
+    {
+      status: "Cancelled",
+      paymentId: String(paymentId),
+      refundReason: reason,
+    },
+    { new: true },
+  )
+}
+
 export async function updateOrderStatus(
   orderNumber,
   status,
@@ -213,7 +250,7 @@ export async function updateOrderStatus(
 
   if (currentOrder.status === "Payed" && status !== "Payed") {
     console.log(
-      `updateOrderStatus - Orden ${orderNumber} ya pagada, no se degrada a ${status}`,
+      `updateOrderStatus - Order ${orderNumber} already paid, not downgrading to ${status}`,
     )
     return currentOrder
   }
@@ -245,9 +282,6 @@ export async function getOrdersByUser(userId) {
   return orders
 }
 
-/**
- * Obtiene las órdenes de un usuario con filtro opcional por estado.
- */
 export async function getOrdersByUserWithFilter(userId, statusFilter = "") {
   await connectToDatabaseUnix()
 
@@ -261,9 +295,6 @@ export async function getOrdersByUserWithFilter(userId, statusFilter = "") {
   return JSON.parse(JSON.stringify(orders))
 }
 
-/**
- * Obtiene todas las órdenes con filtros opcionales por estado y usuario.
- */
 export async function getAllOrdersFiltered(statusFilter = "", userSearch = "") {
   await connectToDatabaseUnix()
 

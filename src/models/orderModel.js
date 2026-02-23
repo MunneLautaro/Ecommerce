@@ -32,6 +32,7 @@ const purchaseOrderSchema = new mongoose.Schema({
     enum: ["Pending", "Payed", "Shipped", "Delivered", "Cancelled"],
     default: "Pending",
   },
+  refundReason: { type: String, default: "" },
   totalAmount: { type: Number, required: true },
   preferenceId: { type: String, index: true },
   paymentId: { type: String },
