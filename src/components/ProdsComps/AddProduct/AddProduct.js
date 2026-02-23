@@ -59,7 +59,7 @@ export default function AddProduct({ items }) {
       className="flex flex-col items-center px-4 justify-center"
     >
       <h1 className="text-2xl font-semibold text-yellow-500 my-6">
-        ¡Add a new product!
+        Add a new product!
       </h1>
 
       {areEnoughItems ? (
@@ -110,7 +110,7 @@ export default function AddProduct({ items }) {
             <Select
               value={productInfo?.form?.color?.value ?? ""}
               elements={colors}
-              type="Model"
+              type="Color"
               onChange={(e) => {
                 const selectedColor = colors.find(
                   (color) => color.value === e.target.value,
