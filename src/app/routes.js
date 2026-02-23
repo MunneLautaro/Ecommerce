@@ -50,9 +50,20 @@ export const adminRoutes = {
     { label: "Categories", url: "/categorieItems" },
     { label: "Orders", url: "/adminPage/orders" },
   ],
+  "/buy": [
+    { label: "Home", url: "/" },
+    { label: "Catalog", url: "/" },
+    { label: "Add/Modify prods", url: "/prods" },
+    { label: "Categories", url: "/categorieItems" },
+    { label: "Orders", url: "/adminPage/orders" },
+  ],
 }
 
 export const userRoutes = {
   "/orders": [{ label: "Catalog", url: "/" }],
+  "/buy": [
+    { label: "Catalog", url: "/" },
+    { label: "My Orders", url: "/orders" },
+  ],
   "/": [{ label: "My Orders", url: "/orders" }],
 }
