@@ -5,8 +5,7 @@ import PaymentStatus from "@/components/MercadoPagoCheckout/PaymentStatus"
 
 export default function CheckOut() {
   return (
-    <div className="pt-[100px] px-4 pb-10">
-      <h1 className="text-2xl font-bold text-center mb-8">Checkout</h1>
+    <div className="pt-25 px-4 pb-10">
       <Suspense fallback={null}>
         <PaymentStatus />
       </Suspense>

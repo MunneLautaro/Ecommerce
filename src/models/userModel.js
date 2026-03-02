@@ -2,8 +2,7 @@ import mongoose from "mongoose"
 
 const userSchema = new mongoose.Schema({
   user: { type: String, required: true, unique: true },
-  md5: { type: String },
-  sha1: { type: String },
+  password: { type: String, required: true },
   googleId: { type: String, unique: true, sparse: true },
   email: { type: String },
   lastSession: { type: Date, default: Date.now },

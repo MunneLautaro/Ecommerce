@@ -2,6 +2,7 @@ import { validateUsername } from "@/helpers/validateUsername"
 import User from "../models/userModel"
 //import { connectToDatabase } from "../../connectToDatabase"
 import { connectToDatabaseUnix } from "../../connectDBUnix"
+import bcrypt from "bcryptjs"
 
 const getUser = async (user, id) => {
   try {
@@ -50,7 +51,7 @@ const getUsers = async () => {
   }
 }
 
-const addUser = async (user, md5, sha1, device) => {
+const addUser = async (user, password, device) => {
   try {
     //await connectToDatabase()
     await connectToDatabaseUnix()
@@ -59,7 +60,7 @@ const addUser = async (user, md5, sha1, device) => {
   }
 
   try {
-    if (!user || !md5 || !sha1) {
+    if (!user || !password) {
       return { error: "Missing fields", status: 400 }
     }
 
@@ -68,10 +69,11 @@ const addUser = async (user, md5, sha1, device) => {
       return { error: "The user already exists", status: 409 }
     }
 
+    const hashedPassword = await bcrypt.hash(password, 10)
+
     const newUser = new User({
       user: user,
-      md5: md5,
-      sha1: sha1,
+      password: hashedPassword,
       device: device,
       activeSession: true,
     })
@@ -108,8 +110,7 @@ const deleteUser = async (user) => {
 const modifyUser = async (
   currentUsername,
   newUsername,
-  md5,
-  sha1,
+  password,
   device = "",
 ) => {
   try {
@@ -132,12 +133,13 @@ const modifyUser = async (
       }
     }
 
+    const hashedPassword = await bcrypt.hash(password, 10)
+
     await User.replaceOne(
       { user: currentUsername },
       {
         user: newUsername,
-        md5: md5,
-        sha1: sha1,
+        password: hashedPassword,
         device: device,
         activeSession: true,
       },

@@ -20,12 +20,6 @@ export default function Table({ users }) {
           <thead className="bg-[#333] text-white uppercase text-xs border-b border-white/20">
             <tr>
               <th className="px-3 sm:px-6 py-3">User</th>
-              <th className="px-3 sm:px-6 py-3 text-right hidden sm:table-cell">
-                MD5
-              </th>
-              <th className="px-3 sm:px-6 py-3 text-right hidden sm:table-cell">
-                SHA1
-              </th>
             </tr>
           </thead>
           <tbody className="divide-y divide-white/10">
@@ -35,37 +29,7 @@ export default function Table({ users }) {
                 className="hover:bg-violet-800/40 transition-colors"
               >
                 <td className="px-3 sm:px-6 py-3 sm:py-4 font-medium text-white">
-                  <div>{user.user}</div>
-                  <div className="sm:hidden mt-1 space-y-1 text-xs text-gray-400">
-                    <div className="truncate">
-                      <span className="text-gray-500">MD5: </span>
-                      <span data-testid={`user-md5-${user._id}`}>
-                        {user.md5}
-                      </span>
-                    </div>
-                    <div className="truncate">
-                      <span className="text-gray-500">SHA1: </span>
-                      <span data-testid={`user-sha1-${user._id}`}>
-                        {user.sha1}
-                      </span>
-                    </div>
-                  </div>
-                </td>
-                <td
-                  data-testid={`user-md5-${user._id}`}
-                  className="px-3 sm:px-6 py-3 sm:py-4 text-right text-white hidden sm:table-cell"
-                >
-                  <span className="inline-block max-w-[180px] lg:max-w-none truncate lg:overflow-visible">
-                    {user.md5}
-                  </span>
-                </td>
-                <td
-                  data-testid={`user-sha1-${user._id}`}
-                  className="px-3 sm:px-6 py-3 sm:py-4 text-right text-white hidden sm:table-cell"
-                >
-                  <span className="inline-block max-w-[200px] lg:max-w-none truncate lg:overflow-visible">
-                    {user.sha1}
-                  </span>
+                  {user.user}
                 </td>
               </tr>
             ))}

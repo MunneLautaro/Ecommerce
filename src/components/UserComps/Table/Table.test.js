@@ -13,36 +13,6 @@ describe("Table", () => {
     })
   })
 
-  it("displays all md5 in first page of the table", () => {
-    render(<Table users={mockUsers} />)
-
-    const md5Cells = screen.getAllByTestId(/user-md5-/)
-
-    expect(md5Cells.length).toEqual(10)
-
-    const firstPageUsers = mockUsers.slice(0, 10)
-
-    firstPageUsers.forEach((u) => {
-      const md5Cell = screen.getByTestId(`user-md5-${u._id}`)
-      expect(md5Cell).toHaveTextContent(String(u.md5))
-    })
-  })
-
-  it("displays all sha1 in the first page of the table", () => {
-    render(<Table users={mockUsers} />)
-
-    const sha1Cells = screen.getAllByTestId(/user-sha1-/)
-
-    expect(sha1Cells.length).toEqual(10)
-
-    const firstPageUsers = mockUsers.slice(0, 10)
-
-    firstPageUsers.forEach((u) => {
-      const sha1Cell = screen.getByTestId(`user-sha1-${u._id}`)
-      expect(sha1Cell).toHaveTextContent(String(u.sha1))
-    })
-  })
-
   it("displays 10 users per page", () => {
     render(<Table users={mockUsers} />)
 

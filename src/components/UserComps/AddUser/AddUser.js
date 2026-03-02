@@ -4,14 +4,12 @@ import Button from "../../Ui/Button/Button"
 import Input from "../../Ui/Input/Input"
 import { useEffect, useState } from "react"
 import { toast } from "react-toastify"
-import CryptoJS from "crypto-js"
 
 export default function AddUser() {
   const [response, setResponse] = useState(null)
   const [formData, setFormData] = useState({
     user: "",
-    md5: "",
-    sha1: "",
+    password: "",
     userAgent: null,
   })
 
@@ -79,8 +77,7 @@ export default function AddUser() {
             onChange={(e) =>
               setFormData((prev) => ({
                 ...prev,
-                md5: CryptoJS.MD5(e?.target?.value).toString(),
-                sha1: CryptoJS.SHA1(e?.target?.value).toString(),
+                password: e?.target?.value,
               }))
             }
           />
@@ -90,7 +87,7 @@ export default function AddUser() {
       <Button
         text={"Add user"}
         type={"submit"}
-        disabled={!(formData.sha1 && formData.user)}
+        disabled={!(formData.password && formData.user)}
       />
     </form>
   )

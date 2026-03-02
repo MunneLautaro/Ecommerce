@@ -22,10 +22,9 @@ const addUserAction = async (formData) => {
 
   const user = formData?.user
   const userAgent = formData?.userAgent
-  const md5 = formData?.md5
-  const sha1 = formData?.sha1
+  const password = formData?.password
 
-  const result = await addUser(user, md5, sha1, userAgent)
+  const result = await addUser(user, password, userAgent)
 
   actionUser()
 
@@ -43,15 +42,13 @@ const modUserAction = async (formData) => {
 
   const currentUsername = formData?.user
   const newUsername = formData?.newUser
-  const md5 = formData?.md5
-  const sha1 = formData?.sha1
+  const password = formData?.password
   const userAgent = formData?.userAgent
 
   const res = await modifyUser(
     currentUsername,
     newUsername,
-    md5,
-    sha1,
+    password,
     userAgent,
   )
 

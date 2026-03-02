@@ -59,7 +59,7 @@ describe("ModUsers", () => {
       <>
         <ModUser />
         <ToastContainer />
-      </>
+      </>,
     )
 
     expect(screen.getByPlaceholderText("Username")).toBeInTheDocument()
@@ -86,15 +86,16 @@ describe("ModUsers", () => {
     })
 
     await waitFor(() =>
-      expect(screen.getByText("User modified successfully")).toBeInTheDocument()
+      expect(
+        screen.getByText("User modified successfully"),
+      ).toBeInTheDocument(),
     )
 
     await waitFor(() => {
       expect(modUser).toHaveBeenCalledWith({
         user: "testUsername",
         newUser: "newTestUsername",
-        md5: "f64714d017b678a1d497d3284903ea50",
-        sha1: "6090e82653e07dc45899bc6532b8261e18661d06",
+        password: "newTestPassword",
         userAgent:
           "Mozilla/5.0 (win32) AppleWebKit/537.36 (KHTML, like Gecko) jsdom/20.0.3",
       })

@@ -3,13 +3,13 @@
 import { createSession, deleteSession } from "../lib/session"
 import { redirect } from "next/navigation"
 import { getUser } from "@/controllers/index"
+import bcrypt from "bcryptjs"
 
 export async function login(formData) {
   const user = formData?.user
-  const cMD5 = formData?.md5
-  const cSHA1 = formData?.sha1
+  const password = formData?.password
 
-  if (!user || !cMD5 || !cSHA1) {
+  if (!user || !password) {
     return { errors: { login: "Complete all fields" } }
   }
 
@@ -17,8 +17,8 @@ export async function login(formData) {
 
   if (
     !currentUser?.user?.user ||
-    currentUser?.user?.md5 !== cMD5 ||
-    currentUser?.user?.sha1 !== cSHA1
+    !currentUser?.user?.password ||
+    !(await bcrypt.compare(password, currentUser.user.password))
   ) {
     return { errors: { login: "Invalid credentials" } }
   }

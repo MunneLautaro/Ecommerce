@@ -4,15 +4,13 @@ import Button from "../../Ui/Button/Button"
 import Input from "../../Ui/Input/Input"
 import { useEffect, useState } from "react"
 import { toast } from "react-toastify"
-import CryptoJS from "crypto-js"
 
 export default function ModUser() {
   const [response, setResponse] = useState(null)
   const [formData, setFormData] = useState({
     user: "",
     newUser: "",
-    md5: "",
-    sha1: "",
+    password: "",
     userAgent: null,
   })
 
@@ -99,8 +97,7 @@ export default function ModUser() {
             onChange={(e) =>
               setFormData((prev) => ({
                 ...prev,
-                md5: CryptoJS.MD5(e?.target?.value).toString(),
-                sha1: CryptoJS.SHA1(e?.target?.value).toString(),
+                password: e?.target?.value,
               }))
             }
           />
@@ -110,9 +107,7 @@ export default function ModUser() {
       <Button
         text={"Modify user"}
         buttonType={"submit"}
-        disabled={
-          !(formData.sha1 && formData.user && formData.newUser && formData.md5)
-        }
+        disabled={!(formData.password && formData.user && formData.newUser)}
       />
     </form>
   )

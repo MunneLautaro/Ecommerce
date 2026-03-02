@@ -4,7 +4,6 @@ import Button from "../Ui/Button/Button"
 import Input from "../Ui/Input/Input"
 import { useEffect, useState, useContext } from "react"
 import { login } from "../../actions/index"
-import CryptoJS from "crypto-js"
 import { SessionContext } from "@/contexts/SessionContext"
 
 export function LoginForm() {
@@ -12,7 +11,7 @@ export function LoginForm() {
   const router = useRouter()
   const [error, setError] = useState(null)
   const [showError, setShowError] = useState(false)
-  const [user, setUser] = useState({ user: "", md5: "", sha1: "" })
+  const [user, setUser] = useState({ user: "", password: "" })
   const [, dispatchSession] = useContext(SessionContext)
 
   const handleGoogleResponse = async (googleResponse) => {
@@ -150,8 +149,7 @@ export function LoginForm() {
           onChange={(e) =>
             setUser((prev) => ({
               ...prev,
-              md5: CryptoJS.MD5(e?.target?.value).toString(),
-              sha1: CryptoJS.SHA1(e?.target?.value).toString(),
+              password: e?.target?.value,
             }))
           }
         />
