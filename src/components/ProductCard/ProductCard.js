@@ -11,6 +11,7 @@ import ProductDetailsModal from "./ProductDetailsModal"
 import DeleteProductModal from "./DeleteProductModal"
 import { CartContext } from "@/contexts/CartContext"
 import { useCart } from "@/hooks/useCart"
+import { SessionContext } from "@/contexts/SessionContext"
 
 export default function ProductCard({
   product,
@@ -23,7 +24,7 @@ export default function ProductCard({
   }
 
   const { cart, dispatchCart } = useContext(CartContext)
-  const { addToCart, removeUnitFromCart } = useCart(dispatchCart)
+  const { addToCart, removeUnitFromCart } = useCart(cart, dispatchCart)
   const [response, setResponse] = useState(null)
   const [loading, setLoading] = useState(true)
   const [isProductModalOpen, setIsProductModalOpen] = useState(false)
@@ -31,6 +32,7 @@ export default function ProductCard({
   const [tiempoDeCarga, setTiempoDeCarga] = useState(
     randomIntFromInterval(500, 1500),
   )
+  const [session] = useContext(SessionContext)
 
   useEffect(() => {
     setTimeout(() => {
@@ -89,32 +91,38 @@ export default function ProductCard({
             </div>
             <Product product={product} />
 
-            {display && (
-              <div className="mt-2 flex flex-row gap-2">
-                <Button
-                  type="button"
-                  onClick={(e) => {
-                    e.stopPropagation()
-                    removeUnitFromCart(product)
-                  }}
-                  text={<Minus size={16} />}
-                />
-                {isAdmin && (
+            {display && session?.user?.user && (
+              <>
+                <div className="mt-2 flex flex-row gap-2">
                   <Button
                     type="button"
-                    onClick={handleDeleteClick}
-                    text={<Trash size={16} />}
+                    onClick={(e) => {
+                      e.stopPropagation()
+                      removeUnitFromCart(product)
+                    }}
+                    disabled={
+                      !cart?.cartProds?.find((item) => item.sku === product.sku)
+                        ?.quantity
+                    }
+                    text={<Minus size={16} />}
                   />
-                )}
-                <Button
-                  type="button"
-                  onClick={(e) => {
-                    e.stopPropagation()
-                    addToCart(product)
-                  }}
-                  text={<Plus size={16} />}
-                />
-              </div>
+                  {isAdmin && (
+                    <Button
+                      type="button"
+                      onClick={handleDeleteClick}
+                      text={<Trash size={16} />}
+                    />
+                  )}
+                  <Button
+                    type="button"
+                    onClick={(e) => {
+                      e.stopPropagation()
+                      addToCart(product)
+                    }}
+                    text={<Plus size={16} />}
+                  />
+                </div>
+              </>
             )}
           </div>
 

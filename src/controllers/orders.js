@@ -1,185 +1,20 @@
 import PurchaseOrder from "../models/orderModel"
-import Product from "../models/productModel"
 import User from "../models/userModel"
 import crypto from "crypto"
 import { connectToDatabaseUnix } from "../../connectDBUnix"
 
-export async function checkStockAvailability(cartItems) {
+export async function createOrder({
+  userId,
+  items,
+  totalAmount,
+  orderNumber: existingOrderNumber,
+  personalInfo,
+}) {
   await connectToDatabaseUnix()
 
-  const insufficientItems = []
-
-  for (const item of cartItems) {
-    const sku = item.sku || "-"
-    const requestedQty = Number(item.quantity)
-
-    const product = await Product.findOne({ sku })
-    if (!product) {
-      insufficientItems.push(`"${item.title}" does not exist`)
-      continue
-    }
-
-    if (product.stock < requestedQty) {
-      insufficientItems.push(
-        `"${item.title}" — available stock: ${product.stock}, requested: ${requestedQty}`,
-      )
-    }
-  }
-
-  if (insufficientItems.length > 0) {
-    return { error: `Insufficient stock: ${insufficientItems.join("; ")}` }
-  }
-
-  return { ok: true }
-}
-
-export async function deductStockForOrder(order) {
-  await connectToDatabaseUnix()
-
-  const updated = await PurchaseOrder.findOneAndUpdate(
-    { orderNumber: order.orderNumber, stockDeducted: { $ne: true } },
-    { stockDeducted: true },
-    { new: true },
-  )
-
-  if (!updated) {
-    console.log(
-      `Stock already deducted for order ${order.orderNumber}, skipping`,
-    )
-    return { success: true, alreadyDeducted: true }
-  }
-
-  const deductedItems = []
-
-  for (const item of order.items) {
-    const result = await Product.findOneAndUpdate(
-      { sku: item.product.sku, stock: { $gte: item.product.cantidad } },
-      { $inc: { stock: -item.product.cantidad } },
-      { new: true },
-    )
-
-    if (!result) {
-      console.warn(
-        `Insufficient stock for SKU ${item.product.sku} (order ${order.orderNumber}). Reverting deductions...`,
-      )
-
-      for (const deducted of deductedItems) {
-        await Product.updateOne(
-          { sku: deducted.sku },
-          { $inc: { stock: deducted.quantity } },
-        )
-      }
-
-      await PurchaseOrder.updateOne(
-        { orderNumber: order.orderNumber },
-        { stockDeducted: false },
-      )
-
-      return {
-        success: false,
-        error: `Insufficient stock for "${item.product.name}" (SKU: ${item.product.sku})`,
-      }
-    }
-
-    deductedItems.push({
-      sku: item.product.sku,
-      quantity: item.product.cantidad,
-    })
-  }
-
-  console.log(
-    `Stock deducted successfully: ${deductedItems.length} products (order ${order.orderNumber})`,
-  )
-  return { success: true }
-}
-
-export async function findPendingOrderForUser(userId, cartItems, totalAmount) {
-  await connectToDatabaseUnix()
-
-  const userIdStr =
-    typeof userId === "object" && userId?.buffer
-      ? Buffer.from(Object.values(userId.buffer)).toString("hex")
-      : String(userId)
-
-  const thirtyMinutesAgo = new Date(Date.now() - 30 * 60 * 1000)
-
-  const pendingOrder = await PurchaseOrder.findOne({
-    user: userIdStr,
-    status: "Pending",
-    preferenceId: { $exists: true, $ne: null },
-    totalAmount,
-    orderDate: { $gte: thirtyMinutesAgo },
-  })
-
-  if (!pendingOrder) return null
-
-  const orderSkus = pendingOrder.items
-    .map((i) => `${i.product.sku}:${i.product.cantidad}`)
-    .sort()
-    .join(",")
-  const cartSkus = cartItems
-    .map((i) => `${i.sku || "-"}:${i.quantity}`)
-    .sort()
-    .join(",")
-
-  if (orderSkus !== cartSkus) return null
-
-  return pendingOrder
-}
-
-export async function cancelExpiredOrders(minutesOld = 30) {
-  await connectToDatabaseUnix()
-
-  const cutoff = new Date(Date.now() - minutesOld * 60 * 1000)
-
-  const result = await PurchaseOrder.updateMany(
-    {
-      status: "Pending",
-      orderDate: { $lt: cutoff },
-    },
-    {
-      status: "Cancelled",
-    },
-  )
-
-  if (result.modifiedCount > 0) {
-    console.log(`Expired orders cancelled: ${result.modifiedCount}`)
-  }
-
-  return result.modifiedCount
-}
-
-export async function cancelPendingOrdersForUser(userId) {
-  await connectToDatabaseUnix()
-
-  const userIdStr =
-    typeof userId === "object" && userId?.buffer
-      ? Buffer.from(Object.values(userId.buffer)).toString("hex")
-      : String(userId)
-
-  const result = await PurchaseOrder.updateMany(
-    {
-      user: userIdStr,
-      status: "Pending",
-    },
-    {
-      status: "Cancelled",
-    },
-  )
-
-  if (result.modifiedCount > 0) {
-    console.log(
-      `Pending orders cancelled for user ${userIdStr}: ${result.modifiedCount}`,
-    )
-  }
-
-  return result.modifiedCount
-}
-
-export async function createOrder({ userId, items, totalAmount }) {
-  await connectToDatabaseUnix()
-
-  const orderNumber = `ORD-${Date.now()}-${crypto.randomBytes(3).toString("hex").toUpperCase()}`
+  const orderNumber =
+    existingOrderNumber ||
+    `ORD-${Date.now()}-${crypto.randomBytes(3).toString("hex").toUpperCase()}`
 
   const userIdStr =
     typeof userId === "object" && userId?.buffer
@@ -190,16 +25,16 @@ export async function createOrder({ userId, items, totalAmount }) {
     orderNumber,
     user: userIdStr,
     deliveryAddress: {
-      street: "-",
-      city: "-",
-      state: "-",
-      postalCode: "-",
-      country: "AR",
+      street: personalInfo?.deliveryAddress?.street || "",
+      city: personalInfo?.deliveryAddress?.city || "",
+      state: personalInfo?.deliveryAddress?.state || "",
+      postalCode: personalInfo?.deliveryAddress?.postalCode || "",
+      country: personalInfo?.deliveryAddress?.country || "AR",
     },
     items: items.map((item) => ({
       product: {
         sku: item.sku || "-",
-        name: item.title,
+        name: item.name || item.title || "Product",
         img: item.img || "",
         description: item.description || "",
         brand: item.brand || "-",
@@ -249,9 +84,6 @@ export async function updateOrderStatus(
   if (!currentOrder) return null
 
   if (currentOrder.status === "Payed" && status !== "Payed") {
-    console.log(
-      `updateOrderStatus - Order ${orderNumber} already paid, not downgrading to ${status}`,
-    )
     return currentOrder
   }
 
@@ -320,4 +152,44 @@ export async function getAllOrdersFiltered(statusFilter = "", userSearch = "") {
     .lean()
 
   return JSON.parse(JSON.stringify(orders))
+}
+
+export async function getMostOrderedProducts() {
+  await connectToDatabaseUnix()
+
+  const products = await PurchaseOrder.aggregate([
+    { $unwind: "$items" },
+    {
+      $group: {
+        _id: "$items.product.sku",
+        count: { $sum: 1 },
+        totalQuantity: { $sum: "$items.product.cantidad" },
+        totalRevenue: { $sum: "$items.totalPrice" },
+      },
+    },
+    { $sort: { count: -1 } },
+    { $limit: 3 },
+    {
+      $lookup: {
+        from: "products",
+        localField: "_id",
+        foreignField: "sku",
+        as: "productInfo",
+      },
+    },
+    { $unwind: { path: "$productInfo", preserveNullAndEmptyArrays: true } },
+    {
+      $project: {
+        _id: 0,
+        sku: "$_id",
+        product: "$productInfo.product",
+        img: "$productInfo.img",
+        price: "$productInfo.price",
+        count: 1,
+        totalQuantity: 1,
+        totalRevenue: 1,
+      },
+    },
+  ])
+  return products
 }

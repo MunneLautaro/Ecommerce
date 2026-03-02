@@ -12,7 +12,11 @@ import { useFetchProducts } from "../../../../hooks/useFetchProducts"
 import Carrousel from "../../../Ui/Carrousel/Carrousel"
 import { Filter, X } from "react-feather"
 
-export default function ProductFilter({ isAdmin = false, products }) {
+export default function ProductFilter({
+  isAdmin = false,
+  products,
+  mostOrderedProducts,
+}) {
   const [isFilterOpen, setIsFilterOpen] = useState(false)
   const [enableTransition, setEnableTransition] = useState(false)
   const prodFilter = useContext(ProductFilterContext)
@@ -102,7 +106,7 @@ export default function ProductFilter({ isAdmin = false, products }) {
       )}
 
       <div className="w-full flex items-center justify-center mt-45 ">
-        <Carrousel />
+        <Carrousel mostOrderedProducts={mostOrderedProducts} />
       </div>
 
       <div className="flex flex-col">

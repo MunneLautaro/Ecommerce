@@ -41,9 +41,9 @@ export default function NavBar() {
         </div>
 
         <div className="hidden md:flex flex-1 items-center justify-end gap-4">
+          {sessionState?.user?.user && pathname !== "/buy" && <Cart />}
           {sessionState?.user?.user ? (
             <>
-              <Cart />
               <LogOutButton
                 username={sessionState?.user?.user}
                 isAdmin={sessionState?.user?.isAdmin}

@@ -1,15 +1,13 @@
 "use client"
 import { ArrowRight, ArrowLeft } from "react-feather"
-import { ProductFilterContext } from "@/contexts/ProductFilterContext"
-import { useState, useContext, useEffect } from "react"
+import { useState, useEffect } from "react"
 import CarrouselProductCard from "./CarrouselProductCard"
 
-export default function Carrousel() {
+export default function Carrousel({ mostOrderedProducts }) {
   const [selectedProduct, setSelectedProduct] = useState(0)
-  const products = useContext(ProductFilterContext)
-  const items = Array.isArray(products?.products) ? products.products : []
+  const items = Array.isArray(mostOrderedProducts) ? mostOrderedProducts : []
   const hasItems = items.length > 0
-  const isLoading = products?.loading ?? true
+  const isLoading = false
 
   const handlePrev = () => {
     setSelectedProduct((prev) => (prev === 0 ? items.length - 1 : prev - 1))
