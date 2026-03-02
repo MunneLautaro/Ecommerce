@@ -7,6 +7,7 @@ import {
   ProductFilterDispatchContext,
   ProductContext,
   SessionContext,
+  CheckOutContext,
 } from "@/contexts"
 import { useReducer, useEffect } from "react"
 import { toast } from "react-toastify"
@@ -21,6 +22,7 @@ import {
 } from "@/reducers/productFilter/productFilterReducer"
 import { initialFormState, productFormReducer } from "@/reducers/productReducer"
 import { initialSession, sessionReducer } from "@/reducers/sessionReducer"
+import { initialCheckOut, checkOutReducer } from "@/reducers/checkOutReducer"
 
 export default function Providers({ children, initialSessionData }) {
   const [cart, dispatchCart] = useReducer(cartReducer, initialCart, (init) => {
@@ -61,19 +63,24 @@ export default function Providers({ children, initialSessionData }) {
     sessionReducer,
     initialSessionData || initialSession,
   )
-
+  const [checkOutState, dispatchCheckOut] = useReducer(
+    checkOutReducer,
+    initialCheckOut,
+  )
   return (
     <SessionContext.Provider value={[session, dispatchSession]}>
       <ProductFilterContext.Provider value={prodFilter}>
         <ProductFilterDispatchContext.Provider value={dispatchProdFilter}>
           <ProductContext.Provider value={[formState, dispatchForm]}>
-            <ItemContext.Provider value={itemFilter}>
-              <ItemDispatchContext.Provider value={dispatchItemFilter}>
-                <CartContext.Provider value={{ cart, dispatchCart }}>
-                  {children}
-                </CartContext.Provider>
-              </ItemDispatchContext.Provider>
-            </ItemContext.Provider>
+            <CheckOutContext.Provider value={[checkOutState, dispatchCheckOut]}>
+              <ItemContext.Provider value={itemFilter}>
+                <ItemDispatchContext.Provider value={dispatchItemFilter}>
+                  <CartContext.Provider value={{ cart, dispatchCart }}>
+                    {children}
+                  </CartContext.Provider>
+                </ItemDispatchContext.Provider>
+              </ItemContext.Provider>
+            </CheckOutContext.Provider>
           </ProductContext.Provider>
         </ProductFilterDispatchContext.Provider>
       </ProductFilterContext.Provider>

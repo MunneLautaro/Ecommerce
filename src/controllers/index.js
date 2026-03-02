@@ -1,4 +1,13 @@
-import { getUser, getUsers, addUser, deleteUser, modifyUser } from "./users"
+import {
+  getUser,
+  getUsers,
+  addUser,
+  deleteUser,
+  modifyUser,
+  setPersonalInfo,
+  removePersonalInfo,
+  getUserPersonalInfo,
+} from "./users"
 import { getProducts, addProduct, modProduct, deleteProduct } from "./products"
 import {
   getItems,
@@ -18,6 +27,9 @@ import {
 export {
   getUser,
   getUsers,
+  getUserPersonalInfo,
+  setPersonalInfo,
+  removePersonalInfo,
   addUser,
   deleteUser,
   modifyUser,
