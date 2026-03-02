@@ -13,7 +13,6 @@ async function refundPayment(paymentId) {
   try {
     const refund = new PaymentRefund(client)
     await refund.create({ payment_id: Number(paymentId), body: {} })
-    console.log(`Webhook - Refund successful for paymentId=${paymentId}`)
     return { success: true }
   } catch (error) {
     const msg = error?.message || String(error)
@@ -38,7 +37,6 @@ function validateWebhookSignature(request) {
   }
 
   if (!xSignature || !xRequestId) {
-    console.log("Webhook - No signature headers present, skipping validation")
     return true
   }
 
@@ -85,7 +83,6 @@ export async function POST(request) {
     const topic = url.searchParams.get("topic")
 
     if (topic === "merchant_order") {
-      console.log("Webhook - merchant_order received, ignoring")
       return NextResponse.json({ received: true }, { status: 200 })
     }
 
@@ -104,9 +101,6 @@ export async function POST(request) {
 
     const payment = new Payment(client)
     const paymentData = await payment.get({ id: paymentId })
-
-    console.log("Webhook - Payment status:", paymentData.status)
-    console.log("Webhook - external_reference:", paymentData.external_reference)
 
     const statusMap = {
       approved: "Payed",

@@ -1,6 +1,6 @@
 import { useCallback } from "react"
 
-export function useCart(dispatchCart) {
+export function useCart(cart, dispatchCart) {
   const addToCart = useCallback(
     (product) => {
       dispatchCart({
@@ -14,11 +14,23 @@ export function useCart(dispatchCart) {
         },
       })
     },
-    [dispatchCart]
+    [dispatchCart],
   )
 
   const removeUnitFromCart = useCallback(
     (product) => {
+      if (!product) return
+      if (
+        !cart?.cartProds?.find((item) => item.sku === product.sku)?.quantity
+      ) {
+        dispatchCart({
+          type: "SET_RESPONSE",
+          payload: {
+            success: `The item: ${product?.product} is not in the cart`,
+          },
+        })
+        return
+      }
       dispatchCart({
         type: "REMOVE_UNIT_FROM_CART",
         payload: product,
@@ -30,7 +42,7 @@ export function useCart(dispatchCart) {
         },
       })
     },
-    [dispatchCart]
+    [dispatchCart],
   )
 
   const deleteProductFromCart = useCallback(
@@ -46,7 +58,7 @@ export function useCart(dispatchCart) {
         },
       })
     },
-    [dispatchCart]
+    [dispatchCart],
   )
 
   return {

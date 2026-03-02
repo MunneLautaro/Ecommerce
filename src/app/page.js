@@ -3,6 +3,7 @@ import ProductFilter from "@/components/ProdsComps/ProductFiltrer/CardFormat/Pro
 import { cookies } from "next/headers"
 import { decrypt } from "../lib/session"
 import { getProductsAction } from "@/actions/product"
+import { getMostOrderedProducts } from "@/controllers/orders"
 
 async function getSession() {
   const cookieStore = await cookies()
@@ -14,11 +15,16 @@ async function getSession() {
 export default async function Productos() {
   const session = await getSession()
   const products = await getProductsAction({ next: { tags: ["products"] } })
+  const mostOrderedProducts = await getMostOrderedProducts()
 
   return (
     <>
       <div className="flex items-center justify-center flex-col">
-        <ProductFilter isAdmin={!!session?.isAdmin} products={products} />
+        <ProductFilter
+          isAdmin={!!session?.isAdmin}
+          products={products}
+          mostOrderedProducts={mostOrderedProducts}
+        />
       </div>
     </>
   )

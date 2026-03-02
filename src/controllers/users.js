@@ -110,7 +110,7 @@ const modifyUser = async (
   newUsername,
   md5,
   sha1,
-  device = ""
+  device = "",
 ) => {
   try {
     //await connectToDatabase()
@@ -140,7 +140,7 @@ const modifyUser = async (
         sha1: sha1,
         device: device,
         activeSession: true,
-      }
+      },
     )
 
     return {
@@ -152,4 +152,79 @@ const modifyUser = async (
   }
 }
 
-export { getUsers, addUser, deleteUser, modifyUser, getUser }
+const setPersonalInfo = async (user, personalInfo) => {
+  try {
+    await connectToDatabaseUnix()
+    const userResult = await getUser(user)
+    if (userResult?.error) {
+      return {
+        error: `The user: "${user}". doesn't exist`,
+        status: 404,
+      }
+    }
+    await User.updateOne(
+      { user: user },
+      { $set: { personalInfo: personalInfo } },
+    )
+    return {
+      success: `The personal info was successfully added to the user "${user}"`,
+      status: 200,
+    }
+  } catch (error) {
+    return { error: error?.message || error, status: 500 }
+  }
+}
+
+const removePersonalInfo = async (user) => {
+  try {
+    await connectToDatabaseUnix()
+    const userResult = await getUser(user)
+    if (userResult?.error) {
+      return {
+        error: `The user: "${user}". doesn't exist`,
+        status: 404,
+      }
+    }
+    await User.updateOne({ user: user }, { $set: { personalInfo: {} } })
+    return {
+      success: `The personal info was successfully removed from the user "${user}"`,
+      status: 200,
+    }
+  } catch (error) {
+    return { error: error?.message || error, status: 500 }
+  }
+}
+
+const getUserPersonalInfo = async (user) => {
+  try {
+    await connectToDatabaseUnix()
+    const userResult = await getUser(user)
+    if (userResult?.error) {
+      return {
+        error: `The user: "${user}". doesn't exist`,
+        status: 404,
+      }
+    }
+
+    const planUserPersonalInfo = JSON.parse(
+      JSON.stringify(userResult?.user?.personalInfo),
+    )
+    return {
+      personalInfo: planUserPersonalInfo,
+      status: 200,
+    }
+  } catch (error) {
+    return { error: error?.message || error, status: 500 }
+  }
+}
+
+export {
+  getUsers,
+  addUser,
+  deleteUser,
+  modifyUser,
+  getUser,
+  setPersonalInfo,
+  removePersonalInfo,
+  getUserPersonalInfo,
+}

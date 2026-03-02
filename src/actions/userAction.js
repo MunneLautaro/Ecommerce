@@ -1,7 +1,15 @@
 "use server"
 import { actionUser } from "./serverActionUser"
 import { requireAuth } from "../lib/session"
-import { addUser, modifyUser, deleteUser, getUsers } from "../controllers/index"
+import {
+  addUser,
+  modifyUser,
+  deleteUser,
+  getUsers,
+  setPersonalInfo,
+  removePersonalInfo,
+  getUserPersonalInfo,
+} from "../controllers/index"
 
 const addUserAction = async (formData) => {
   const { authorized, error, session } = await requireAuth({
@@ -44,7 +52,7 @@ const modUserAction = async (formData) => {
     newUsername,
     md5,
     sha1,
-    userAgent
+    userAgent,
   )
 
   actionUser()
@@ -82,4 +90,58 @@ const getUsersAction = async () => {
   return users
 }
 
-export { addUserAction, modUserAction, deleteUserAction, getUsersAction }
+const getUserPersonalInfoAction = async () => {
+  const { authorized, error, session } = await requireAuth({
+    requireAdmin: false,
+  })
+  if (!authorized) {
+    return { error }
+  }
+  const user = session.username
+  const res = await getUserPersonalInfo(user)
+  return res
+}
+
+const setPersonalInfoAction = async (formData) => {
+  const { authorized, error, session } = await requireAuth({
+    requireAdmin: false,
+  })
+  if (!authorized) {
+    return { error }
+  }
+  if (!formData?.personalInfo) {
+    return { error: "Missing personal info" }
+  }
+  if (!session?.username) {
+    return { error: "Session not valid" }
+  }
+
+  const user = session.username
+  const personalInfo = formData?.personalInfo
+  const res = await setPersonalInfo(user, personalInfo)
+  actionUser()
+  return res
+}
+
+const removePersonalInfoAction = async (formData) => {
+  const { authorized, error, session } = await requireAuth({
+    requireAdmin: false,
+  })
+  if (!authorized) {
+    return { error }
+  }
+  const user = session.username
+  const res = await removePersonalInfo(user)
+  actionUser()
+  return res
+}
+
+export {
+  addUserAction,
+  modUserAction,
+  deleteUserAction,
+  getUsersAction,
+  getUserPersonalInfoAction,
+  setPersonalInfoAction,
+  removePersonalInfoAction,
+}

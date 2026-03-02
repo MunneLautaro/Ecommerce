@@ -1,47 +1,27 @@
 "use server"
 
-import { client, Preference, PaymentRefund } from "../lib/mercadopago"
+import { client, Preference } from "../lib/mercadopago"
 import { getSession } from "../lib/session"
 import {
   createOrder,
   updateOrderStatus,
-  findPendingOrderForUser,
-  cancelExpiredOrders,
-  cancelPendingOrdersForUser,
-  checkStockAvailability,
-  deductStockForOrder,
   findOrderByNumber,
-  markOrderAsRefund,
 } from "../controllers/orders"
+import {
+  findActiveReservation,
+  confirmReservation,
+  releaseReservation,
+} from "../controllers/reservations"
+import { setPersonalInfo } from "@/controllers/users"
 
-async function refundPayment(paymentId) {
+export async function createPreference(
+  orderNumber,
+  personalInfo,
+  saveForLater,
+) {
   try {
-    const refund = new PaymentRefund(client)
-    await refund.create({ payment_id: Number(paymentId), body: {} })
-    console.log(`Refund successful for paymentId=${paymentId}`)
-    return { success: true }
-  } catch (error) {
-    const msg = error?.message || String(error)
-    console.error(`Error refunding paymentId=${paymentId}:`, msg)
-
-    const isTestEnv =
-      msg.includes("Unauthorized use of live credentials") ||
-      msg.includes("unauthorized")
-
-    return {
-      success: false,
-      error: isTestEnv
-        ? "Refund not available in test environment (sandbox)"
-        : msg,
-      isTestEnv,
-    }
-  }
-}
-
-export async function createPreference(cartItems) {
-  try {
-    if (!cartItems || cartItems.length === 0) {
-      return { error: "Your cart is empty" }
+    if (!orderNumber) {
+      return { error: "No order number provided" }
     }
 
     const session = await getSession()
@@ -49,53 +29,48 @@ export async function createPreference(cartItems) {
       return { error: "You must be logged in to make a purchase" }
     }
 
-    await cancelExpiredOrders(30)
-
-    const stockCheck = await checkStockAvailability(cartItems)
-    if (stockCheck.error) {
-      return { error: stockCheck.error }
+    const reservation = await findActiveReservation(orderNumber)
+    if (!reservation) {
+      return {
+        error:
+          "Your reservation has expired or does not exist. Please go back to your cart and try again.",
+      }
     }
 
-    const totalAmount = cartItems.reduce(
-      (sum, item) => sum + Number(item.price) * Number(item.quantity),
-      0,
-    )
-
-    const existingOrder = await findPendingOrderForUser(
-      String(session.userId),
-      cartItems,
-      totalAmount,
-    )
+    const existingOrder = await findOrderByNumber(orderNumber)
     if (existingOrder && existingOrder.preferenceId) {
-      console.log("Reusing existing preference:", existingOrder.preferenceId)
       return {
         preferenceId: existingOrder.preferenceId,
         orderNumber: existingOrder.orderNumber,
       }
     }
 
-    await cancelPendingOrdersForUser(String(session.userId))
+    const order =
+      existingOrder ??
+      (await createOrder({
+        userId: String(session.userId),
+        items: reservation.cartSnapshot,
+        totalAmount: reservation.totalAmount,
+        orderNumber,
+        personalInfo,
+      }))
 
-    const order = await createOrder({
-      userId: String(session.userId),
-      items: cartItems,
-      totalAmount,
-    })
-
-    console.log("Order created:", order.orderNumber)
+    if (saveForLater) {
+      await setPersonalInfo(session.username, personalInfo)
+    }
 
     const appUrl = process.env.NEXT_PUBLIC_APP_URL
 
     const now = new Date()
     const expirationFrom = now.toISOString()
-    const expirationTo = new Date(now.getTime() + 30 * 60 * 1000).toISOString()
+    const expirationTo = reservation.expiresAt.toISOString()
 
     const preference = new Preference(client)
     const result = await preference.create({
       body: {
-        items: cartItems.map((item, index) => ({
+        items: reservation.cartSnapshot.map((item, index) => ({
           id: String(index + 1),
-          title: item.title,
+          title: item.name,
           quantity: Number(item.quantity),
           unit_price: Number(item.price),
           currency_id: "ARS",
@@ -112,8 +87,6 @@ export async function createPreference(cartItems) {
         expiration_date_to: expirationTo,
       },
     })
-
-    console.log("Preference created:", result.id)
 
     await updateOrderStatus(order.orderNumber, "Pending", null, result.id)
 
@@ -147,13 +120,6 @@ export async function verifyPayment(orderNumber) {
 
     if (data.results && data.results.length > 0) {
       const payment = data.results[0]
-
-      console.log(
-        "verifyPayment - status:",
-        payment.status,
-        "order:",
-        orderNumber,
-      )
 
       const statusMap = {
         approved: "Payed",
@@ -190,25 +156,7 @@ export async function verifyPayment(orderNumber) {
           }
         }
 
-        const stockResult = await deductStockForOrder(currentOrder)
-
-        if (!stockResult.success) {
-          const refundResult = await refundPayment(payment.id)
-
-          const reason = refundResult.success
-            ? `Automatic refund: ${stockResult.error}`
-            : `Refund failed (manual action required): ${stockResult.error}`
-
-          await markOrderAsRefund(orderNumber, payment.id, reason)
-
-          return {
-            status: "refunded",
-            orderStatus: "Cancelled",
-            orderNumber,
-            error: stockResult.error,
-            refunded: refundResult.success,
-          }
-        }
+        await confirmReservation(orderNumber)
 
         const order = await updateOrderStatus(
           orderNumber,
@@ -221,6 +169,11 @@ export async function verifyPayment(orderNumber) {
           orderStatus: "Payed",
           orderNumber: order?.orderNumber,
         }
+      }
+
+      // Pago fallido o cancelado: liberar la reserva y restaurar el stock
+      if (orderStatus === "Cancelled") {
+        await releaseReservation(orderNumber)
       }
 
       const order = await updateOrderStatus(

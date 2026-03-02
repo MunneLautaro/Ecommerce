@@ -53,14 +53,14 @@ export function OrderCard({ order, showUser = false, onClick }) {
 
       {showUser && (
         <p className="text-sm text-violet-400 mb-1">
-          Usuario: <span className="text-white">{userName}</span>
+          User: <span className="text-white">{userName}</span>
         </p>
       )}
 
       <div className="flex items-center justify-between">
         <p className="text-sm text-gray-400">
           {date} — {order.items?.length || 0}{" "}
-          {order.items?.length === 1 ? "producto" : "productos"}
+          {order.items?.length === 1 ? "product" : "products"}
         </p>
         <p className="text-white font-semibold">
           ${order.totalAmount?.toFixed(2)}
@@ -94,7 +94,7 @@ export function OrderDetailModal({ order, onClose }) {
         onClick={(e) => e.stopPropagation()}
       >
         <div className="flex items-center justify-between mb-4">
-          <h2 className="text-lg font-bold text-white">Detalle de Orden</h2>
+          <h2 className="text-lg font-bold text-white">Order Details</h2>
           <button
             onClick={onClose}
             className="text-gray-400 hover:text-white transition-colors text-2xl leading-none"
@@ -105,28 +105,28 @@ export function OrderDetailModal({ order, onClose }) {
 
         <div className="space-y-2 mb-4">
           <div className="flex justify-between items-center">
-            <span className="text-sm text-gray-400">Orden</span>
+            <span className="text-sm text-gray-400">Order</span>
             <span className="text-sm font-mono text-white">
               {order.orderNumber}
             </span>
           </div>
           <div className="flex justify-between items-center">
-            <span className="text-sm text-gray-400">Fecha</span>
+            <span className="text-sm text-gray-400">Date</span>
             <span className="text-sm text-white">{date}</span>
           </div>
           <div className="flex justify-between items-center">
-            <span className="text-sm text-gray-400">Estado</span>
+            <span className="text-sm text-gray-400">Order State</span>
             <StatusBadge status={order.status} />
           </div>
           {userName && (
             <div className="flex justify-between items-center">
-              <span className="text-sm text-gray-400">Usuario</span>
+              <span className="text-sm text-gray-400">User</span>
               <span className="text-sm text-white">{userName}</span>
             </div>
           )}
           {order.paymentId && (
             <div className="flex justify-between items-center">
-              <span className="text-sm text-gray-400">ID de Pago</span>
+              <span className="text-sm text-gray-400">Payment ID</span>
               <span className="text-sm font-mono text-white">
                 {order.paymentId}
               </span>
@@ -136,7 +136,7 @@ export function OrderDetailModal({ order, onClose }) {
 
         <div className="border-t border-white/10 my-4" />
 
-        <h3 className="text-sm font-semibold text-gray-400 mb-3">Productos</h3>
+        <h3 className="text-sm font-semibold text-gray-400 mb-3">Products</h3>
         <div className="space-y-3">
           {order.items?.map((item, index) => (
             <div
@@ -187,7 +187,7 @@ export function OrderDetailModal({ order, onClose }) {
           onClick={onClose}
           className="w-full mt-4 py-2 rounded-lg border border-white/20 hover:bg-white/5 text-white font-semibold transition-colors"
         >
-          Cerrar
+          Close
         </button>
       </div>
     </div>

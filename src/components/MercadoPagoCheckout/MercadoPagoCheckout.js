@@ -1,36 +1,27 @@
 "use client"
 
-import { useContext, useState, useEffect, useRef } from "react"
+import { useContext, useState, useEffect } from "react"
+import { useSearchParams } from "next/navigation"
 import { initMercadoPago, Wallet } from "@mercadopago/sdk-react"
 import { CartContext } from "@/contexts/CartContext"
 import { createPreference } from "@/actions/payment"
+import { CheckOutContext } from "@/contexts"
 
 initMercadoPago(process.env.NEXT_PUBLIC_MP_PUBLIC_KEY, { locale: "es-AR" })
 
 export default function MercadoPagoCheckout() {
   const { cart } = useContext(CartContext)
+  const searchParams = useSearchParams()
+  const orderNumber = searchParams.get("order")
   const [preferenceId, setPreferenceId] = useState(null)
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState(null)
   const [mounted, setMounted] = useState(false)
-
-  const cartSnapshotRef = useRef(null)
+  const [checkOutState] = useContext(CheckOutContext)
 
   useEffect(() => {
     setMounted(true)
   }, [])
-
-  useEffect(() => {
-    if (!preferenceId || !cartSnapshotRef.current) return
-
-    const currentFingerprint = JSON.stringify(
-      cart?.cartProds?.map((p) => `${p.sku}:${p.quantity}`).sort(),
-    )
-    if (currentFingerprint !== cartSnapshotRef.current) {
-      setPreferenceId(null)
-      cartSnapshotRef.current = null
-    }
-  }, [cart?.cartProds, preferenceId])
 
   const total =
     cart?.cartProds
@@ -38,22 +29,22 @@ export default function MercadoPagoCheckout() {
       ?.toFixed(2) || "0.00"
 
   const handleCheckout = async () => {
-    if (!cart?.cartProds?.length) return
+    if (!orderNumber) {
+      setError(
+        "No reservation found. Please go back to your cart and try again.",
+      )
+      return
+    }
 
     setLoading(true)
     setError(null)
 
-    const items = cart.cartProds.map((p) => ({
-      title: p.product,
-      quantity: p.quantity,
-      price: p.price,
-      sku: p.sku,
-      img: p.img || "",
-    }))
+    const result = await createPreference(
+      orderNumber,
+      checkOutState?.userData,
+      checkOutState?.saveForLater,
+    )
 
-    console.log({ items })
-    const result = await createPreference(items)
-    console.log({ result })
     if (result.error) {
       setError(result.error)
       setLoading(false)
@@ -61,14 +52,17 @@ export default function MercadoPagoCheckout() {
     }
 
     setPreferenceId(result.preferenceId)
-    cartSnapshotRef.current = JSON.stringify(
-      cart.cartProds.map((p) => `${p.sku}:${p.quantity}`).sort(),
-    )
     setLoading(false)
   }
 
-  if (!mounted) {
-    return null
+  if (!mounted) return null
+
+  if (!orderNumber) {
+    return (
+      <div className="text-center text-gray-400 py-10">
+        <p>No active reservation. Please go back to your cart.</p>
+      </div>
+    )
   }
 
   if (!cart?.cartProds?.length) {
@@ -105,7 +99,7 @@ export default function MercadoPagoCheckout() {
         </div>
       </div>
 
-      {error && <p className="text-red-400 text-sm">{error}</p>}
+      {error && <p className="text-red-400 text-sm text-center">{error}</p>}
 
       {!preferenceId ? (
         <button

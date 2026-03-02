@@ -3,12 +3,17 @@ import { ShoppingCart, ShoppingBag, ArrowRight } from "react-feather"
 import { CartContext } from "@/contexts/CartContext"
 import CartDrawer from "./CartDrawer"
 import ProductCartInfo from "./ProductCartInfo"
-import Link from "next/link"
+import { useRouter } from "next/navigation"
+import Button from "../Ui/Button/Button"
+import { reserveStockAction } from "@/actions/reservationActions"
 
 export default function Cart() {
   const [isOpen, setIsOpen] = useState(false)
+  const [isLoading, setIsLoading] = useState(false)
+  const [error, setError] = useState(null)
   const { cart } = useContext(CartContext)
   const [cartCount, setCartCount] = useState(0)
+  const router = useRouter()
 
   const total =
     cart?.cartProds
@@ -22,6 +27,22 @@ export default function Cart() {
     }
     setCartCount(cart.cartProds.length)
   }, [cart])
+
+  async function handleGoToCheckout() {
+    setIsLoading(true)
+    setError(null)
+
+    const result = await reserveStockAction(cart.cartProds)
+
+    if (result.error) {
+      setError(result.error)
+      setIsLoading(false)
+      return
+    }
+
+    setIsOpen(false)
+    router.push(`/buy?order=${result.orderNumber}`)
+  }
 
   return (
     <div id="idDelCarrito">
@@ -56,14 +77,19 @@ export default function Cart() {
                 <span className="text-sm text-gray-400">Total</span>
                 <span className="text-lg font-bold text-white">${total}</span>
               </div>
-              <Link
-                href="/buy"
-                onClick={() => setIsOpen(false)}
-                className="flex items-center justify-center gap-2 w-full py-2.5 rounded-lg bg-violet-600 hover:bg-violet-500 text-white font-semibold transition-colors text-sm"
+
+              {error && (
+                <p className="text-red-400 text-xs mb-2 text-center">{error}</p>
+              )}
+
+              <button
+                onClick={handleGoToCheckout}
+                disabled={isLoading}
+                className="flex items-center justify-center gap-2 w-full py-2.5 rounded-lg bg-violet-600 hover:bg-violet-500 disabled:opacity-50 disabled:cursor-not-allowed text-white font-semibold transition-colors text-sm"
               >
-                Go to Checkout
-                <ArrowRight className="w-4 h-4" />
-              </Link>
+                {isLoading ? "Reserving..." : "Go to Checkout"}
+                {!isLoading && <ArrowRight className="w-4 h-4" />}
+              </button>
             </div>
           </>
         )}

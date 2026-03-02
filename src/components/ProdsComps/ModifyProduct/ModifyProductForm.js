@@ -19,7 +19,8 @@ export default function ModifyProductForm({ onSubmit }) {
     } else {
       toast.error(formProduct?.response?.error)
     }
-  }, [formProduct?.response])
+    setResponse(null)
+  }, [formProduct?.response, setResponse])
 
   return (
     <div className="flex flex-col items-start w-full">
