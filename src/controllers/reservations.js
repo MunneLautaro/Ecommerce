@@ -12,7 +12,7 @@ export async function createReservation(userId, cartItems) {
 
   try {
     const result = await session.withTransaction(async () => {
-      await releaseExpiredReservationsForUser(userId, session)
+      await releaseAllExpiredReservations(session)
 
       const reservedItems = []
 
@@ -53,7 +53,7 @@ export async function createReservation(userId, cartItems) {
               name: item.title || item.product || item.name || "Product",
               price: Number(item.price),
               quantity: Number(item.quantity),
-              img: item.img?.startsWith("data:") ? "" : item.img || "", // ✅ nunca guardar base64
+              img: item.img?.startsWith("data:") ? "" : item.img || "",
               description: item.description || "",
               brand: item.brand || "-",
               model: item.model || "-",
@@ -108,11 +108,10 @@ export async function releaseReservation(orderNumber) {
   }
 }
 
-async function releaseExpiredReservationsForUser(userId, session) {
+async function releaseAllExpiredReservations(session) {
   const now = new Date()
 
   const expired = await Reservation.find({
-    userId,
     expiresAt: { $lte: now },
   }).session(session)
 

@@ -6,9 +6,11 @@ import { useCart } from "@/hooks/useCart"
 import Image from "next/image"
 
 export default function ProductCartInfo({ product }) {
-  const { dispatchCart } = useContext(CartContext)
-  const { addToCart, removeUnitFromCart, deleteProductFromCart } =
-    useCart(dispatchCart)
+  const { cart, dispatchCart } = useContext(CartContext)
+  const { addToCart, removeUnitFromCart, deleteProductFromCart } = useCart(
+    cart,
+    dispatchCart,
+  )
 
   return (
     <div className="flex gap-3 p-3 rounded-lg bg-white/5 hover:bg-white/[0.07] transition-colors">

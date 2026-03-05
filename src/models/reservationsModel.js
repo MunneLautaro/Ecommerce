@@ -46,7 +46,7 @@ const reservationSchema = new mongoose.Schema(
   },
 )
 
-reservationSchema.index({ expiresAt: 1 }, { expireAfterSeconds: 0 })
+reservationSchema.index({ expiresAt: 1 })
 reservationSchema.index({ userId: 1 })
 
 export default mongoose.models.Reservation ||
