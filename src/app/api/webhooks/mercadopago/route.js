@@ -2,7 +2,7 @@ import { NextResponse } from "next/server"
 import { Payment, PaymentRefund } from "mercadopago"
 import { client } from "@/lib/mercadopago"
 import {
-  deductStockForOrder,
+  /*deductStockForOrder,*/
   findOrderByNumber,
   markOrderAsRefund,
   updateOrderStatus,
@@ -138,7 +138,7 @@ export async function POST(request) {
     }
 
     if (orderStatus === "Payed") {
-      const stockResult = await deductStockForOrder(currentOrder)
+      /*const stockResult = await deductStockForOrder(currentOrder)*/
 
       if (!stockResult.success) {
         console.warn(
