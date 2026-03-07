@@ -10,6 +10,7 @@ import {
 } from "@/contexts/ProductFilterContext"
 import { RefreshCcw } from "react-feather"
 import { useFetchProducts } from "../../../hooks/useFetchProducts"
+import Caption from "@/components/Ui/Caption/Caption"
 
 export default function ModifyProduct({ products }) {
   const stateProdFilter = useContext(ProductFilterContext)
@@ -31,9 +32,9 @@ export default function ModifyProduct({ products }) {
 
   return (
     <>
-      <h1 className="flex text-lg font-semibold mb-4">
+      <Caption customStyle="text-2xl font-bold text-center mb-2">
         Modify an existent product!
-      </h1>
+      </Caption>
 
       <div
         className="grid grid-cols-1 xl:grid-cols-[1fr_auto] gap-4 xl:gap-6"

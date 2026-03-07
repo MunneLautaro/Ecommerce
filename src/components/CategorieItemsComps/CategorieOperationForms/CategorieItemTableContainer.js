@@ -6,6 +6,7 @@ import { RefreshCcw } from "react-feather"
 import Button from "@/components/Ui/Button/Button"
 import ItemTable from "../ItemTable/ItemTable"
 import { useItemFilterActions } from "@/hooks/useItemFilterActions"
+import Caption from "@/components/Ui/Caption/Caption"
 
 export default function CategorieItemTableContainer() {
   const itemFilter = useContext(ItemContext)
@@ -25,14 +26,21 @@ export default function CategorieItemTableContainer() {
     itemFilter?.itemFilter?.type === ""
   return (
     <>
-      <div className="flex flex-row items-start justify-between mb-4">
-        <Button
-          onClick={reset}
-          disabled={isRefreshDisabled}
-          text={<RefreshCcw />}
+      <div className="flex flex-col items-start justify-between mb-4">
+        <Caption customStyle={"text-xl font-bold text-center my-4 w-full"}>
+          Modify/Delete Categorie Item
+        </Caption>
+        <ItemTable
+          resetTrigger={resetTrigger}
+          refreshButton={
+            <Button
+              onClick={reset}
+              disabled={isRefreshDisabled}
+              text={<RefreshCcw />}
+            />
+          }
         />
       </div>
-      <ItemTable resetTrigger={resetTrigger} />
     </>
   )
 }

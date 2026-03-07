@@ -8,6 +8,7 @@ import { useState, useEffect } from "react"
 import { toast } from "react-toastify"
 import { addCategorieItemAction } from "../../../actions/categorieAction"
 import Label from "@/components/Ui/Label/Label"
+import Caption from "@/components/Ui/Caption/Caption"
 
 export default function AddCategorieItem() {
   const [item, setItem] = useState({ type: "", value: "" })
@@ -25,7 +26,10 @@ export default function AddCategorieItem() {
   }, [response])
 
   return (
-    <div className="flex">
+    <div className="flex flex-col items-center w-full">
+      <Caption customStyle={"text-xl font-bold text-center my-4 w-full"}>
+        Add Categorie Item
+      </Caption>
       <form
         className="flex flex-col bg-[#424242] p-3 rounded-lg shadow-2xl mt-2"
         onSubmit={async (e) => {

@@ -11,6 +11,7 @@ import LinkUi from "@/components/Ui/Link/Link"
 import { useFetchItems } from "@/hooks/useFetchItems"
 import { ItemContext, ItemDispatchContext } from "../../../contexts/ItemContext"
 import Label from "@/components/Ui/Label/Label"
+import Caption from "@/components/Ui/Caption/Caption"
 
 export default function AddProduct({ items }) {
   const [productInfo, disptachProductInfo] = useContext(ProductContext)
@@ -59,10 +60,9 @@ export default function AddProduct({ items }) {
       data-testid="AddProductComponent"
       className="flex flex-col items-center px-4 justify-center"
     >
-      <h1 className="text-2xl font-semibold text-yellow-500 my-6">
+      <Caption customStyle="text-2xl font-bold text-center mt-4">
         Add a new product!
-      </h1>
-
+      </Caption>
       {areEnoughItems ? (
         <div className="flex flex-col md:flex-row mt-6 gap-10 w-full max-w-5xl bg-[#424242] p-3 rounded-lg shadow-2xl">
           <form

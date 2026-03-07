@@ -25,11 +25,11 @@ export default function ModifyProductForm({ onSubmit }) {
 
   return (
     <div className="flex flex-col items-start w-full">
-      {!isProductSelected && (
-        <div className="mb-4 p-3 bg-blue-500/20 border border-blue-500 rounded-lg text-blue-200 text-sm">
-          👆 Select a product from the table to modify it
-        </div>
-      )}
+      <div
+        className={`mb-4 p-3 bg-blue-500/20 border border-blue-500 rounded-lg text-blue-200 text-sm ${isProductSelected ? "invisible" : ""}`}
+      >
+        👆 Select a product from the table to modify it
+      </div>
       <div className="flex flex-col lg:flex-row gap-4 w-full max-w-4xl">
         <form
           onSubmit={async (e) => {

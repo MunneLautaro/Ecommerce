@@ -1,5 +1,6 @@
 "use server"
 import ProductFilter from "@/components/ProdsComps/ProductFiltrer/CardFormat/ProductFilter"
+import Caption from "@/components/Ui/Caption/Caption"
 import { cookies } from "next/headers"
 import { decrypt } from "../lib/session"
 import { getProductsAction } from "@/actions/product"
@@ -20,6 +21,9 @@ export default async function Productos() {
   return (
     <>
       <div className="flex items-center justify-center flex-col">
+        <Caption customStyle={"text-2xl font-bold text-center mt-2"}>
+          Products
+        </Caption>
         <ProductFilter
           isAdmin={!!session?.isAdmin}
           products={products}

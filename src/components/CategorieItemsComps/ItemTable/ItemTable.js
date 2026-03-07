@@ -18,7 +18,7 @@ import Pagination from "../../UserComps/Pagination/Pagination"
 
 const ITEMS_PER_PAGE = 10
 
-export default function ItemTable({ resetTrigger }) {
+export default function ItemTable({ resetTrigger, refreshButton }) {
   const itemFilter = useContext(ItemContext)
   const dispatchItemFilter = useContext(ItemDispatchContext)
   const [inputValues, setInputValues] = useState({})
@@ -111,13 +111,18 @@ export default function ItemTable({ resetTrigger }) {
                 resetTrigger={resetTrigger}
               />
             </SortableTh>
+            <th className="p-2 border border-[#212121]">
+              <div className="flex justify-center items-center">
+                {refreshButton}
+              </div>
+            </th>
           </tr>
         </thead>
         <tbody>
           {paginatedItems.map((item, index) => (
             <tr
               key={`${item?.type}-${item?.value}`}
-              className={`h-[40px] cursor-pointer focus:ring-4 focus:ring-teal-300 items-center justify-center ${
+              className={`h-[40px] cursor-pointer focus:ring-4 focus:ring-white items-center justify-center ${
                 index % 2 === 0
                   ? "bg-violet-400 text-white hover:bg-violet-600 transition-opacity"
                   : "bg-amber-400 text-white hover:bg-amber-600 transition-all duration-300"
@@ -211,11 +216,13 @@ export default function ItemTable({ resetTrigger }) {
         </tbody>
       </table>
       {totalPages > 1 && (
-        <Pagination
-          currentPage={currentPage}
-          setCurrentPage={setCurrentPage}
-          totalPages={totalPages}
-        />
+        <div className="flex justify-center w-full">
+          <Pagination
+            currentPage={currentPage}
+            setCurrentPage={setCurrentPage}
+            totalPages={totalPages}
+          />
+        </div>
       )}
     </>
   )
