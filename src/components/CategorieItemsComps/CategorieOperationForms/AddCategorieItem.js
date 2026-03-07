@@ -7,6 +7,7 @@ import { VALID_CATEGORIES } from "@/utils/validCategories"
 import { useState, useEffect } from "react"
 import { toast } from "react-toastify"
 import { addCategorieItemAction } from "../../../actions/categorieAction"
+import Label from "@/components/Ui/Label/Label"
 
 export default function AddCategorieItem() {
   const [item, setItem] = useState({ type: "", value: "" })
@@ -42,12 +43,8 @@ export default function AddCategorieItem() {
           }}
           value={item?.type}
         />
-        <label
-          htmlFor="itemValue"
-          className="text-sm font-medium text-gray-200 mt-2"
-        >
-          Item Value
-        </label>
+
+        <Label htmlFor="itemValue">Item Value</Label>
         <Input
           id="itemValue"
           type={"text"}

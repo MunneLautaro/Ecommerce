@@ -6,6 +6,7 @@ import { toast } from "react-toastify"
 import { ProductContext } from "../../../contexts/ProductContext"
 import { modProductAction } from "../../../actions/product"
 import { useProduct } from "@/hooks/useProduct"
+import Label from "@/components/Ui/Label/Label"
 
 export default function ModifyProductForm({ onSubmit }) {
   const [formProduct, dispatchFormProduct] = useContext(ProductContext)
@@ -39,9 +40,7 @@ export default function ModifyProductForm({ onSubmit }) {
           }}
           className="flex flex-col gap-4 w-full lg:w-1/2 min-w-0 bg-[#424242] p-3 rounded-lg shadow-2xl"
         >
-          <label htmlFor="img-url" className="font-semibold">
-            Image:
-          </label>
+          <Label htmlFor="img-url">Image URL</Label>
           <Input
             id="img-url"
             name={"img"}
@@ -51,6 +50,7 @@ export default function ModifyProductForm({ onSubmit }) {
             onChange={(e) => setProductField("img", e?.target?.value)}
           />
 
+          <Label htmlFor="img-file">Upload Image</Label>
           <Input
             id="img-file"
             dataTestId="imgFile"
@@ -79,9 +79,7 @@ export default function ModifyProductForm({ onSubmit }) {
             }}
           />
 
-          <label htmlFor="description" className="font-semibold">
-            Description:
-          </label>
+          <Label htmlFor="description">Description</Label>
           <Input
             id="description"
             name={"description"}
@@ -92,9 +90,7 @@ export default function ModifyProductForm({ onSubmit }) {
             required={true}
           />
 
-          <label htmlFor="price" className="font-semibold">
-            Price:
-          </label>
+          <Label htmlFor="price">Price</Label>
           <Input
             id="price"
             name={"price"}
@@ -105,9 +101,7 @@ export default function ModifyProductForm({ onSubmit }) {
             required={true}
           />
 
-          <label htmlFor="stock" className="font-semibold">
-            Stock:
-          </label>
+          <Label htmlFor="stock">Stock</Label>
           <Input
             id="stock"
             name={"stock"}

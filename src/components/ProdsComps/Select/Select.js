@@ -9,7 +9,7 @@ export default function Select({ elements, type, onChange, value }) {
     <div className="w-full max-w-xs my-2">
       <label
         htmlFor={type}
-        className="block text-sm font-medium text-gray-200 mb-1"
+        className="block text-sm font-medium text-gray-200 mb-1 pl-5"
       >
         {type}
       </label>

@@ -10,6 +10,7 @@ import { ProductContext } from "../../../contexts/ProductContext"
 import LinkUi from "@/components/Ui/Link/Link"
 import { useFetchItems } from "@/hooks/useFetchItems"
 import { ItemContext, ItemDispatchContext } from "../../../contexts/ItemContext"
+import Label from "@/components/Ui/Label/Label"
 
 export default function AddProduct({ items }) {
   const [productInfo, disptachProductInfo] = useContext(ProductContext)
@@ -138,13 +139,7 @@ export default function AddProduct({ items }) {
               }}
               required
             />
-
-            <label
-              htmlFor="img-url-add"
-              className="text-sm font-medium text-gray-200 mt-2"
-            >
-              Image URL
-            </label>
+            <Label htmlFor="img-url-add">Image URL</Label>
             <Input
               id="img-url-add"
               name={"img"}
@@ -158,12 +153,8 @@ export default function AddProduct({ items }) {
               }}
             />
 
-            <label
-              htmlFor="img-file-add"
-              className="text-sm font-medium text-gray-200 mt-2"
-            >
-              Upload Image
-            </label>
+            <Label htmlFor="img-file-add">Upload Image</Label>
+
             <Input
               id="img-file-add"
               dataTestId="imgFile"
@@ -194,12 +185,8 @@ export default function AddProduct({ items }) {
               }}
             />
 
-            <label
-              htmlFor="description-add"
-              className="text-sm font-medium text-gray-200 mt-2"
-            >
-              Description
-            </label>
+            <Label htmlFor="description-add">Description</Label>
+
             <Input
               id="description-add"
               name={"description"}
@@ -214,12 +201,7 @@ export default function AddProduct({ items }) {
               required={true}
             />
 
-            <label
-              htmlFor="price-add"
-              className="text-sm font-medium text-gray-200 mt-2"
-            >
-              Price
-            </label>
+            <Label htmlFor="price-add">Price</Label>
             <Input
               id="price-add"
               name={"price"}
@@ -234,12 +216,7 @@ export default function AddProduct({ items }) {
               required={true}
             />
 
-            <label
-              htmlFor="stock-add"
-              className="text-sm font-medium text-gray-200 mt-2"
-            >
-              Stock
-            </label>
+            <Label htmlFor="stock-add">Stock</Label>
             <Input
               id="stock-add"
               name={"stock"}
