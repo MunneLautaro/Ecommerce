@@ -46,7 +46,10 @@ export default function ModUser() {
 
       <div className="flex flex-col gap-3">
         <div className="flex flex-col gap-1">
-          <label htmlFor="user" className="text-sm font-medium text-gray-300">
+          <label
+            htmlFor="user"
+            className="text-sm font-medium text-gray-300 pl-1"
+          >
             Current Username
           </label>
           <Input
@@ -63,7 +66,7 @@ export default function ModUser() {
         <div className="flex flex-col gap-1">
           <label
             htmlFor="newUser"
-            className="text-sm font-medium text-gray-300"
+            className="text-sm font-medium text-gray-300 pl-1"
           >
             New Username
           </label>
@@ -84,7 +87,7 @@ export default function ModUser() {
         <div className="flex flex-col gap-1">
           <label
             htmlFor="newPassword"
-            className="text-sm font-medium text-gray-300"
+            className="text-sm font-medium text-gray-300 pl-1"
           >
             New Password
           </label>

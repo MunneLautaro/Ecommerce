@@ -38,7 +38,7 @@ export default function DeleteUser() {
         <div className="flex flex-col gap-1">
           <label
             htmlFor="deleteUser"
-            className="text-sm font-medium text-gray-300"
+            className="text-sm font-medium text-gray-300 pl-1"
           >
             Username to Delete
           </label>

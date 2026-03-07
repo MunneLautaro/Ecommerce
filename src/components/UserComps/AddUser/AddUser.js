@@ -46,7 +46,7 @@ export default function AddUser() {
         <div className="flex flex-col gap-1">
           <label
             htmlFor="addUsername"
-            className="text-sm font-medium text-gray-300"
+            className="text-sm font-medium text-gray-300 pl-1"
           >
             Username
           </label>
@@ -64,7 +64,7 @@ export default function AddUser() {
         <div className="flex flex-col gap-1">
           <label
             htmlFor="addPassword"
-            className="text-sm font-medium text-gray-300"
+            className="text-sm font-medium text-gray-300 pl-1"
           >
             Password
           </label>

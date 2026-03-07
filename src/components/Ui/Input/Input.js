@@ -15,7 +15,7 @@ export default function Input({
   return (
     <input
       id={id}
-      className="flex my-2 text-white placeholder:text-gray-400 bg-[#6b6b6b] rounded-md focus:outline focus:outline-violet-800 p-1"
+      className="flex my-2 w-full text-white placeholder:text-gray-400 bg-[#6b6b6b] rounded-md focus:outline focus:outline-violet-800 p-1"
       type={type}
       name={name}
       placeholder={placeHolder}

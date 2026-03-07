@@ -18,7 +18,7 @@ export default function FilterByKey({ keys }) {
     <div className="m-2">
       <label
         htmlFor={`filter-${keys}`}
-        className="text-sm font-medium text-gray-200 block mb-1"
+        className="text-sm font-medium text-gray-200 block mb-1 pl-1"
       >
         Search by {keys}
       </label>
