@@ -1,6 +1,6 @@
 export const initialCheckOut = {
   orderNumber: null,
-  userData: {
+  personalInfo: {
     name: "",
     surname: "",
     email: "",
@@ -23,15 +23,18 @@ export const checkOutReducer = (state, action) => {
       return { ...state, orderNumber: action.payload }
 
     case "SET_USER_DATA":
-      return { ...state, userData: { ...state.userData, ...action.payload } }
+      return {
+        ...state,
+        personalInfo: { ...state.personalInfo, ...action.payload },
+      }
 
     case "SET_DELIVERY_ADDRESS_DATA":
       return {
         ...state,
-        userData: {
-          ...state.userData,
+        personalInfo: {
+          ...state.personalInfo,
           deliveryAddress: {
-            ...state.userData.deliveryAddress,
+            ...state.personalInfo.deliveryAddress,
             ...action.payload,
           },
         },
@@ -41,7 +44,7 @@ export const checkOutReducer = (state, action) => {
       return { ...state, isFormOpen: action.payload }
 
     case "SET_USER_INFO":
-      return { ...state, userData: action.payload }
+      return { ...state, personalInfo: action.payload }
 
     case "SET_SAVE_FOR_LATER":
       return { ...state, saveForLater: !state.saveForLater }

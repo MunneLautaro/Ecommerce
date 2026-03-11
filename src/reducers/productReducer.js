@@ -37,6 +37,10 @@ export const productFormReducer = (state, action) => {
       return { ...state, response: action.payload }
     }
 
+    case "CLEAR_RESPONSE": {
+      return { ...state, response: null }
+    }
+
     default: {
       console.log("unknown action")
       return state
