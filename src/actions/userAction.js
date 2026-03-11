@@ -9,6 +9,7 @@ import {
   setPersonalInfo,
   removePersonalInfo,
   getUserPersonalInfo,
+  updateUserPersonalInfo,
 } from "../controllers/index"
 
 const addUserAction = async (formData) => {
@@ -16,7 +17,7 @@ const addUserAction = async (formData) => {
     requireAdmin: true,
   })
 
-  if (!authorized) {
+  if (!authorized || !formData || !session) {
     return { error }
   }
 
@@ -36,7 +37,7 @@ const modUserAction = async (formData) => {
     requireAdmin: true,
   })
 
-  if (!authorized) {
+  if (!authorized || !formData || !session) {
     return { error }
   }
 
@@ -62,7 +63,7 @@ const deleteUserAction = async (formData) => {
     requireAdmin: true,
   })
 
-  if (!authorized) {
+  if (!authorized || !formData || !session) {
     return { error }
   }
 
@@ -79,7 +80,7 @@ const getUsersAction = async () => {
   const { authorized, error, session } = await requireAuth({
     requireAdmin: true,
   })
-  if (!authorized) {
+  if (!authorized || !session) {
     return { error }
   }
 
@@ -91,7 +92,7 @@ const getUserPersonalInfoAction = async () => {
   const { authorized, error, session } = await requireAuth({
     requireAdmin: false,
   })
-  if (!authorized) {
+  if (!authorized || !session) {
     return { error }
   }
   const user = session.username
@@ -103,7 +104,7 @@ const setPersonalInfoAction = async (formData) => {
   const { authorized, error, session } = await requireAuth({
     requireAdmin: false,
   })
-  if (!authorized) {
+  if (!authorized || !formData || !session) {
     return { error }
   }
   if (!formData?.personalInfo) {
@@ -124,11 +125,30 @@ const removePersonalInfoAction = async (formData) => {
   const { authorized, error, session } = await requireAuth({
     requireAdmin: false,
   })
+  console.log("Removing personal info with data:", formData)
   if (!authorized) {
     return { error }
   }
   const user = session.username
   const res = await removePersonalInfo(user)
+  actionUser()
+  return res
+}
+
+const updateUserPersonalInfoAction = async (formData) => {
+  const { authorized, error, session } = await requireAuth({
+    requireAdmin: false,
+  })
+  console.log("Updating personal info with data:", formData)
+  if (!authorized) {
+    return { error }
+  }
+  if (!session?.username) {
+    return { error: "Session not valid" }
+  }
+
+  const user = session.username
+  const res = await updateUserPersonalInfo(user, formData)
   actionUser()
   return res
 }
@@ -141,4 +161,5 @@ export {
   getUserPersonalInfoAction,
   setPersonalInfoAction,
   removePersonalInfoAction,
+  updateUserPersonalInfoAction,
 }

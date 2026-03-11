@@ -220,6 +220,29 @@ const getUserPersonalInfo = async (user) => {
   }
 }
 
+const updateUserPersonalInfo = async (user, personalInfo) => {
+  try {
+    await connectToDatabaseUnix()
+    const userResult = await getUser(user)
+    if (userResult?.error) {
+      return {
+        error: `The user: "${user}". doesn't exist`,
+        status: 404,
+      }
+    }
+    await User.updateOne(
+      { user: user },
+      { $set: { personalInfo: personalInfo } },
+    )
+    return {
+      success: `The personal info was successfully updated for the user "${user}"`,
+      status: 200,
+    }
+  } catch (error) {
+    return { error: error?.message || error, status: 500 }
+  }
+}
+
 export {
   getUsers,
   addUser,
@@ -229,4 +252,5 @@ export {
   setPersonalInfo,
   removePersonalInfo,
   getUserPersonalInfo,
+  updateUserPersonalInfo,
 }

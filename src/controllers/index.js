@@ -7,6 +7,7 @@ import {
   setPersonalInfo,
   removePersonalInfo,
   getUserPersonalInfo,
+  updateUserPersonalInfo,
 } from "./users"
 import { getProducts, addProduct, modProduct, deleteProduct } from "./products"
 import {
@@ -30,6 +31,7 @@ export {
   getUserPersonalInfo,
   setPersonalInfo,
   removePersonalInfo,
+  updateUserPersonalInfo,
   addUser,
   deleteUser,
   modifyUser,
