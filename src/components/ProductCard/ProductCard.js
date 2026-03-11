@@ -11,7 +11,6 @@ import ProductDetailsModal from "./ProductDetailsModal"
 import DeleteProductModal from "./DeleteProductModal"
 import { CartContext } from "@/contexts/CartContext"
 import { useCart } from "@/hooks/useCart"
-import { SessionContext } from "@/contexts/SessionContext"
 
 export default function ProductCard({
   product,
@@ -32,7 +31,6 @@ export default function ProductCard({
   const [tiempoDeCarga, setTiempoDeCarga] = useState(
     randomIntFromInterval(500, 1500),
   )
-  const [session] = useContext(SessionContext)
 
   useEffect(() => {
     setTimeout(() => {
@@ -76,24 +74,23 @@ export default function ProductCard({
         <>
           <div
             onClick={() => setIsProductModalOpen(true)}
-            className="w-[250px] h-[300px] rounded-[15px] bg-gradient-to-b from-[#292929] to-[#151515] m-[10px] p-[5px] flex flex-col items-center overflow-hidden shadow-lg hover:scale-[1.02] transition-transform relative hover:shadow-violet-500/50 cursor-pointer"
+            className="border border-[#868686] w-[250px] h-[300px] rounded-[15px] bg-gradient-to-b from-[#292929] to-[#151515] m-[10px] p-[5px] flex flex-col items-center overflow-hidden shadow-lg hover:scale-[1.02] transition-transform relative hover:shadow-violet-500/50 cursor-pointer"
           >
-            <div className="flex items-center justify-center relative w-[75px] h-[75px]">
+            <div className="flex items-center justify-center relative w-[75px] h-[75px] mt-5">
               {product?.img && (
                 <Image
                   src={product.img}
                   alt="Imagen de product"
                   fill
                   className="object-contain rounded-full"
-                  unoptimized
                 />
               )}
             </div>
             <Product product={product} />
 
-            {display && session?.user?.user && (
+            {display && (
               <>
-                <div className="mt-2 flex flex-row gap-2">
+                <div className="mt-2 mb-5 flex flex-row gap-2">
                   <Button
                     type="button"
                     onClick={(e) => {

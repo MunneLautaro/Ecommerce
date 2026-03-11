@@ -81,7 +81,6 @@ export default function ItemTable({ resetTrigger, refreshButton }) {
                 }}
               />
             </SortableTh>
-
             <SortableTh
               label={"Product Name"}
               sortField="value"

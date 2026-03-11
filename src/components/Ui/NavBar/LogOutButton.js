@@ -3,6 +3,7 @@ import { logout } from "../../../actions/index"
 import { SessionContext } from "@/contexts/SessionContext"
 import { CartContext } from "@/contexts/CartContext"
 import { LogOut } from "react-feather"
+import Link from "next/link"
 
 export default function LogOutButton({ username, isAdmin }) {
   const [, dispatchSession] = useContext(SessionContext)
@@ -14,16 +15,16 @@ export default function LogOutButton({ username, isAdmin }) {
   }
 
   return (
-    <div className="flex flex-col items-center justify-center">
+    <div className="flex flex-row items-center justify-center gap-4">
       <h2
         className={`${
           isAdmin ? "text-violet-400" : "text-yellow-500"
-        } font-black font-mono text-3xl `}
+        } font-black font-mono text-3xl hover:scale-110 transition-all duration-300 hover:underline`}
       >
-        {username}
+        <Link href="/profile">{username}</Link>
       </h2>
       <button
-        className="bg-gray-300 hover:bg-gray-600 text-gray-900 p-1 rounded"
+        className="bg-gray-300 hover:bg-gray-600 transition-colors duration-150 text-gray-900 p-1 rounded"
         onClick={() => {
           handleLogout()
         }}

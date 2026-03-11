@@ -41,7 +41,7 @@ export default function MercadoPagoCheckout() {
 
     const result = await createPreference(
       orderNumber,
-      checkOutState?.userData,
+      checkOutState?.personalInfo,
       checkOutState?.saveForLater,
     )
 

@@ -1,7 +1,7 @@
 export default function SortableTh({ label, sortField, onSort, children }) {
   return (
     <th className="p-2 border border-[#212121]">
-      <div className="flex flex-row justify-center items-center">
+      <div className="flex flex-col justify-center items-center">
         <div
           onClick={() => onSort(sortField)}
           className="mr-2 hover:underline cursor-pointer"

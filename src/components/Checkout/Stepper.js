@@ -4,8 +4,8 @@ import CheckOut from "./CheckOut"
 import { CheckOutContext } from "@/contexts"
 import { useContext, useMemo } from "react"
 
-function isFormComplete(userData) {
-  const { name, surname, email, phone, deliveryAddress } = userData || {}
+function isFormComplete(personalInfo) {
+  const { name, surname, email, phone, deliveryAddress } = personalInfo || {}
   const { street, city, state, postalCode, country } = deliveryAddress || {}
   return [
     name,
@@ -24,8 +24,8 @@ export default function Stepper() {
   const [checkOutState, dispatchCheckOut] = useContext(CheckOutContext)
 
   const formComplete = useMemo(
-    () => isFormComplete(checkOutState.userData),
-    [checkOutState.userData],
+    () => isFormComplete(checkOutState.personalInfo),
+    [checkOutState.personalInfo],
   )
 
   const currentStep = checkOutState.isFormOpen ? 0 : 1
@@ -38,7 +38,15 @@ export default function Stepper() {
   return (
     <div className="px-4 pb-10">
       <h1 className="text-2xl font-bold text-center">Checkout</h1>
-      {checkOutState.isFormOpen && <CheckoutForm />}
+      {checkOutState.isFormOpen && (
+        <CheckoutForm
+          onSubmit={() =>
+            dispatchCheckOut({ type: "SET_FORM_OPEN", payload: false })
+          }
+          saveForLater={true}
+          disabled={!formComplete}
+        />
+      )}
       {!checkOutState.isFormOpen && <CheckOut />}
 
       <div className="flex justify-center items-center gap-4 mt-8">

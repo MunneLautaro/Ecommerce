@@ -114,7 +114,7 @@ export function LoginForm() {
   return (
     <div className="flex items-center justify-center p-5 flex-col">
       <form
-        className="flex flex-col bg-[#424242] p-[30px] m-5 rounded"
+        className="flex flex-col bg-[#424242] p-[30px] m-5 rounded border border-bg-[#d3d3d3]"
         onSubmit={async (e) => {
           e.preventDefault()
           const loginResponse = await login(user)
@@ -123,7 +123,7 @@ export function LoginForm() {
       >
         <label
           htmlFor="user"
-          className="text-sm font-medium text-gray-200 mb-1"
+          className="text-sm font-medium text-gray-200 mb-1 pl-1"
         >
           Username
         </label>
@@ -137,7 +137,7 @@ export function LoginForm() {
         />
         <label
           htmlFor="password"
-          className="text-sm font-medium text-gray-200 mb-1 mt-2"
+          className="text-sm font-medium text-gray-200 mb-1 mt-2 pl-1"
         >
           Password
         </label>
@@ -154,7 +154,9 @@ export function LoginForm() {
           }
         />
 
-        <Button text={"Log in"} type={"submit"} />
+        <div className="flex mt-3 justify-center">
+          <Button text={"Sign in"} type={"submit"} />
+        </div>
       </form>
 
       <div className="mt-4">

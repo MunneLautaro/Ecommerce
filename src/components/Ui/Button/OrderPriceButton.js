@@ -16,11 +16,11 @@ export default function OrderPriceButton() {
   }
 
   return (
-    <Button
-      textColor="amber-400"
+    <button
+      className={`relative transition:ease-in-out duration-200 bg-violet-800 rounded-md text-amber-400 hover:bg-violet-900 active:bg-violet-950 p-[5px] mt-2 text-lg disabled:opacity-50 disabled:hover:bg-gray-300 min-w-[60px] justify-center flex`}
       onClick={handleSort}
-      text={<>{prodFilter?.prodFilter?.isAscending ? "DESC" : "ASC"}</>}
-      m={0}
-    />
+    >
+      {prodFilter?.prodFilter?.isAscending ? "DESC" : "ASC"}
+    </button>
   )
 }

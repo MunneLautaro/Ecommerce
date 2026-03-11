@@ -28,7 +28,7 @@ export default function ProductTable({ products }) {
         <thead className="bg-[#212121] text-amber-400">
           <tr>
             <th className="p-1 sm:p-2 border border-[#212121]">
-              <div className="flex flex-row justify-center items-center gap-0.5 sm:gap-1">
+              <div className="flex flex-col justify-center items-center sm:gap-1">
                 <div
                   onClick={() => {
                     setFieldToSort("product")
@@ -53,7 +53,7 @@ export default function ProductTable({ products }) {
               </div>
             </th>
             <th className="p-1 sm:p-2 border border-[#212121]">
-              <div className="flex flex-row justify-center items-center gap-0.5 sm:gap-1">
+              <div className="flex flex-col justify-center items-center sm:gap-1">
                 <div
                   onClick={() => {
                     setFieldToSort("brand")
@@ -78,7 +78,7 @@ export default function ProductTable({ products }) {
               </div>
             </th>
             <th className="p-1 sm:p-2 border border-[#212121]">
-              <div className="flex flex-row justify-center items-center gap-0.5 sm:gap-1">
+              <div className="flex flex-col justify-center items-center sm:gap-1">
                 <div
                   onClick={() => {
                     setFieldToSort("color")
@@ -103,7 +103,7 @@ export default function ProductTable({ products }) {
               </div>
             </th>
             <th className="p-1 sm:p-2 border border-[#212121]">
-              <div className="flex flex-row justify-center items-center gap-0.5 sm:gap-1">
+              <div className="flex flex-col justify-center items-center sm:gap-1">
                 <div
                   onClick={() => {
                     setFieldToSort("model")
@@ -127,8 +127,8 @@ export default function ProductTable({ products }) {
                 </div>
               </div>
             </th>
-            <th className="p-1 sm:p-2 border border-[#212121]">
-              <div className="flex flex-row justify-center items-center gap-0.5 sm:gap-1">
+            <th className=" sm:p-2 border border-[#212121]">
+              <div className="flex flex-col justify-center items-center ">
                 <div className="text-xs sm:text-sm lg:text-base">Price</div>
                 <div className="scale-75 sm:scale-100">
                   <OrderPriceButton />

@@ -34,18 +34,18 @@ export default function Carrousel({ mostOrderedProducts }) {
           <div className="absolute right-0 bottom-[-30px] h-52 w-52 rounded-full bg-indigo-500 blur-3xl" />
         </div>
 
-        <div className="relative flex items-center gap-4">
-          <button
-            aria-label="Producto anterior"
-            className="group grid h-8 w-8 sm:h-12 sm:w-12 flex-shrink-0 place-items-center rounded-full border border-white/10 bg-white/10 text-white shadow-lg transition hover:-translate-x-1 hover:bg-white/20 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white/60"
-            onClick={handlePrev}
-          >
-            <ArrowLeft
-              size={18}
-              className="sm:w-6 sm:h-6 transition group-hover:-translate-x-0.5"
-            />
-          </button>
+        <button
+          aria-label="Producto anterior"
+          className="group absolute left-3 sm:left-6 top-1/2 -translate-y-1/2 z-10 grid h-8 w-8 sm:h-12 sm:w-12 flex-shrink-0 place-items-center rounded-full border border-white/10 bg-white/10 text-white shadow-lg transition hover:-translate-x-1 hover:bg-white/20 focus-visible:outline focus-visible:outline-offset-2 focus-visible:outline-white/60"
+          onClick={handlePrev}
+        >
+          <ArrowLeft
+            size={18}
+            className="sm:w-6 sm:h-6 transition group-hover:-translate-x-0.5"
+          />
+        </button>
 
+        <div className="relative flex items-center justify-center gap-4 px-10 sm:px-16">
           <div className="relative flex-1">
             <div
               className="transition-all duration-500 ease-out"
@@ -58,18 +58,18 @@ export default function Carrousel({ mostOrderedProducts }) {
               />
             </div>
           </div>
-
-          <button
-            aria-label="Producto siguiente"
-            className="group grid h-8 w-8 sm:h-12 sm:w-12 flex-shrink-0 place-items-center rounded-full border border-white/10 bg-white/10 text-white shadow-lg transition hover:translate-x-1 hover:bg-white/20 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white/60"
-            onClick={handleNext}
-          >
-            <ArrowRight
-              size={18}
-              className="sm:w-6 sm:h-6 transition group-hover:translate-x-0.5"
-            />
-          </button>
         </div>
+
+        <button
+          aria-label="Producto siguiente"
+          className="group absolute right-3 sm:right-6 top-1/2 -translate-y-1/2 z-10 grid h-8 w-8 sm:h-12 sm:w-12 flex-shrink-0 place-items-center rounded-full border border-white/10 bg-white/10 text-white shadow-lg transition hover:translate-x-1 hover:bg-white/20 focus-visible:outline focus-visible:outline-offset-2 focus-visible:outline-white/60"
+          onClick={handleNext}
+        >
+          <ArrowRight
+            size={18}
+            className="sm:w-6 sm:h-6 transition group-hover:translate-x-0.5"
+          />
+        </button>
 
         <div className="relative mt-4 sm:mt-8 flex justify-center gap-2">
           {(hasItems ? items : [null]).map((_, id) => {
@@ -80,7 +80,7 @@ export default function Carrousel({ mostOrderedProducts }) {
                 aria-label={
                   hasItems ? `Ver producto ${id + 1}` : "Sin productos"
                 }
-                className={`h-3 w-8 rounded-full transition focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white/60 ${
+                className={`h-3 w-8 rounded-full transition focus-visible:outline focus-visible:outline-offset-2 focus-visible:outline-white/60 ${
                   isActive
                     ? "bg-white shadow-[0_0_0_2px_rgba(255,255,255,0.25)]"
                     : "bg-white/30"

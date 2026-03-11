@@ -1,6 +1,6 @@
 export default function Button({
   text,
-  type,
+  type = "button",
   onClick,
   underline,
   disabled,

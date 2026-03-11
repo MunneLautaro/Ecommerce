@@ -27,7 +27,7 @@ export default function NavBar() {
 
   return (
     <>
-      <div className="flex bg-[#424242] justify-between items-center w-full max-w-full h-[90px] fixed top-0 px-4 md:px-6 z-10 overflow-hidden">
+      <div className="flex bg-[#424242] shadow-md justify-between items-center w-full max-w-full h-[90px] fixed top-0 px-4 md:px-6 z-10 overflow-hidden">
         <div className="min-w-0 flex-1 relative left-0 top-0 ">
           <Title />
         </div>
@@ -41,7 +41,7 @@ export default function NavBar() {
         </div>
 
         <div className="hidden md:flex flex-1 items-center justify-end gap-4">
-          {sessionState?.user?.user && pathname !== "/buy" && <Cart />}
+          {pathname !== "/buy" && pathname !== "/login" && <Cart />}
           {sessionState?.user?.user ? (
             <>
               <LogOutButton

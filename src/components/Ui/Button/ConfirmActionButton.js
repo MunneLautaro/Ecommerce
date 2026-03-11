@@ -7,8 +7,9 @@ export default function ConfirmActionButton({
   modalTittle,
   modalMessage,
   onCancel = () => {},
-  onConfirm,
+  onConfirm = () => {},
   isDisabled,
+  buttonType = "button",
 }) {
   const [isModalOpen, setIsModalOpen] = useState(false)
   return (
@@ -20,6 +21,7 @@ export default function ConfirmActionButton({
           setIsModalOpen((prev) => !prev)
         }}
         text={buttonChildren}
+        type={buttonType}
       />
       <Modal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)}>
         <div className="p-5 flex flex-col items-center">
@@ -29,6 +31,7 @@ export default function ConfirmActionButton({
           </div>
           <div className="flex flex-row justify-between gap-20">
             <button
+              type="reset"
               onClick={(e) => {
                 e.preventDefault()
                 onCancel()
@@ -39,6 +42,7 @@ export default function ConfirmActionButton({
               Cancel
             </button>
             <button
+              type="submit"
               onClick={(e) => {
                 e.preventDefault()
                 onConfirm()
