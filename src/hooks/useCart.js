@@ -26,7 +26,7 @@ export function useCart(cart, dispatchCart) {
         dispatchCart({
           type: "SET_RESPONSE",
           payload: {
-            success: `The item: ${product?.product} is not in the cart`,
+            error: `The item: ${product?.product} is not in the cart`,
           },
         })
         return
@@ -42,7 +42,7 @@ export function useCart(cart, dispatchCart) {
         },
       })
     },
-    [dispatchCart],
+    [cart, dispatchCart],
   )
 
   const deleteProductFromCart = useCallback(

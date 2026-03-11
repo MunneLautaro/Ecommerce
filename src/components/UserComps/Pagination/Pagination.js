@@ -1,4 +1,5 @@
 import Button from "../../Ui/Button/Button"
+import { ArrowLeft, ArrowRight } from "react-feather"
 
 export default function TablePagination({
   currentPage,
@@ -6,11 +7,11 @@ export default function TablePagination({
   totalPages,
 }) {
   return (
-    <div className="flex justify-center mt-4 space-x-2">
+    <div className="flex justify-center my-4 space-x-2 ">
       <Button
         disabled={currentPage === 1}
         onClick={() => setCurrentPage((p) => p - 1)}
-        text={"Previous"}
+        text={<ArrowLeft />}
       />
       <span className="text-white m-1 mt-2">
         Page {currentPage} of {totalPages}
@@ -19,7 +20,7 @@ export default function TablePagination({
       <Button
         disabled={currentPage === totalPages}
         onClick={() => setCurrentPage((p) => p + 1)}
-        text={"next"}
+        text={<ArrowRight />}
       />
     </div>
   )
