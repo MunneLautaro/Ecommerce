@@ -4,8 +4,8 @@ import { CartContext } from "@/contexts/CartContext"
 import CartDrawer from "./CartDrawer"
 import ProductCartInfo from "./ProductCartInfo"
 import { useRouter } from "next/navigation"
-import Button from "../Ui/Button/Button"
 import { reserveStockAction } from "@/actions/reservationActions"
+import { SessionContext } from "@/contexts/SessionContext"
 
 export default function Cart() {
   const [isOpen, setIsOpen] = useState(false)
@@ -14,6 +14,7 @@ export default function Cart() {
   const { cart } = useContext(CartContext)
   const [cartCount, setCartCount] = useState(0)
   const router = useRouter()
+  const [sessionState] = useContext(SessionContext)
 
   const total =
     cart?.cartProds
@@ -29,6 +30,11 @@ export default function Cart() {
   }, [cart])
 
   async function handleGoToCheckout() {
+    if (!sessionState?.user?.user) {
+      router.push("/login")
+      return
+    }
+
     setIsLoading(true)
     setError(null)
 
