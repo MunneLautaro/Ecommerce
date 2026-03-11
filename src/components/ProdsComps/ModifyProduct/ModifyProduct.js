@@ -32,27 +32,31 @@ export default function ModifyProduct({ products }) {
 
   return (
     <>
-      <Caption customStyle="text-2xl font-bold text-center mb-2">
-        Modify an existent product!
-      </Caption>
+      <div className="flex flex-col">
+        <Caption customStyle="text-2xl font-bold text-center mb-2">
+          Modify an existent product!
+        </Caption>
 
-      <div
-        className="grid grid-cols-1 xl:grid-cols-[1fr_auto] gap-4 xl:gap-6"
-        data-testid="ModProductComponent "
-      >
-        <div className="order-2 xl:order-1 flex flex-col items-start justify-start gap-4 min-w-0">
-          <div className="flex flex-col-reverse items-end">
-            <ShowProds />
-            <Button
-              disabled={isRefreshDisabled}
-              text={<RefreshCcw />}
-              onClick={() => dispatchProdFilter({ type: "RESET_FILTERS" })}
-            />
+        <div
+          className="grid grid-cols-1 xl:grid-cols-[1fr_auto] gap-4 xl:gap-6"
+          data-testid="ModProductComponent "
+        >
+          <div className="order-2 xl:order-1 flex flex-col items-start justify-start gap-4 min-w-0">
+            <div className="flex flex-col-reverse items-end justify-center">
+              <ShowProds />
+              <div className="pr-1">
+                <Button
+                  disabled={isRefreshDisabled}
+                  text={<RefreshCcw />}
+                  onClick={() => dispatchProdFilter({ type: "RESET_FILTERS" })}
+                />
+              </div>
+            </div>
           </div>
-        </div>
 
-        <div className="order-1 xl:order-2 grid justify-center xl:justify-start xl:sticky xl:top-4 mb-6 xl:mb-0">
-          <ModifyProductForm onSubmit={fetchProductsWithPriceRange} />
+          <div className="order-1 xl:order-2 grid justify-center xl:justify-start xl:sticky xl:top-4 mb-6 xl:mb-0">
+            <ModifyProductForm onSubmit={fetchProductsWithPriceRange} />
+          </div>
         </div>
       </div>
     </>

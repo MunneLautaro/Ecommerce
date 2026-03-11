@@ -38,7 +38,7 @@ export default function ModifyProductForm({ onSubmit }) {
             setResponse(modedProduct)
             onSubmit()
           }}
-          className="flex flex-col gap-4 w-full lg:w-1/2 min-w-0 bg-[#424242] p-3 rounded-lg shadow-2xl"
+          className="flex flex-col gap-4 w-full lg:w-1/2 min-w-0 bg-[#424242] p-3 rounded-lg shadow-2xl border border-bg-[#d3d3d3]"
         >
           <Label htmlFor="img-url">Image URL</Label>
           <Input

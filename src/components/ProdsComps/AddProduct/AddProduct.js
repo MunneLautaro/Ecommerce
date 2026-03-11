@@ -47,6 +47,7 @@ export default function AddProduct({ items }) {
     } else {
       toast.error(productInfo?.response?.error)
     }
+    disptachProductInfo({ type: "CLEAR_RESPONSE" })
   }, [productInfo?.response])
 
   const areEnoughItems =
@@ -64,7 +65,7 @@ export default function AddProduct({ items }) {
         Add a new product!
       </Caption>
       {areEnoughItems ? (
-        <div className="flex flex-col md:flex-row mt-6 gap-10 w-full max-w-5xl bg-[#424242] p-3 rounded-lg shadow-2xl">
+        <div className="flex flex-col md:flex-row mt-6 gap-10 w-full max-w-5xl bg-[#424242] p-3 rounded-lg shadow-2xl border border-bg-[#d3d3d3]">
           <form
             onSubmit={async (e) => {
               e.preventDefault()

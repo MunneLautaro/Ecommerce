@@ -9,40 +9,47 @@ export default function ProductTab({ products, items }) {
   const [displayAddProduct, setDisplayAddProduct] = useState(true)
   const [, dispatchForm] = useContext(ProductContext)
 
+  const TABS = [
+    {
+      label: "Add",
+      onClick: () => {
+        setDisplayAddProduct(true)
+        dispatchForm({ type: "CLEAR_FORM" })
+      },
+    },
+    {
+      label: "Modify",
+      onClick: () => {
+        setDisplayAddProduct(false)
+        dispatchForm({ type: "CLEAR_FORM" })
+      },
+    },
+  ]
+
   return (
-    <>
-      <div className="flex flex-col items-center justify-center m-5">
-        <div className="flex">
+    <div className="flex flex-col items-center w-full">
+      <div className="flex w-full max-w-sm">
+        {TABS.map((tab, index) => (
           <button
-            className="transition:ease-in-out duration-200 bg-violet-800 rounded-md text-white hover:bg-violet-900 active:bg-violet-950 py-2 px-[20px] m-1 mt-2 text-lg disabled:opacity-50 disabled:hover:bg-gray-300"
-            text="Add"
-            onClick={() => {
-              setDisplayAddProduct(true)
-              dispatchForm({ type: "CLEAR_FORM" })
-            }}
-            disabled={displayAddProduct}
+            key={tab.label}
+            onClick={tab.onClick}
+            className={`flex-1 py-2 text-sm font-semibold transition-colors duration-200 border-b-2 ${
+              (index === 0 ? displayAddProduct : !displayAddProduct)
+                ? "border-violet-500 text-violet-400"
+                : "border-transparent text-gray-400 hover:text-gray-200"
+            }`}
           >
-            Add
+            {tab.label}
           </button>
-          <button
-            className="transition:ease-in-out duration-200 bg-violet-800 rounded-md text-white hover:bg-violet-900 active:bg-violet-950 px-[10px] m-1 mt-2 text-lg disabled:opacity-50 disabled:hover:bg-gray-300"
-            onClick={() => {
-              setDisplayAddProduct(false)
-              dispatchForm({ type: "CLEAR_FORM" })
-            }}
-            disabled={!displayAddProduct}
-          >
-            Modify
-          </button>
-        </div>
-        <div className="flex flex-col items-center justify-center">
-          {displayAddProduct ? (
-            <AddProduct items={items} />
-          ) : (
-            <ModifyProduct products={products} />
-          )}
-        </div>
+        ))}
       </div>
-    </>
+      <div className="w-full mt-4 flex justify-center">
+        {displayAddProduct ? (
+          <AddProduct items={items} />
+        ) : (
+          <ModifyProduct products={products} />
+        )}
+      </div>
+    </div>
   )
 }

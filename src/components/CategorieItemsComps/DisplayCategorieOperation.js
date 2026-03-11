@@ -28,38 +28,31 @@ export default function DisplayCategorieOperation({ items }) {
     fetchItems(items)
   }, [fetchItems, items])
 
+  const TABS = [
+    { label: "Add", component: <AddCategorieItem /> },
+    { label: "Modify/Delete", component: <CategorieItemTableContainer /> },
+  ]
+
   return (
-    <>
-      <div className="flex flex-col items-center">
-        <div className="flex">
-          <div className="flex flex-col items-center justify-center m-5">
-            <div className="flex">
-              <button
-                className="transition:ease-in-out duration-200 bg-violet-800 rounded-md text-white hover:bg-violet-900 active:bg-violet-950 py-2 px-[20px] m-1 mt-2 text-lg disabled:opacity-50 disabled:hover:bg-gray-300"
-                text="Add"
-                onClick={() => setDisplayAddItem((prevDisplay) => !prevDisplay)}
-                disabled={displayAddItem}
-              >
-                Add
-              </button>
-              <button
-                className="transition:ease-in-out duration-200 bg-violet-800 rounded-md text-white hover:bg-violet-900 active:bg-violet-950 px-[10px] m-1 mt-2 text-lg disabled:opacity-50 disabled:hover:bg-gray-300"
-                onClick={() => setDisplayAddItem((prevDisplay) => !prevDisplay)}
-                disabled={!displayAddItem}
-              >
-                Modify/Delete
-              </button>
-            </div>
-            {displayAddItem ? (
-              <AddCategorieItem />
-            ) : (
-              <>
-                <CategorieItemTableContainer />
-              </>
-            )}
-          </div>
-        </div>
+    <div className="flex flex-col items-center w-full">
+      <div className="flex w-full max-w-sm">
+        {TABS.map((tab, index) => (
+          <button
+            key={tab.label}
+            onClick={() => setDisplayAddItem(index === 0)}
+            className={`flex-1 py-2 text-sm font-semibold transition-colors duration-200 border-b-2 ${
+              (index === 0 ? displayAddItem : !displayAddItem)
+                ? "border-violet-500 text-violet-400"
+                : "border-transparent text-gray-400 hover:text-gray-200"
+            }`}
+          >
+            {tab.label}
+          </button>
+        ))}
       </div>
-    </>
+      <div className="w-full mt-4 flex justify-center">
+        {displayAddItem ? TABS[0].component : TABS[1].component}
+      </div>
+    </div>
   )
 }
