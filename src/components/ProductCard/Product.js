@@ -1,15 +1,24 @@
 import ItemProductCard from "./ItemProductCard"
 import { capitalizeText } from "@/helpers/capitalizeText"
+import { SessionContext } from "@/contexts/SessionContext"
+import { useContext } from "react"
 
 export default function Product({ product, truncate = true }) {
+  const [session] = useContext(SessionContext)
   return (
-    <div className="flex flex-col items-center mt-[10px]">
+    <div className="flex flex-col items-center mt-[10px] ">
       <div className="flex flex-col items-start">
-        <ItemProductCard type={"SKU"} elem={product?.sku} truncate={truncate} />
+        {session?.isAdmin && (
+          <ItemProductCard
+            type={"SKU"}
+            elem={product?.sku}
+            truncate={truncate}
+          />
+        )}
         <ItemProductCard
           type={"Product"}
           elem={`${capitalizeText(
-            product?.product?.label || product?.product
+            product?.product?.label || product?.product,
           )}`}
           truncate={truncate}
         />
