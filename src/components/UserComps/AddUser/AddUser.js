@@ -1,4 +1,5 @@
 "use client"
+import ConfirmActionButton from "@/components/Ui/Button/ConfirmActionButton"
 import { addUserAction } from "../../../actions/index"
 import Button from "../../Ui/Button/Button"
 import Input from "../../Ui/Input/Input"
@@ -27,16 +28,15 @@ export default function AddUser() {
     } else {
       toast.error(response?.error)
     }
+    setResponse(null)
   }, [response])
 
   return (
     <form
       onSubmit={async (e) => {
         e.preventDefault()
-        const addResponse = await addUserAction(formData)
-        setResponse(addResponse)
       }}
-      className="flex flex-col gap-4 w-full max-w-sm bg-[#2a2a2a] border border-white/10 shadow-lg rounded-xl p-5"
+      className="flex flex-col gap-4 w-full max-w-sm bg-[#2a2a2a] border border-bg-[#d3d3d3] shadow-lg rounded-xl p-5"
     >
       <h3 className="text-base font-semibold text-gray-100 text-center">
         Add User
@@ -84,10 +84,15 @@ export default function AddUser() {
         </div>
       </div>
 
-      <Button
-        text={"Add user"}
-        type={"submit"}
-        disabled={!(formData.password && formData.user)}
+      <ConfirmActionButton
+        buttonChildren={"Add user"}
+        modalTittle={"Confirm Add User"}
+        modalMessage={`Are you sure you want to add the user: ${formData.user}?`}
+        isDisabled={!(formData.password && formData.user)}
+        onConfirm={async () => {
+          const addResponse = await addUserAction(formData)
+          setResponse(addResponse)
+        }}
       />
     </form>
   )

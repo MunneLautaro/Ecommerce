@@ -1,7 +1,7 @@
 "use client"
-import { modUserAction } from "../../../actions/index"
-import Button from "../../Ui/Button/Button"
 import Input from "../../Ui/Input/Input"
+import ConfirmActionButton from "@/components/Ui/Button/ConfirmActionButton"
+import { modUserAction } from "../../../actions/index"
 import { useEffect, useState } from "react"
 import { toast } from "react-toastify"
 
@@ -29,6 +29,7 @@ export default function ModUser() {
     } else {
       toast.error(response?.error)
     }
+    setResponse(null)
   }, [response])
 
   return (
@@ -38,7 +39,7 @@ export default function ModUser() {
         const modResponse = await modUserAction(formData)
         setResponse(modResponse)
       }}
-      className="flex flex-col gap-4 w-full max-w-sm bg-[#2a2a2a] border border-white/10 shadow-lg rounded-xl p-5"
+      className="flex flex-col gap-4 w-full max-w-sm bg-[#2a2a2a] border border-bg-[#d3d3d3] shadow-lg rounded-xl p-5"
     >
       <h3 className="text-base font-semibold text-gray-100 text-center">
         Modify User
@@ -107,10 +108,15 @@ export default function ModUser() {
         </div>
       </div>
 
-      <Button
-        text={"Modify user"}
-        buttonType={"submit"}
-        disabled={!(formData.password && formData.user && formData.newUser)}
+      <ConfirmActionButton
+        buttonChildren={"Modify user"}
+        modalTittle={"Confirm Modify User"}
+        modalMessage={`Are you sure you want to modify the user: ${formData.user}?`}
+        isDisabled={!(formData.password && formData.user && formData.newUser)}
+        onConfirm={async () => {
+          const modResponse = await modUserAction(formData)
+          setResponse(modResponse)
+        }}
       />
     </form>
   )
