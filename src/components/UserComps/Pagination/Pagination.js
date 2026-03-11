@@ -7,7 +7,7 @@ export default function TablePagination({
   totalPages,
 }) {
   return (
-    <div className="flex justify-center my-4 space-x-2 ">
+    <div className="flex items-center justify-center my-4 space-x-2 ">
       <Button
         disabled={currentPage === 1}
         onClick={() => setCurrentPage((p) => p - 1)}
