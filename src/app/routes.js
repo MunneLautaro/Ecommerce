@@ -1,12 +1,12 @@
 export const adminRoutes = {
   "/prods": [
-    { label: "Home", url: "/adminPage" },
+    { label: "Users", url: "/adminPage" },
     { label: "Catalog", url: "/" },
     { label: "Categories", url: "/categorieItems" },
     { label: "Orders", url: "/adminPage/orders" },
   ],
   "/": [
-    { label: "Home", url: "/adminPage" },
+    { label: "Users", url: "/adminPage" },
     { label: "Add/Modify prods", url: "/prods" },
     { label: "Categories", url: "/categorieItems" },
     { label: "Orders", url: "/adminPage/orders" },
@@ -18,40 +18,54 @@ export const adminRoutes = {
     { label: "Orders", url: "/adminPage/orders" },
   ],
   "/categorieItems": [
-    { label: "Home", url: "/adminPage" },
+    { label: "Users", url: "/adminPage" },
     { label: "Catalog", url: "/" },
     { label: "Add/Modify prods", url: "/prods" },
     { label: "Orders", url: "/adminPage/orders" },
   ],
   "/adminPage/orders": [
-    { label: "Home", url: "/adminPage" },
+    { label: "Users", url: "/adminPage" },
     { label: "Catalog", url: "/" },
     { label: "Add/Modify prods", url: "/prods" },
     { label: "Categories", url: "/categorieItems" },
   ],
   "/buy/success": [
-    { label: "Home", url: "/" },
+    { label: "Users", url: "/adminPage" },
     { label: "Catalog", url: "/" },
     { label: "Add/Modify prods", url: "/prods" },
     { label: "Categories", url: "/categorieItems" },
     { label: "Orders", url: "/adminPage/orders" },
   ],
   "/buy/failure": [
-    { label: "Home", url: "/" },
+    { label: "Users", url: "/adminPage" },
     { label: "Catalog", url: "/" },
     { label: "Add/Modify prods", url: "/prods" },
     { label: "Categories", url: "/categorieItems" },
     { label: "Orders", url: "/adminPage/orders" },
   ],
   "/buy/pending": [
-    { label: "Home", url: "/" },
+    { label: "Users", url: "/adminPage" },
     { label: "Catalog", url: "/" },
     { label: "Add/Modify prods", url: "/prods" },
     { label: "Categories", url: "/categorieItems" },
     { label: "Orders", url: "/adminPage/orders" },
   ],
   "/buy": [
-    { label: "Home", url: "/" },
+    { label: "Users", url: "/adminPage" },
+    { label: "Catalog", url: "/" },
+    { label: "Add/Modify prods", url: "/prods" },
+    { label: "Categories", url: "/categorieItems" },
+    { label: "Orders", url: "/adminPage/orders" },
+  ],
+  "/profile": [
+    { label: "Users", url: "/adminPage" },
+    { label: "Catalog", url: "/" },
+    { label: "Add/Modify prods", url: "/prods" },
+    { label: "Categories", url: "/categorieItems" },
+    { label: "Orders", url: "/adminPage/orders" },
+  ],
+  "/profile/orders": [
+    { label: "Users", url: "/adminPage" },
     { label: "Catalog", url: "/" },
     { label: "Add/Modify prods", url: "/prods" },
     { label: "Categories", url: "/categorieItems" },
@@ -60,10 +74,7 @@ export const adminRoutes = {
 }
 
 export const userRoutes = {
-  "/orders": [{ label: "Catalog", url: "/" }],
-  "/buy": [
-    { label: "Catalog", url: "/" },
-    { label: "My Orders", url: "/orders" },
-  ],
-  "/": [{ label: "My Orders", url: "/orders" }],
+  "/profile/orders": [{ label: "Catalog", url: "/" }],
+  "/profile": [{ label: "Catalog", url: "/" }],
+  "/buy": [{ label: "Catalog", url: "/" }],
 }
