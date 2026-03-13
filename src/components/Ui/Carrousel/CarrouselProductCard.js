@@ -14,8 +14,8 @@ export default function CarrouselProductCard({
   const image = product?.img || ""
 
   return (
-    <article className="mx-auto w-full max-w-xs sm:max-w-sm rounded-2xl border border-white/10 bg-white/5 p-3 sm:p-4 text-white shadow-2xl backdrop-blur-md">
-      <div className="relative aspect-[16/10] overflow-hidden rounded-xl bg-black/10">
+    <article className="hover:scale-110 transition-transform mx-auto w-full max-w-xs sm:max-w-sm rounded-2xl border border-white/10 bg-white/5 p-3 sm:p-4 text-white shadow-2xl backdrop-blur-md">
+      <div className="relative aspect-[16/10] overflow-hidden rounded-xl bg-black/10 ">
         {isPlaceholder ? (
           <div className="flex h-full w-full items-center justify-center text-sm text-white/70">
             Sin productos
@@ -26,7 +26,7 @@ export default function CarrouselProductCard({
             alt={name}
             fill
             priority
-            className="object-cover"
+            className="object-fill"
             sizes="(max-width: 640px) 80vw, 320px"
           />
         )}

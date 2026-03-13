@@ -24,6 +24,16 @@ export default function Carrousel({ mostOrderedProducts }) {
     })
   }, [items.length, hasItems])
 
+  useEffect(() => {
+    if (items.length <= 1) return
+
+    const intervalId = setInterval(() => {
+      setSelectedProduct((prev) => (prev === items.length - 1 ? 0 : prev + 1))
+    }, 5000)
+
+    return () => clearInterval(intervalId)
+  }, [items.length])
+
   const currentProduct = hasItems ? items[selectedProduct] : null
 
   return (
@@ -36,7 +46,7 @@ export default function Carrousel({ mostOrderedProducts }) {
 
         <button
           aria-label="Producto anterior"
-          className="group absolute left-3 sm:left-6 top-1/2 -translate-y-1/2 z-10 grid h-8 w-8 sm:h-12 sm:w-12 flex-shrink-0 place-items-center rounded-full border border-white/10 bg-white/10 text-white shadow-lg transition hover:-translate-x-1 hover:bg-white/20 focus-visible:outline focus-visible:outline-offset-2 focus-visible:outline-white/60"
+          className="group absolute left-3 sm:left-6 top-1/2 -translate-y-1/2 z-5 grid h-8 w-8 sm:h-12 sm:w-12 flex-shrink-0 place-items-center rounded-full border border-white/10 bg-white/10 text-white shadow-lg transition hover:-translate-x-1 hover:bg-white/20 focus-visible:outline focus-visible:outline-offset-2 focus-visible:outline-white/60"
           onClick={handlePrev}
         >
           <ArrowLeft
@@ -62,7 +72,7 @@ export default function Carrousel({ mostOrderedProducts }) {
 
         <button
           aria-label="Producto siguiente"
-          className="group absolute right-3 sm:right-6 top-1/2 -translate-y-1/2 z-10 grid h-8 w-8 sm:h-12 sm:w-12 flex-shrink-0 place-items-center rounded-full border border-white/10 bg-white/10 text-white shadow-lg transition hover:translate-x-1 hover:bg-white/20 focus-visible:outline focus-visible:outline-offset-2 focus-visible:outline-white/60"
+          className="group absolute right-3 sm:right-6 top-1/2 -translate-y-1/2 z-5 grid h-8 w-8 sm:h-12 sm:w-12 flex-shrink-0 place-items-center rounded-full border border-white/10 bg-white/10 text-white shadow-lg transition hover:translate-x-1 hover:bg-white/20 focus-visible:outline focus-visible:outline-offset-2 focus-visible:outline-white/60"
           onClick={handleNext}
         >
           <ArrowRight
