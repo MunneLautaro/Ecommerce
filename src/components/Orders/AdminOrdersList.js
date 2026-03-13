@@ -7,6 +7,7 @@ import {
   OrderDetailModal,
 } from "@/components/Orders/OrderComponents"
 import Select from "@/components/ProdsComps/Select/Select"
+import Pagination from "@/components/UserComps/Pagination/Pagination"
 
 export default function AdminOrdersList() {
   const [orders, setOrders] = useState([])
@@ -14,6 +15,8 @@ export default function AdminOrdersList() {
   const [statusFilter, setStatusFilter] = useState("all")
   const [userSearch, setUserSearch] = useState("")
   const [selectedOrder, setSelectedOrder] = useState(null)
+  const [ordersPerPage, setOrdersPerPage] = useState(10)
+  const [currentPage, setCurrentPage] = useState(1)
 
   const fetchOrders = useCallback(async () => {
     setLoading(true)
@@ -31,6 +34,9 @@ export default function AdminOrdersList() {
     return () => clearTimeout(timeout)
   }, [fetchOrders])
 
+  const totalPages = Math.ceil(orders.length / ordersPerPage)
+  const startIndex = (currentPage - 1) * ordersPerPage
+  const paginatedItems = orders.slice(startIndex, startIndex + ordersPerPage)
   return (
     <div className="w-full max-w-3xl mx-auto">
       <div className="flex flex-col sm:flex-row gap-3 mb-6">
@@ -57,9 +63,53 @@ export default function AdminOrdersList() {
       </div>
 
       {!loading && (
-        <p className="text-sm text-gray-400 mb-4">
-          {orders.length} {orders.length === 1 ? "order" : "orders"} found
-        </p>
+        <div className="flex flex-row justify-between items-center mb-4">
+          <p className="text-sm text-gray-400">
+            {orders.length} {orders.length === 1 ? "order" : "orders"} found
+          </p>
+
+          <div className="flex flex-row gap-5">
+            <button
+              className={`flex-1 py-2 text-sm font-semibold transition-colors duration-200 border-b-2 ${
+                ordersPerPage === 10
+                  ? "border-violet-500 text-violet-400"
+                  : "border-transparent text-gray-400 hover:text-gray-200"
+              }`}
+              onClick={() => {
+                setOrdersPerPage(10)
+                setCurrentPage(1)
+              }}
+            >
+              10 orders
+            </button>
+            <button
+              className={`flex-1 py-2 text-sm font-semibold transition-colors duration-200 border-b-2 ${
+                ordersPerPage === 20
+                  ? "border-violet-500 text-violet-400"
+                  : "border-transparent text-gray-400 hover:text-gray-200"
+              }`}
+              onClick={() => {
+                setOrdersPerPage(20)
+                setCurrentPage(1)
+              }}
+            >
+              20 orders
+            </button>
+            <button
+              className={`flex-1 py-2 text-sm font-semibold transition-colors duration-200 border-b-2 ${
+                ordersPerPage === 30
+                  ? "border-violet-500 text-violet-400"
+                  : "border-transparent text-gray-400 hover:text-gray-200"
+              }`}
+              onClick={() => {
+                setOrdersPerPage(30)
+                setCurrentPage(1)
+              }}
+            >
+              30 orders
+            </button>
+          </div>
+        </div>
       )}
 
       {loading ? (
@@ -70,7 +120,7 @@ export default function AdminOrdersList() {
         <p className="text-center text-gray-400 py-10">No orders found</p>
       ) : (
         <div className="space-y-3">
-          {orders.map((order) => (
+          {paginatedItems.map((order) => (
             <OrderCard
               key={order._id}
               order={order}
@@ -85,6 +135,15 @@ export default function AdminOrdersList() {
         order={selectedOrder}
         onClose={() => setSelectedOrder(null)}
       />
+      {totalPages > 1 && (
+        <div className="flex justify-center w-full">
+          <Pagination
+            currentPage={currentPage}
+            setCurrentPage={setCurrentPage}
+            totalPages={totalPages}
+          />
+        </div>
+      )}
     </div>
   )
 }

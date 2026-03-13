@@ -8,20 +8,24 @@ export default function TablePagination({
 }) {
   return (
     <div className="flex items-center justify-center my-4 space-x-2 ">
-      <Button
+      <button
+        className="rounded-full bg-violet-800 p-2 hover:bg-violet-900 hover:scale-110 transition-all disabled:bg-gray-500 disabled:cursor-not-allowed"
         disabled={currentPage === 1}
         onClick={() => setCurrentPage((p) => p - 1)}
-        text={<ArrowLeft />}
-      />
+      >
+        <ArrowLeft />
+      </button>
       <span className="text-white m-1 mt-2">
         Page {currentPage} of {totalPages}
       </span>
 
-      <Button
+      <button
+        className="rounded-full bg-violet-800 p-2 hover:bg-violet-900 hover:scale-110 transition-all disabled:bg-gray-500 disabled:cursor-not-allowed"
         disabled={currentPage === totalPages}
         onClick={() => setCurrentPage((p) => p + 1)}
-        text={<ArrowRight />}
-      />
+      >
+        <ArrowRight />
+      </button>
     </div>
   )
 }
