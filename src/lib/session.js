@@ -4,6 +4,9 @@ import { setCookie, deleteCookie } from "cookies-next"
 import { cookies } from "next/headers"
 
 const secretKey = process.env.SESSION_SECRET
+if (!secretKey) {
+  throw new Error("SESSION_SECRET is not set")
+}
 const encodedKey = new TextEncoder().encode(secretKey)
 
 export async function encrypt(payload) {
@@ -19,6 +22,11 @@ export async function createSession(userId, username, isAdmin) {
 
   await setCookie("session", session, {
     cookies,
+    httpOnly: true,
+    secure: process.env.NODE_ENV === "production",
+    sameSite: "lax",
+    path: "/",
+    maxAge: 60 * 60 * 24 * 7,
   })
 }
 
@@ -55,7 +63,10 @@ export async function requireAuth(options = {}) {
     return { authorized: false, error: "You must login", session: null }
   }
 
-  if (options.requireAdmin && !session.isAdmin) {
+  if (options.requireAdmin && !session?.isAdmin) {
+    if (!session) {
+      return { authorized: false, error: "You must login", session: null }
+    }
     return { authorized: false, error: "Unauthorized", session: null }
   }
 

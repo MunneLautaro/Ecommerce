@@ -31,7 +31,7 @@ export default function AddCategorieItem() {
         Add Categorie Item
       </Caption>
       <form
-        className="flex flex-col bg-[#424242] p-3 rounded-lg shadow-2xl mt-2 border border-bg-[#d3d3d3]"
+        className="flex flex-col bg-[#424242] p-3 rounded-lg shadow-md mt-2 border border-bg-[#d3d3d3]"
         onSubmit={async (e) => {
           e.preventDefault()
           const addItemResponse = await addCategorieItemAction(item)
@@ -48,7 +48,9 @@ export default function AddCategorieItem() {
           value={item?.type}
         />
 
-        <Label htmlFor="itemValue">Item Value</Label>
+        <div className="mb-1">
+          <Label htmlFor="itemValue">Item Value</Label>
+        </div>
         <Input
           id="itemValue"
           type={"text"}

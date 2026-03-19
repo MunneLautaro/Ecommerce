@@ -36,7 +36,7 @@ export default function AddUser() {
       onSubmit={async (e) => {
         e.preventDefault()
       }}
-      className="flex flex-col gap-4 w-full max-w-sm bg-[#2a2a2a] border border-bg-[#d3d3d3] shadow-lg rounded-xl p-5"
+      className="flex flex-col gap-4 w-full max-w-sm bg-[#2a2a2a] border border-bg-[#d3d3d3] shadow-md rounded-xl p-5"
     >
       <h3 className="text-base font-semibold text-gray-100 text-center">
         Add User

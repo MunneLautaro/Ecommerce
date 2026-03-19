@@ -38,7 +38,7 @@ export default function Carrousel({ mostOrderedProducts }) {
 
   return (
     <div className="flex w-full justify-center px-2 sm:px-4">
-      <div className="relative flex h-auto w-full max-w-4xl flex-col justify-center overflow-hidden rounded-2xl sm:rounded-3xl bg-gradient-to-br from-slate-900 via-indigo-950 to-violet-900 px-3 sm:px-6 py-5 sm:py-6 shadow-2xl">
+      <div className="relative flex h-auto w-full max-w-4xl flex-col justify-center overflow-hidden rounded-2xl sm:rounded-3xl bg-gradient-to-br from-slate-900 via-indigo-950 to-violet-900 px-3 sm:px-6 py-5 sm:py-6 shadow-lg">
         <div className="pointer-events-none absolute inset-0 opacity-70">
           <div className="absolute -left-8 top-10 h-40 w-40 rounded-full bg-violet-500 blur-3xl" />
           <div className="absolute right-0 bottom-[-30px] h-52 w-52 rounded-full bg-indigo-500 blur-3xl" />

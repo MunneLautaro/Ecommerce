@@ -165,7 +165,7 @@ export function LoginForm() {
 
       <div
         className={`
-        ${error ? "bg-red-400 mt-0 rounded-sm p-3" : ""} 
+        ${error ? "bg-red-400 mt-5 rounded-sm p-3" : ""} 
         w-fit
       `}
       >

@@ -90,7 +90,7 @@ export function OrderDetailModal({ order, onClose }) {
       onClick={onClose}
     >
       <div
-        className="bg-grey-900 border border-white/10 rounded-xl max-w-lg w-full max-h-[85vh] overflow-y-auto p-6 shadow-2xl"
+        className="bg-grey-900 border border-white/10 rounded-xl max-w-lg w-full max-h-[85vh] overflow-y-auto p-6 shadow-md"
         onClick={(e) => e.stopPropagation()}
       >
         <div className="flex items-center justify-between mb-4">
