@@ -35,18 +35,25 @@ export default async function middleware(req) {
     const TWO_HOURS = 2 * 60 * 60
     const THRESHOLD = 30 * 60
 
+    if (now >= session.exp) {
+      res.cookies.delete("session")
+      return NextResponse.redirect(new URL("/login", req.nextUrl))
+    }
+
     if (session.exp - now < THRESHOLD) {
+      const newExp = now + TWO_HOURS
       const newToken = await encrypt({
         userId: session.userId,
         username: session.username,
         isAdmin: session.isAdmin,
+        exp: newExp,
       })
 
       res.cookies.set("session", newToken, {
         httpOnly: true,
         secure: process.env.NODE_ENV === "production",
         sameSite: "lax",
-        expires: new Date(Date.now() + TWO_HOURS * 1000),
+        expires: new Date(newExp * 1000),
         path: "/",
       })
     }
