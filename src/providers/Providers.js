@@ -67,6 +67,16 @@ export default function Providers({ children, initialSessionData }) {
     checkOutReducer,
     initialCheckOut,
   )
+
+  useEffect(() => {
+    dispatchSession({
+      type: initialSessionData?.session ? "SET_SESSION" : "CLEAR_SESSION",
+    })
+    dispatchSession({
+      type: "SET_USER",
+      payload: initialSessionData?.user || null,
+    })
+  }, [initialSessionData])
   return (
     <SessionContext.Provider value={[session, dispatchSession]}>
       <ProductFilterContext.Provider value={prodFilter}>

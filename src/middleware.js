@@ -1,8 +1,15 @@
 import { NextResponse } from "next/server"
 import { decrypt, encrypt } from "../src/lib/session"
 
-const protectedRoutes = ["/adminPage", "/prods", "/categorieItems"]
-const authRequiredRoutes = ["/orders"]
+const protectedRoutes = ["/adminPage", "/prods", "/categorieItems", "/orders"]
+const authRequiredRoutes = [
+  "/profile",
+  "/buy",
+  "/adminPage",
+  "/prods",
+  "/categorieItems",
+  "/orders",
+]
 const publicRoutes = ["/login", "/"]
 
 export default async function middleware(req) {
@@ -19,7 +26,6 @@ export default async function middleware(req) {
     if (isProtectedRoute || isAuthRequired) {
       return NextResponse.redirect(new URL("/login", req.nextUrl))
     }
-    res.headers.set("Cache-Control", "public, max-age=3600, s-maxage=3600")
     return res
   }
 
@@ -32,8 +38,8 @@ export default async function middleware(req) {
 
   if (session?.exp) {
     const now = Math.floor(Date.now() / 1000)
-    const TWO_HOURS = 2 * 60 * 60
-    const THRESHOLD = 30 * 60
+    const TWO_HOURS = 60 * 60 * 1
+    const THRESHOLD = 60 * 30
 
     if (now >= session.exp) {
       res.cookies.delete("session")
@@ -79,6 +85,8 @@ export default async function middleware(req) {
 
 export const config = {
   matcher: [
+    "/",
+    "/profile",
     "/adminPage/:path*",
     "/prods/:path*",
     "/categorieItems/:path*",
