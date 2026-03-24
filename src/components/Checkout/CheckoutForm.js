@@ -39,7 +39,6 @@ export default function CheckOutForm({
 
   useEffect(() => {
     if (!response) return
-    console.log({ response })
     if (response?.success) {
       toast.success(`${response?.success}`)
     } else {

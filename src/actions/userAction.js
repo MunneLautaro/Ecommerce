@@ -125,7 +125,6 @@ const removePersonalInfoAction = async (formData) => {
   const { authorized, error, session } = await requireAuth({
     requireAdmin: false,
   })
-  console.log("Removing personal info with data:", formData)
   if (!authorized) {
     return { error }
   }
@@ -139,7 +138,6 @@ const updateUserPersonalInfoAction = async (formData) => {
   const { authorized, error, session } = await requireAuth({
     requireAdmin: false,
   })
-  console.log("Updating personal info with data:", formData)
   if (!authorized) {
     return { error }
   }
