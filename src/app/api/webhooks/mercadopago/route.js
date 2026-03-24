@@ -133,7 +133,6 @@ export async function POST(request) {
     }
 
     if (currentOrder.status === "Cancelled" && orderStatus !== "Payed") {
-      console.log(`Webhook - Order ${orderNumber} already cancelled, ignoring`)
       return NextResponse.json({ received: true }, { status: 200 })
     }
 
@@ -153,9 +152,6 @@ export async function POST(request) {
 
         await markOrderAsRefund(orderNumber, paymentId, reason)
 
-        console.log(
-          `Webhook - Order ${orderNumber} cancelled due to insufficient stock. Refund: ${refundResult.success ? "successful" : "failed"}`,
-        )
         return NextResponse.json({ received: true }, { status: 200 })
       }
 

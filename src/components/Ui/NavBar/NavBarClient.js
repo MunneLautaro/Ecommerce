@@ -11,7 +11,6 @@ import Cart from "@/components/Cart/Cart"
 import { LogIn } from "react-feather"
 
 export default function NavBarClient({ user }) {
-  console.log({ user })
   const pathname = usePathname()
   const [isMenuOpen, setIsMenuOpen] = useState(false)
   const [userState, setUserState] = useState(null)
