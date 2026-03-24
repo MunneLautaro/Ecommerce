@@ -33,7 +33,10 @@ export default async function RootLayout({ children }) {
   return (
     <html lang="en">
       <body className="antialiased">
-        <Providers initialSessionData={initialSessionData}>
+        <Providers
+          key={session?.userId || "no-session"}
+          initialSessionData={initialSessionData}
+        >
           <NavBar />
           <div className="pt-[90px]">{children}</div>
           <ToastContainer theme="dark" position="bottom-left" />

@@ -13,7 +13,7 @@ export async function encrypt(payload) {
   return new SignJWT(payload)
     .setProtectedHeader({ alg: "HS256", typ: "JWT" })
     .setIssuedAt()
-    .setExpirationTime("7d")
+    .setExpirationTime("1h")
     .sign(encodedKey)
 }
 
@@ -26,7 +26,7 @@ export async function createSession(userId, username, isAdmin) {
     secure: process.env.NODE_ENV === "production",
     sameSite: "lax",
     path: "/",
-    maxAge: 60 * 60 * 24 * 7,
+    maxAge: 60 * 60 * 1,
   })
 }
 
@@ -35,15 +35,17 @@ export async function deleteSession() {
 }
 
 export async function decrypt(session = "") {
-  if (!session) return
+  if (!session) return null
   try {
     const { payload } = await jwtVerify(session, encodedKey, {
       algorithms: ["HS256"],
     })
     return payload
   } catch (error) {
-    console.log(error)
-    console.log("Failed to verify session")
+    if (error.code !== "ERR_JWT_EXPIRED") {
+      console.error("Unexpected session error:", error.code)
+    }
+    return null
   }
 }
 
