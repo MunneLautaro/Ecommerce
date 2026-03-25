@@ -6,8 +6,8 @@ import { decrypt } from "../lib/session"
 import Providers from "@/providers/Providers"
 
 export const metadata = {
-  title: "Lautistas Store",
-  description: "Nose :D",
+  title: "Bob's Store",
+  description: "My first Next.js app",
 }
 
 async function getSession() {
