@@ -38,8 +38,8 @@ export default async function middleware(req) {
 
   if (session?.exp) {
     const now = Math.floor(Date.now() / 1000)
-    const TWO_HOURS = 60 * 60 * 1
-    const THRESHOLD = 60 * 30
+    const TWO_HOURS = 60 * 60
+    const THRESHOLD = 60 * 15
 
     if (now >= session.exp) {
       res.cookies.delete("session")
