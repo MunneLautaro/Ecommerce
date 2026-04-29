@@ -95,7 +95,7 @@ Una plataforma de comercio electrónico moderna construida con **Next.js**, **Re
 1. **Clonar el repositorio**
 
 ```bash
-git clone <repository-url>
+git clone https://github.com/MunneLautaro/Ecommerce.git
 cd Ecommerce
 ```
 
@@ -114,16 +114,20 @@ MONGODB_URI=mongodb://localhost:27017/ecommerce
 # o usar MongoDB Atlas:
 # MONGODB_URI=mongodb+srv://username:password@cluster.mongodb.net/ecommerce
 
-# JWT
-JWT_SECRET=tu_secret_key_aqui
+# Seguridad & Sesión
+SESSION_SECRET=tu_session_secret_aqui_minimo_32_caracteres
 
 # Mercado Pago
 NEXT_PUBLIC_MP_PUBLIC_KEY=tu_public_key_mercado_pago
 MP_ACCESS_TOKEN=tu_access_token_mercado_pago
+MP_WEBHOOK_SECRET=tu_webhook_secret_mercado_pago
 
 # Google Auth (opcional)
-GOOGLE_CLIENT_ID=tu_client_id
-GOOGLE_CLIENT_SECRET=tu_client_secret
+NEXT_PUBLIC_GOOGLE_CLIENT_ID=tu_client_id_google
+GOOGLE_CLIENT_SECRET=tu_client_secret_google
+
+# URL de la Aplicación
+NEXT_PUBLIC_APP_URL=http://localhost:3000
 ```
 
 4. **Sembrar base de datos (opcional)**
@@ -146,14 +150,16 @@ Acceder a `http://localhost:3000`
 
 ### Variables de Entorno Detalladas
 
-| Variable                    | Descripción                   | Requerida |
-| --------------------------- | ----------------------------- | --------- |
-| `MONGODB_URI`               | URL de conexión a MongoDB     | ✅ Sí     |
-| `JWT_SECRET`                | Clave secreta para firmar JWT | ✅ Sí     |
-| `NEXT_PUBLIC_MP_PUBLIC_KEY` | Clave pública de Mercado Pago | ✅ Sí     |
-| `MP_ACCESS_TOKEN`           | Token de acceso Mercado Pago  | ✅ Sí     |
-| `GOOGLE_CLIENT_ID`          | ID de cliente Google OAuth    | ❌ No     |
-| `GOOGLE_CLIENT_SECRET`      | Secreto cliente Google OAuth  | ❌ No     |
+| Variable                       | Descripción                                            | Requerida |
+| ------------------------------ | ------------------------------------------------------ | --------- |
+| `MONGODB_URI`                  | URL de conexión a MongoDB                              | ✅ Sí     |
+| `SESSION_SECRET`               | Clave secreta para firmar cookies (mín. 32 caracteres) | ✅ Sí     |
+| `NEXT_PUBLIC_MP_PUBLIC_KEY`    | Clave pública de Mercado Pago                          | ✅ Sí     |
+| `MP_ACCESS_TOKEN`              | Token de acceso Mercado Pago                           | ✅ Sí     |
+| `MP_WEBHOOK_SECRET`            | Secreto webhook de Mercado Pago                        | ✅ Sí     |
+| `NEXT_PUBLIC_APP_URL`          | URL base de la aplicación                              | ✅ Sí     |
+| `NEXT_PUBLIC_GOOGLE_CLIENT_ID` | ID de cliente Google OAuth                             | ❌ No     |
+| `GOOGLE_CLIENT_SECRET`         | Secreto cliente Google OAuth                           | ❌ No     |
 
 ### Base de Datos
 
@@ -413,12 +419,6 @@ Si eres parte del equipo:
 ## 📄 Licencia
 
 Este proyecto es privado. Todos los derechos reservados.
-
----
-
-## 📧 Contacto
-
-Para preguntas o soporte, contactar al equipo de desarrollo.
 
 ---
 
